@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+option {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+/* Style for the selected option */
+option:checked {
+    font-weight: bold;
+    background-color: #ccc;
+}
+
+/* header */
+
+/* loading stuff */
+.product-loading{
+    max-width: 1270px;
+    margin:auto;
+    height:200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+}
+.tiktok-spinner{
+    position:relative;
+    height:2em;
+    width:4.1em;
+}
+.ball{
+    position: absolute;
+    height:2em;
+    width: 2em;
+    border-radius:50%;
+    mix-blend-mode: multiply;
+}
+.ball.red{
+    left:0;
+    background-color: #f71375;
+    animation: 0.7s red-move ease-in-out infinite;
+}
+.ball.blue{
+    right:0;
+    background-color: #37f7f6;
+    animation : 0.7s blue-move ease-in-out infinite;
+}
+@keyframes blue-move{
+    25%{
+        transoform: scale(0,7);
+    }
+    50%{
+        right:1.9em;
+    }
+    75%{
+        transform: scale(1.2);
+    }
+    100%{
+        right:0;
+    }
+}
+@keyframes red-move{
+    25%{
+        transoform: scale(1,2);
+    }
+    50%{
+        left:1.9em;
+    }
+    75%{
+        transform: scale(0.7);
+    }
+    100%{
+        left:0;
+    }
+}
+
+
+
+.backgroundimg {
+    background-image: url("./assets/background.png");
+    background-size:cover;
+    background-position: 10%;
+}
+
+
+/* for small */
+@media (max-width:767px){
+    .backgroundimg{
+        background-image: none;
+        background-color: rgba(55, 65, 81, 1);
+    }
+}
+
+/*for medium */
+@media (min-width: 768px) and (max-width: 1024px){
+    .backgroundimg{
+        background-image: none;
+        background-color: rgba(55, 65, 81, 1);
+    }
+}
+/* for large and medium */
+@media (max-width: 1439px){
+
+}
