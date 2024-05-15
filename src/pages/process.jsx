@@ -13,15 +13,20 @@ function Process() {
     const [switchtype,setswitchtype] = useState("text");
     const [modifydata,setmodifydata] = useState("");
     const [currentkey,setcurrentkey] = useState("");
+    const [error,seterror] = useState("");
+    const [inputservice,setinputservice] = useState("");
 
     // Function to convert raw text to JSON-like structure
     const textToJSON = (text) => {
-        const lines = text.split('\n');
+        let lines = text.split(/[\n]/);
+        // console.log("lines :", lines)
         const json = {};
+        const regex = /[:]/;
+
 
         lines.forEach(line => {
-            if (line.includes(':')) {
-                const [key,value] = line.split(':');
+            if (regex.test(line)) {
+                const [key,value] = line.split(/[:]/);
                 const trimmedKey = key.trim();
                 json[trimmedKey] = ``;
             }
@@ -51,6 +56,12 @@ function Process() {
         return json;
     };
 
+    const allowedExtensions = ['jpg', 'jpeg', 'png', 'pdf'];
+
+    const isFileExtensionAllowed = (filename) => {
+        const fileExtension = filename.split('.').pop().toLowerCase();
+        return allowedExtensions.includes(fileExtension);
+    };
     const handleFileUpload = (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -63,33 +74,50 @@ function Process() {
         e.preventDefault();
         setProcessing(true);
         try {
+            if(!inputservice){
+                throw new Error ("Please select a service");
+            }
             const formData = new FormData();
             const myFiles = document.getElementById('myFiles').files;
 
             for (let i = 0; i < myFiles.length; i++) {
                 const file = myFiles[i];
-                formData.append(file.name, file);
+                // console.log(`file.name :`, file.name);
+                const isAllowed = isFileExtensionAllowed(file.name);
+                if(!isAllowed){
+                    throw new Error("We only allow file PDF,TIFF,JPEG and PNG.");
+                }
+                formData.append('file', file); // Ensure 'file' matches the backend expectation
             }
-
-            const response = await fetch('http://localhost:3500/veryfi', {
+            if(myFiles.length <=0 ){
+                throw new Error ("Please select a file");
+            }
+            const response = await fetch(`https://fastapi-r12h.onrender.com/text-extraction?service=Veryfi`, {
                 method: 'POST',
                 body: formData
             });
 
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
             const json = await response.json();
             setocrvalue(json);
             setProcessing(false);
+            seterror("");
         } catch (err) {
-            console.log(err);
+            // console.error('There was an error: ', err.message);
             setProcessing(false);
+            seterror(err.message)
         }
     };
 
     useEffect(() => {
         if (ocrvalue) {
-            const jsonData = textToJSON(ocrvalue);
+            const jsonData = textToJSON(ocrvalue.raw_text);
             setMyJsonData(jsonData);
-            console.log(`jsonData: ${JSON.stringify(myJsonData)}`);
+            // console.log(`jsonData: ${JSON.stringify(myJsonData)}`);
+            // console.log("ocrvalue :", ocrvalue);
         }
     }, [ocrvalue]);
     const modifyfunction = (e) =>{
@@ -148,9 +176,9 @@ function Process() {
                     {
                         ocrvalue ? (
                             <>
-                                <pre className="md:max-w-28 overflow-auto border-none text-green-500  max-h-34 border-4">
-                                    {ocrvalue}
-                                </pre>
+                                <div className="md:max-w-28 overflow-auto border-none text-green-500  max-h-34 border-4 whitespace-pre-line">
+                                    {ocrvalue.raw_text}
+                                </div>
                             </>
                         ):(
                             <>
@@ -177,18 +205,28 @@ function Process() {
                             <h1 className="text-2xl mt-3 text-white mb-7">PDF, TIFF, JPEG & PNG</h1>
                         </>                            
                     </label>
-                        <select className=" mt-2 p-2 text-md border-none rounded-md hover:cursor-pointer">
-                            <option value="select">Select OCR services</option>
-                            <option value="">Verify(recommend)</option>
-                            <option value="">Google lens</option>
-                            <option value="">Google vision</option>
+                        <select className=" mt-2 p-2 text-md border-none rounded-md hover:cursor-pointer" onChange={(e) => setinputservice(e.target.value)}>
+                            <option value="">Select OCR services</option>
+                            <option value="Veryfi">Veryfi(recommend)</option>
+                            <option value="Google lens">Google lens</option>
+                            <option value="Google vision">Google vision</option>
                         </select>
                         <button className={!processing ? "text-white mt-4 text-md p-2 rounded-md w-52 bg-yellow-400 hover:bg-yellow-200" : "text-white mt-6 text-md p-2 rounded-md w-52 bg-yellow-500 opacity-50 cursor-not-allowed"} disabled={processing} onClick={sendFiles}> {processing ? "PROCESSING....." : "START OCR"}</button>
+                        {
+                            error ? (
+                                <>
+                                    <div className="text-red-700 mt-2 text-xl">{error}</div>
+                                </>
+                            ) :(
+                                <>
+                                </>
+                            )
+                        }
                     </div>
                 </div>
                 <div className="flex justify-center items-center p-10 flex-wrap border-4 border-blue-400 text-white">
                     <div className= {switchtype !== "json" ? "border-4 border-gray-300 p-10 flex flex-col items-center gap-4 rounded-lg" : "border-4 border-green-500 p-10 flex flex-col items-center gap-4 rounded-lg"}>
-                        <h1 className="mb-2 text-3xl text-yellow-400">Defaul Template</h1>
+                        <h1 className="mb-2 text-3xl text-yellow-400">Default Template</h1>
 
                         <div className="flex border-2">
                             <div className="border-2 p-5 text-center hover:cursor-pointer hover:bg-green-600" onClick={()=> setswitchtype("json")}> .JSON </div>
@@ -201,7 +239,7 @@ function Process() {
                                     <pre>{JSON.stringify(myJsonData, null,3)}</pre>
                                 </div>
                             ): switchtype == "text" && myJsonData !=undefined ? (
-                                <div className="text-gray-300">
+                                <div className="text-gray-300 overflow-auto">
                                     {
                                         modifydata ? (
                                             <>
