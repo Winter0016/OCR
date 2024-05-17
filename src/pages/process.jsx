@@ -16,7 +16,7 @@ function Process() {
     const [deletefield,setdeletefield] = useState(false);
     const [addvalue,setaddvalue] = useState("");
     const [modifyfield , setmodifyfield] = useState(false);
-    const [objectfield,setobjectfield] = useState({"name":"","id":""});
+    const [objectfield,setobjectfield] = useState({});
     const [modifyvalue,setmodifyvalue] = useState();
     const [originalvalue , setoriginalvalue] = useState();
 
@@ -177,7 +177,7 @@ function Process() {
                         <select className="mt-2 p-2 text-md border-none rounded-md hover:cursor-pointer" onChange={(e) => setinputservice(e.target.value)}>
                             <option value="">Select OCR services</option>
                             <option value="Veryfi">Veryfi (recommend)</option>
-                            <option value="Google lens">Google lens</option>
+                            <option value="Amazon Textract">Amazon Textract</option>
                             <option value="Google vision">Google vision</option>
                         </select>
                         <button className={!processing ? "text-white mt-4 text-md p-2 rounded-md w-52 bg-yellow-400 hover:bg-yellow-200" : "text-white mt-6 text-md p-2 rounded-md w-52 bg-yellow-500 opacity-50 cursor-not-allowed"} disabled={processing} onClick={sendFiles}> {processing ? "PROCESSING....." : "START OCR"}</button>
@@ -215,7 +215,7 @@ function Process() {
                                             <>
                                             
                                             </>
-                                        ) : switchtype === "text" ? (
+                                        ) : switchtype === "text" && ocrvalue ? (
                                             <div className="text-gray-300 flex flex-col gap-4">
                                                 <div className="overflow-auto flex gap-5 justify-center">
                                                     <div className="border-2 p-3 rounded-xl hover:cursor-pointer hover:bg-blue-600" onClick={() => {setdeletefield(false);setmodifyfield(false); setshowform(prevshowform => !prevshowform)}}>ADD FIELD</div>
@@ -226,22 +226,37 @@ function Process() {
                                                     showform ? (
                                                         <form className="mb-6 text-blue-600" onSubmit={addfunction}>
                                                             <h1>ADD FIELD</h1>
-                                                            <input type="text" value={addvalue} onChange={(e) => setaddvalue(e.target.value)} className="p-2"/>
-                                                            <button type="submit" className="ml-3">ADD</button>
+                                                            <div className="flex">
+                                                                <input type="text" value={addvalue} onChange={(e) => setaddvalue(e.target.value)} className="p-2 rounded-lg"/>
+                                                                <button type="submit" className="ml-3 border-2 pl-4 pr-4 p-2 rounded-lg flex gap-1 hover:opacity-60 hover:translate-x-1">
+                                                                    ADD
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                                                    </svg>
+
+                                                                </button>                                                    
+                                                            </div>
                                                         </form>
                                                     ) : deletefield ? (
                                                         <>
                                                             <h1 className=" text-red-600">Choose a field u want to delete (toggle the button to stop) </h1>
                                                         </>
-                                                    ) : (
+                                                    ) : modifyfield ? (
                                                         <>
                                                             <h1 className=" text-yellow-600">Choose a field u want to modify (toggle the button to stop) </h1>
                                                             {
-                                                                modifyvalue ? (
+                                                                modifyfield ? (
                                                                     <form className="mb-6 text-yellow-600" onSubmit={modifyfunction}>
                                                                         <h1>Modify for {originalvalue}</h1>
-                                                                        <input type="text" value={modifyvalue} onChange={(e) => setmodifyvalue(e.target.value)} className="p-2"/>
-                                                                        <button type="submit" className="ml-3">Change</button>
+                                                                        <div className="flex">
+                                                                            <input type="text" value={modifyvalue} onChange={(e) => setmodifyvalue(e.target.value)} className="p-2 rounded-lg"/>
+                                                                            <button type="submit" className="ml-3 border-2 pl-4 pr-4 p-2 rounded-lg flex gap-1 hover:opacity-60 hover:translate-x-1">
+                                                                                CHANGE
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                                                    <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
+                                                                                </svg>
+                                                                            </button>                                                    
+                                                                        </div>
                                                                     </form>
                                                                 ):(
                                                                     <>
@@ -249,6 +264,8 @@ function Process() {
                                                                 )
                                                             }
                                                         </>
+                                                    ) : (
+                                                        <></>
                                                     )
                                                 }
                                                 <div className="flex flex-col gap-5">
