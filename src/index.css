@@ -25,6 +25,16 @@ option:checked {
     align-items: center;
     overflow: hidden;
 }
+.product-loading2{
+    width: fit-content;
+    margin:auto;
+    height:fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* overflow: hidden; */
+    /* border:solid; */
+}
 .tiktok-spinner{
     position:relative;
     height:2em;
@@ -35,16 +45,15 @@ option:checked {
     height:2em;
     width: 2em;
     border-radius:50%;
-    mix-blend-mode: multiply;
 }
 .ball.red{
     left:0;
-    background-color: #f71375;
+    background-color: rgb(255, 0, 0);
     animation: 0.7s red-move ease-in-out infinite;
 }
 .ball.blue{
     right:0;
-    background-color: #37f7f6;
+    background-color: rgb(85, 255, 0);
     animation : 0.7s blue-move ease-in-out infinite;
 }
 @keyframes blue-move{

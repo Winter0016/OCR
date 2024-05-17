@@ -37,7 +37,8 @@ function Process() {
 
     const convertOJson = async (rawtext) => {
         // console.log(`attepming convertojson`);
-        // console.log(`rawtext: `,rawtext)
+        // console.log(`rawtext: `,rawtext);
+        setocrjson("");
         try {
             setconvertprocess(true);
             const response = await fetch(`https://fastapi-r12h.onrender.com/convert?raw_text=${rawtext}`, {
@@ -59,8 +60,10 @@ function Process() {
 
     const sendFiles = async (e) => {
         e.preventDefault();
-        setProcessing(true);
+        setocrvalue("");
         try {
+            setProcessing(true);
+
             if (!inputservice) {
                 throw new Error("Please select a service");
             }
@@ -200,7 +203,7 @@ function Process() {
 
     return (
         <div className="bg-gray-900 font-mono">
-            <div className='md:m-auto flex flex-col flex-wrap text-wrap pb-24 border-4' style={{ maxWidth: "1450px" }}>
+            <div className='md:m-auto flex flex-col flex-wrap text-wrap pb-24' style={{ maxWidth: "1450px" }}>
                 <div className="flex justify-center flex-wrap w-auto h-auto">
                     <div className="flex flex-col items-center mt-9">
                         <h1 className="md:text-5xl text-2xl text-white">See Yourself</h1>
@@ -227,9 +230,18 @@ function Process() {
                             </div>
                         ) : (
                             processing ? (
-                                <div className="flex flex-col justify-center items-center md:max-w-28 overflow-auto text-blue-400 border-4 text-lg p-4 h-28 text-wrap" style={{ whiteSpace: 'pre-wrap' }}>
-                                    <div>This could take a minute, please wait...</div>
-                                </div>
+                                <>
+                                    <div className="flex flex-col items-center md:max-w-28 overflow-auto text-blue-400 border-4 text-lg p-4 h-28 text-wrap bg-gray-900 gap-0">
+                                        <div className="product-loading2">
+                                            <div>This could take a minute, please wait...</div>
+                                            <div className="tiktok-spinner">
+                                                <div className="ball red"></div>
+                                                <div className="ball blue"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </>
+                                
                             ) : (
                                 <div className="flex flex-col justify-center items-center md:max-w-28 overflow-auto text-green-500 border-4 text-4xl p-4 h-28" style={{ whiteSpace: 'pre-wrap' }}>
                                     <div>YOUR RESULT</div>
@@ -277,8 +289,14 @@ function Process() {
                         {
                             convertprocess ? (
                                 <>
-                                    <div className="flex flex-col justify-center items-center md:max-w-28 overflow-auto text-blue-400 border-4 text-lg p-4 h-28 text-wrap" style={{ whiteSpace: 'pre-wrap' }}>
-                                        <div>CONVERTING......</div>
+                                    <div className="flex flex-col items-center w-fit overflow-auto text-blue-400 text-lg p-4 h-fit text-wrap bg-gray-900 gap-0">
+                                        <div className="product-loading2">
+                                            <div>CONVERTING......</div>
+                                            <div className="tiktok-spinner">
+                                                <div className="ball red opacity-100"></div>
+                                                <div className="ball blue opacity-100"></div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </>
                             ) :(
@@ -308,7 +326,7 @@ function Process() {
                                                         <div className="text-center mb-4 text-wrap">Click any field you want to modify in this template</div>
                                                     )
                                                 }
-                                                <div className="flex flex-wrap gap-2">
+                                                <div className="flex flex-wrap gap-3">
                                                     <div>
                                                         {  
                                                             Object.entries(Arrayoftext).map(([key, value]) => (
