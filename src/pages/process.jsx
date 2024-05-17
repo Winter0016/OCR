@@ -130,14 +130,18 @@ function Process() {
 
     useEffect(() => {
         if (ocrjson) {
-            // console.log(`ocrjson : ${JSON.stringify(ocrjson)}`)
+            // Regular expression to remove anything outside valid JSON characters
             const jsonString = ocrjson.replace(/```/g, '').trim(); // Remove the triple backticks
-            const parsedData = JSON.parse(jsonString);
-            // console.log("parsedData :", parsedData);
-            setMyJsonData(parsedData);
-            const keys = extractKeys(parsedData);
-            setArrayoftext(keys);
-            // console.log("array of text", keys);
+    
+            try {
+                const parsedData = JSON.parse(jsonString);
+                setMyJsonData(parsedData);
+                const keys = extractKeys(parsedData);
+                setArrayoftext(keys);
+            } catch (error) {
+                console.error("Failed to parse JSON:", error);
+                seterror(error.message);
+            }
         }
     }, [ocrjson]);
 
