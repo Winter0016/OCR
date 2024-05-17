@@ -8,16 +8,17 @@ function Process() {
     const [ocrjson, setocrjson] = useState("");
     const [processing, setProcessing] = useState(false);
     const [myJsonData, setMyJsonData] = useState(null);
-    const [switchtype, setswitchtype] = useState("json");
-    const [modifydata, setmodifydata] = useState("");
-    const [currentkey, setcurrentkey] = useState("");
+    const [switchtype, setswitchtype] = useState("text");
     const [error, seterror] = useState("");
     const [inputservice, setinputservice] = useState("");
-    const [Arrayoftext,setArrayoftext] = useState([]);
     const [convertprocess,setconvertprocess] = useState(false);
-    const [arrayofvalue,setarrayofvalue] = useState("");
-    const [modifydata2,setmodifydata2] = useState("");
-    const [currentvalue,setcurrentvalue] = useState("");
+    const [showform,setshowform] = useState(false);
+    const [deletefield,setdeletefield] = useState(false);
+    const [addvalue,setaddvalue] = useState("");
+    const [modifyfield , setmodifyfield] = useState(false);
+    const [objectfield,setobjectfield] = useState({"name":"","id":""});
+    const [modifyvalue,setmodifyvalue] = useState();
+    const [originalvalue , setoriginalvalue] = useState();
 
 
     const allowedExtensions = ['jpg', 'jpeg', 'png', 'pdf'];
@@ -35,28 +36,6 @@ function Process() {
         }
     };
 
-    const convertOJson = async (rawtext) => {
-        // console.log(`attepming convertojson`);
-        // console.log(`rawtext: `,rawtext);
-        setocrjson("");
-        try {
-            setconvertprocess(true);
-            const response = await fetch(`https://fastapi-r12h.onrender.com/convert?raw_text=${rawtext}`, {
-                method: 'POST',
-                body:"",
-            });
-            if (!response.ok) {
-                throw new Error('Network response was not ok at convert');
-            }
-            const json = await response.json();
-            // console.log(`json : ${JSON.stringify(json)}`);
-            setocrjson(json.reply);
-            setconvertprocess(false);
-        } catch (err) {
-            setconvertprocess(false);
-            seterror(err.message);
-        }
-    };
 
     const sendFiles = async (e) => {
         e.preventDefault();
@@ -94,116 +73,42 @@ function Process() {
             setocrvalue(json);
             setProcessing(false);
             seterror("");
+            setswitchtype("text");
         } catch (err) {
             setProcessing(false);
             seterror(err.message);
         }
     };
-
-    useEffect(() => {
-        if (ocrvalue) {
-            // console.log(`ocrvalue.raw_text : ${ocrvalue.raw_text}`);
-            convertOJson(ocrvalue.raw_text);
+    const addfunction = (e) => {
+        e.preventDefault();
+        const original = { ...objectfield };
+        if (addvalue) {
+            const newField = { [addvalue]: "" };
+            const updatedObject = {...newField,...original};
+            setobjectfield(updatedObject);
         }
-    }, [ocrvalue]);
-
-    const extractKeys = (obj, keys = []) => {
-        for (let key in obj) {
-            if (typeof obj[key] === 'object' && obj[key] !== null) {
-                extractKeys(obj[key], keys);
-            } else {
-                keys.push(key);
-            }
+        setaddvalue("");
+    }
+    const deletefunction = (mykey) =>{
+        if(deletefield){
+            const original = {...objectfield};
+            delete original[mykey];
+            setobjectfield(original);
         }
-        return keys;
-    };
-    const extractvalues = (obj,values = [] ) => {
-        for(let key in obj){
-            if(typeof obj[key] === "object" && obj[key] !== null){
-                extractvalues(obj[key],values);
+    }
+    const modifyfunction = (e) =>{
+        e.preventDefault();
+        const original = {...objectfield};
+        const newobject = {}
+        for(const key in original){
+            if(key === originalvalue){
+                newobject[modifyvalue] = "";
             }else{
-                values.push(obj[key]);
+                newobject[key] = "";
             }
         }
-        return values;
+        setobjectfield(newobject);
     }
-
-    useEffect(() => {
-        if (ocrjson) {
-            // Regular expression to remove anything outside valid JSON characters
-            const jsonString = ocrjson.replace(/```/g, '').trim(); // Remove the triple backticks
-    
-            try {
-                const parsedData = JSON.parse(jsonString);
-                setMyJsonData(parsedData);
-                const keys = extractKeys(parsedData);
-                setArrayoftext(keys);
-            } catch (error) {
-                console.error("Failed to parse JSON:", error);
-                seterror(error.message);
-            }
-        }
-    }, [ocrjson]);
-
-    useEffect(() =>{
-        const keys = extractKeys(myJsonData);
-        const values = extractvalues(myJsonData);
-        setArrayoftext(keys);
-        setarrayofvalue(values)
-        // console.log("array of text", keys);
-    },[myJsonData])
-
-
-    const modifyKey = (obj, currentKey, newKey) => {
-        if (typeof obj !== 'object' || obj === null) return obj;
-    
-        const newObj = {};
-        for (let key in obj) {
-            if (key === currentKey) {
-                newObj[newKey] = obj[key];
-            } else {
-                newObj[key] = modifyKey(obj[key], currentKey, newKey);
-            }
-        }
-        return newObj;
-    };
-    const modifyvalue = (obj,currentvalue,newvalue) => {
-        if (typeof obj !== 'object' || obj === null) return obj;
-    
-        const newObj = {};
-        for (let key in obj) {
-            if (obj[key] === currentvalue) {
-                newObj[key] = newvalue;
-            } else {
-                newObj[key] = modifyvalue(obj[key], currentvalue, newvalue);
-            }
-        }
-        return newObj;
-    }
-    
-
-    const modifyfunction = (e) => {
-        e.preventDefault();
-        if (!modifydata) {
-            console.log(`no modifydata is found`);
-        } else {
-            const updatedData = modifyKey({ ...myJsonData }, currentkey, modifydata);
-            setMyJsonData(updatedData);
-            setmodifydata("");
-            setcurrentkey("");
-        }
-    };
-    const modifyfunction2 = (e) => {
-        e.preventDefault();
-        if (!modifydata2) {
-            console.log(`no modifydata is found`);
-        } else {
-            const updatedData = modifyvalue({ ...myJsonData }, currentvalue, modifydata2);
-            setMyJsonData(updatedData);
-            setmodifydata2("");
-            setcurrentvalue("");
-        }
-    };
 
     return (
         <div className="bg-gray-900 font-mono">
@@ -222,14 +127,14 @@ function Process() {
                                 <h1 className="text-3xl text-yellow-400 mt-3">{selectedFile}</h1>
                             </div>
                         ) : (
-                            <div className="flex justify-center items-center md:max-w-28 overflow-auto text-green-500 border-4 text-4xl p-4 h-28" style={{ whiteSpace: 'pre-wrap' }}>
+                            <div className="flex justify-center items-center md:max-w-28 overflow-auto text-green-500 border-2 text-4xl p-4 h-28" style={{ whiteSpace: 'pre-wrap' }}>
                                 Your file input
                             </div>
                         )
                     }
                     {
                         ocrvalue ? (
-                            <div className="md:max-w-28 overflow-auto border-none text-green-500 max-h-34 border-4 whitespace-pre-line">
+                            <div className="md:max-w-28 overflow-auto border-none text-green-500 max-h-34 border-4">
                                 {ocrvalue.raw_text}
                             </div>
                         ) : (
@@ -237,7 +142,7 @@ function Process() {
                                 <>
                                     <div className="flex flex-col items-center md:max-w-28 overflow-auto text-blue-400 border-4 text-lg p-4 h-28 text-wrap bg-gray-900 gap-0">
                                         <div className="product-loading2">
-                                            <div>This could take a minute, please wait...</div>
+                                            <div className="mb-2">This could take a while, please wait...</div>
                                             <div className="tiktok-spinner">
                                                 <div className="ball red"></div>
                                                 <div className="ball blue"></div>
@@ -247,7 +152,7 @@ function Process() {
                                 </>
                                 
                             ) : (
-                                <div className="flex flex-col justify-center items-center md:max-w-28 overflow-auto text-green-500 border-4 text-4xl p-4 h-28" style={{ whiteSpace: 'pre-wrap' }}>
+                                <div className="flex flex-col justify-center items-center md:max-w-28 overflow-auto text-green-500 border-2 text-4xl p-4 h-28" style={{ whiteSpace: 'pre-wrap' }}>
                                     <div>YOUR RESULT</div>
                                 </div>
                             )
@@ -285,7 +190,7 @@ function Process() {
                 </div>
                 <div className="flex justify-center items-center p-10 flex-wrap border-4 border-blue-400 text-white">
                     <div className={switchtype !== "json" ? "border-4 border-gray-300 p-10 flex flex-col items-center gap-4 rounded-lg" : "border-4 border-green-500 p-10 flex flex-col items-center gap-4 rounded-lg"}>
-                        <h1 className="mb-2 text-3xl text-yellow-400">Default Template</h1>
+                        <h1 className="mb-2 text-3xl text-yellow-400">Config Template for collecting info</h1>
                         <div className="flex border-2">
                             <div className="border-2 p-5 text-center hover:cursor-pointer hover:bg-green-600" onClick={() => setswitchtype("json")}> .JSON </div>
                             <div className="border-2 p-5 text-center hover:cursor-pointer hover:bg-gray-300" onClick={() => setswitchtype("text")}> Text </div>
@@ -306,55 +211,60 @@ function Process() {
                             ) :(
                                 <>
                                     {
-                                        switchtype === "json" && myJsonData ? (
-                                            <div className="text-green-500">
-                                                <pre>{JSON.stringify(myJsonData, null, 3)}</pre>
-                                            </div>
-                                        ) : switchtype === "text" && myJsonData ? (
-                                            <div className="text-gray-300 overflow-auto">
+                                        switchtype === "json" && ocrvalue ? (
+                                            <>
+                                            
+                                            </>
+                                        ) : switchtype === "text" ? (
+                                            <div className="text-gray-300 flex flex-col gap-4">
+                                                <div className="overflow-auto flex gap-5 justify-center">
+                                                    <div className="border-2 p-3 rounded-xl hover:cursor-pointer hover:bg-blue-600" onClick={() => {setdeletefield(false);setmodifyfield(false); setshowform(prevshowform => !prevshowform)}}>ADD FIELD</div>
+                                                    <div className="border-2 p-3 rounded-xl hover:cursor-pointer hover:bg-red-600" onClick={() => {setshowform(false);setmodifyfield(false); setdeletefield(prev => !prev)}}>DELETE FIELD</div>
+                                                    <div className="border-2 p-3 rounded-xl hover:cursor-pointer hover:bg-yellow-600" onClick={() => {setshowform(false);setdeletefield(false); setmodifyfield(prev => !prev)}}>MODIFY</div>
+                                                </div>
                                                 {
-                                                    modifydata || modifydata2 ? (
+                                                    showform ? (
+                                                        <form className="mb-6 text-blue-600" onSubmit={addfunction}>
+                                                            <h1>ADD FIELD</h1>
+                                                            <input type="text" value={addvalue} onChange={(e) => setaddvalue(e.target.value)} className="p-2"/>
+                                                            <button type="submit" className="ml-3">ADD</button>
+                                                        </form>
+                                                    ) : deletefield ? (
                                                         <>
-                                                            <form onSubmit={modifyfunction} className="mb-6">
-                                                                <h1>Modify key ({modifydata})</h1>
-                                                                <input type="text" value={modifydata} onChange={(e) => setmodifydata(e.target.value)} className="text-red-600 mr-2" />
-                                                                <button type="submit">CHANGE</button>
-                                                            </form>
-                                                            <form onSubmit={modifyfunction2} className="mb-6">
-                                                                <h1>Modify value ({modifydata2})</h1>
-                                                                <input type="text" value={modifydata2} onChange={(e) => setmodifydata2(e.target.value)} className="text-red-600 mr-2" />
-                                                                <button type="submit">CHANGE</button>
-                                                            </form>                                                   
+                                                            <h1 className=" text-red-600">Choose a field u want to delete (toggle the button to stop) </h1>
                                                         </>
                                                     ) : (
-                                                        <div className="text-center mb-4 text-wrap">Click any field you want to modify in this template</div>
+                                                        <>
+                                                            <h1 className=" text-yellow-600">Choose a field u want to modify (toggle the button to stop) </h1>
+                                                            {
+                                                                modifyvalue ? (
+                                                                    <form className="mb-6 text-yellow-600" onSubmit={modifyfunction}>
+                                                                        <h1>Modify for {originalvalue}</h1>
+                                                                        <input type="text" value={modifyvalue} onChange={(e) => setmodifyvalue(e.target.value)} className="p-2"/>
+                                                                        <button type="submit" className="ml-3">Change</button>
+                                                                    </form>
+                                                                ):(
+                                                                    <>
+                                                                    </>
+                                                                )
+                                                            }
+                                                        </>
                                                     )
                                                 }
-                                                <div className="flex flex-wrap gap-3">
+                                                <div className="flex flex-col gap-5">
                                                     <div>
                                                         {  
-                                                            Object.entries(Arrayoftext).map(([key, value]) => (
-                                                                <div key={key} className="hover:cursor-pointer border-2 p-2" onClick={() => { setmodifydata(value); setcurrentkey(value); }}>
-                                                                    {key}.{value}
-                                                                </div>
-                                                            ))
-                                                            // <>
-                                                            //     <div>convert to text template</div>
-                                                            // </>
+                                                                Object.entries(objectfield).map(([key, value]) => (
+                                                                    <div key={key} className={deletefield ? "hover:cursor-pointer hover:bg-red-600 border-2 p-2": modifyfield ? "hover:cursor-pointer hover:bg-yellow-600 border-2 p-2" : "border-2 p-2"} onClick={() => {deletefunction(key);setmodifyvalue(key);setoriginalvalue(key)}}>
+                                                                        {key} : {value}
+                                                                    </div>
+                                                                ))
+                                                                // <>
+                                                                //     <div>convert to text template</div>
+                                                                // </>
                                                         }
                                                     </div>
-                                                    <div>
-                                                        {  
-                                                            Object.entries(arrayofvalue).map(([key, value]) => (
-                                                                <div key={key} className="hover:cursor-pointer border-2 p-2" onClick={() => { setmodifydata2(value); setcurrentvalue(value); }}>
-                                                                    {value}
-                                                                </div>
-                                                            ))
-                                                            // <>
-                                                            //     <div>convert to text template</div>
-                                                            // </>
-                                                        }
-                                                    </div>
+                                                    <button className="border-2 p-2 hover:bg-green-600 text-2xl rounded-xl">COLLECT</button>
                                                 </div>
                                             </div>
                                         ) : null
