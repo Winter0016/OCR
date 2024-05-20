@@ -1,5 +1,7 @@
 import img from "../imgs/img";
-import { useState, useEffect } from "react";
+import { useState,useRef, useEffect} from "react";
+import Webcam from 'react-webcam';
+
 
 function Process() {
     const [selectedFile, setSelectedFile] = useState(null);
@@ -19,7 +21,16 @@ function Process() {
     const [objectfield,setobjectfield] = useState({});
     const [modifyvalue,setmodifyvalue] = useState();
     const [originalvalue , setoriginalvalue] = useState();
+    const [collectprocess,setcollectprocess] = useState(false);
+    const [collecterror,setcollecterror] = useState("");
 
+    const [cameraEnabled, setCameraEnabled] = useState(false);
+    const webcamRef = useRef(null);
+    const [capturedImage, setCapturedImage] = useState(null);
+
+
+    //camera
+    //
 
     const allowedExtensions = ['jpg', 'jpeg', 'png', 'pdf'];
 
@@ -35,7 +46,6 @@ function Process() {
             setImgUrl(URL.createObjectURL(file));
         }
     };
-
 
     const sendFiles = async (e) => {
         e.preventDefault();
@@ -79,6 +89,68 @@ function Process() {
             seterror(err.message);
         }
     };
+    // const isEmptyObject = (obj) => {
+    //     return Object.keys(obj).length === 0 && obj.constructor === Object;
+    // };
+
+    const convertjson = async () => {
+        try{
+            setcollectprocess(true);
+            if (Object.keys(objectfield).length === 0 && objectfield.constructor === Object) {
+                // console.log('no config!');
+                throw new Error("You haven't config template yet.");
+            }
+            // const jsonObject = { "id": "", "họ và tên": "" };
+
+            const formData = new FormData();
+            const jsonBlob = new Blob([JSON.stringify(objectfield)], { type: 'application/json' });
+            formData.append('file', jsonBlob, 'data.json');
+
+            const response = await fetch(`https://fastapi-r12h.onrender.com/convert?raw_text=${ocrvalue.raw_text}`,{
+                method:"POST",
+                body:formData
+            });
+
+            const json = await response.json();
+            // if (!response.ok) {
+            //     throw new Error(json.msg);
+            // }
+            setocrjson(json);
+            setcollectprocess(false);
+            setcollecterror("");
+
+        }catch(err){
+            console.log(err.message);
+            setcollecterror(err.message);
+            setcollectprocess(false);
+        }
+    }
+    useEffect(() => {
+        if(ocrjson){
+            // console.log("OCRJSON :",ocrjson);
+        // Remove the ```json and ``` from the string
+        const cleanedJsonString = ocrjson.reply.replace(/```json\n|```/g, '');
+
+        // Parse the cleaned JSON string into an object
+        const parsedObject = JSON.parse(cleanedJsonString);
+
+        setMyJsonData(parsedObject);
+        setobjectfield(parsedObject);
+        }
+    },[ocrjson])
+    // useEffect(() => {
+    //     if(objectfield){
+    //         console.log("objectfield :",objectfield);
+    //         // setMyJsonData(JSON.parse(ocrjson));
+    //     }
+    // },[objectfield])
+    // useEffect(() => {
+    //     if(ocrvalue){
+    //         console.log("ocrvalue :",ocrvalue.raw_text);
+    //         // setMyJsonData(JSON.parse(ocrjson));
+    //     }
+    // },[ocrvalue])
+
     const addfunction = (e) => {
         e.preventDefault();
         const original = { ...objectfield };
@@ -110,6 +182,32 @@ function Process() {
         setobjectfield(newobject);
     }
 
+
+    const captureImage = () => {
+        const imageSrc = webcamRef.current.getScreenshot();
+        setCapturedImage(imageSrc);
+        setCameraEnabled(false);
+
+        const byteCharacters = atob(imageSrc.split(',')[1]);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], { type: 'image/jpeg' });
+
+        const file = new File([blob], 'captured_image.jpeg', { type: 'image/jpeg' });
+        const fileList = new DataTransfer();
+        fileList.items.add(file);
+
+        const myFilesInput = document.getElementById('myFiles');
+        myFilesInput.files = fileList.files;
+
+        // Manually trigger the change event to call handleFileUpload
+        const event = new Event('change', { bubbles: true });
+        myFilesInput.dispatchEvent(event);
+    };
+
     return (
         <div className="bg-gray-900 font-mono">
             <div className='md:m-auto flex flex-col flex-wrap text-wrap pb-24' style={{ maxWidth: "1450px" }}>
@@ -125,16 +223,17 @@ function Process() {
                             <div className="flex flex-col items-center">
                                 <img className="object-contain h-fit md:max-w-28" src={imgurl} alt="" />
                                 <h1 className="text-3xl text-yellow-400 mt-3">{selectedFile}</h1>
+                                <h1 className="text-3xl text-white mt-3 border-2 rounded-md p-2 hover:cursor-pointer">CROP IMAGE</h1>
                             </div>
                         ) : (
-                            <div className="flex justify-center items-center md:max-w-28 overflow-auto text-green-500 border-2 text-4xl p-4 h-28" style={{ whiteSpace: 'pre-wrap' }}>
+                            <div className="flex justify-center items-center md:max-w-28 overflow-auto text-green-500 border-2 text-4xl p-4 h-28 mt-9" style={{ whiteSpace: 'pre-wrap' }}>
                                 Your file input
                             </div>
                         )
                     }
                     {
                         ocrvalue ? (
-                            <div className="md:max-w-28 overflow-auto border-none text-green-500 max-h-34 border-4">
+                            <div className="md:max-w-28 overflow-auto border-none text-green-500 max-h-34 border-4 whitespace-pre-line">
                                 {ocrvalue.raw_text}
                             </div>
                         ) : (
@@ -152,28 +251,48 @@ function Process() {
                                 </>
                                 
                             ) : (
-                                <div className="flex flex-col justify-center items-center md:max-w-28 overflow-auto text-green-500 border-2 text-4xl p-4 h-28" style={{ whiteSpace: 'pre-wrap' }}>
+                                <div className="flex flex-col justify-center items-center md:max-w-28 overflow-auto text-green-500 border-2 text-4xl p-4 h-28 mt-9" style={{ whiteSpace: 'pre-wrap' }}>
                                     <div>YOUR RESULT</div>
                                 </div>
                             )
                         )
                     }
-                    <div className="flex flex-col items-center">
-                        <label htmlFor="myFiles" className="hover:cursor-pointer border-dashed border-4 border-yellow-400 flex flex-col justify-center items-center w-auto md:p-6 p-10">
-                            <input
-                                type="file"
-                                id="myFiles"
-                                accept="*/*"
-                                multiple
-                                className="hidden"
-                                onChange={handleFileUpload}
-                            />
+                    <div className="flex flex-col items-center justify-center">
+                        <div>
+                            {cameraEnabled ? (
+                                <div>
+                                    <Webcam
+                                        audio={false}
+                                        ref={webcamRef}
+                                        screenshotFormat="image/jpeg"
+                                    />
+                                    <button className="text-white" onClick={captureImage}>Capture Image</button><br/>
+                                    <button className="text-white" onClick={() => setCameraEnabled(false)}>Close Camera</button>
+                                </div>
+                            ) : (
+                                <div className="mb-3 flex flex-col items-center">
+                                    <button className="text-white text-wrap p-2 rounded-lg border-2" onClick={() => setCameraEnabled(true)}>Access Camera</button>
+                                </div>
+                            )}
                             <>
-                                <img className="mt-7 md:max-h-15 md:h-auto h-32" src={img.fileupload} alt="" />
-                                <h1 className="text-3xl text-yellow-400 mt-3">Click here</h1>
-                                <h1 className="text-2xl mt-3 text-white mb-7">PDF, TIFF, JPEG & PNG</h1>
+                                <label htmlFor="myFiles" className="hover:cursor-pointer border-dashed border-4 border-yellow-400 flex flex-col justify-center items-center w-auto md:p-4 p-10">
+                                    <input
+                                        type="file"
+                                        id="myFiles"
+                                        accept="*/*"
+                                        multiple
+                                        className="hidden"
+                                        onChange={handleFileUpload}
+                                    />
+                                    <>
+                                        <img className="mt-7 md:max-h-15 md:h-auto h-32" src={img.fileupload} alt="" />
+                                        <h1 className="text-3xl text-yellow-400 mt-3">Click here</h1>
+                                        <h1 className="text-2xl mt-3 text-white mb-7">PDF, TIFF, JPEG & PNG</h1>
+                                    </>
+                                </label>
                             </>
-                        </label>
+                            {/* {capturedImage && <img src={capturedImage} alt="Captured" />} */}
+                        </div>
                         <select className="mt-2 p-2 text-md border-none rounded-md hover:cursor-pointer" onChange={(e) => setinputservice(e.target.value)}>
                             <option value="">Select OCR services</option>
                             <option value="Veryfi">Veryfi (recommend)</option>
@@ -211,9 +330,11 @@ function Process() {
                             ) :(
                                 <>
                                     {
-                                        switchtype === "json" && ocrvalue ? (
+                                        switchtype === "json" && ocrvalue && objectfield ? (
                                             <>
-                                            
+                                                <pre>
+                                                    {JSON.stringify(objectfield,null,2)}
+                                                </pre>
                                             </>
                                         ) : switchtype === "text" && ocrvalue ? (
                                             <div className="text-gray-300 flex flex-col gap-4">
@@ -281,7 +402,14 @@ function Process() {
                                                                 // </>
                                                         }
                                                     </div>
-                                                    <button className="border-2 p-2 hover:bg-green-600 text-2xl rounded-xl">COLLECT</button>
+                                                    <button className={collectprocess ? "border-2 p-2 bg-green-600 text-2xl rounded-xl opacity-50 cursor-not-allowed" : "border-2 p-2 hover:bg-green-600 text-2xl rounded-xl"} onClick={convertjson} disabled={collectprocess}>{collectprocess ? "COLLECTING..." : "COLLECT"}</button>
+                                                    {
+                                                        collecterror ? (
+                                                            <h1 className="text-red-600 mt-1">{collecterror}</h1>
+                                                        ) :(
+                                                            <></>
+                                                        )
+                                                    }
                                                 </div>
                                             </div>
                                         ) : null
