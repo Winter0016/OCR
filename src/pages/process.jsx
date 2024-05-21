@@ -89,13 +89,12 @@ function Process() {
             seterror(err.message);
         }
     };
-    useEffect(() =>{
-        if(ocrvalue){
-            // console.log(`ocrvalue.raw_text la : ${JSON.stringify(ocrvalue.raw_text).replace(/"/g, '')}`);
-            console.log(`ocrvalue.raw_text la : ${JSON.stringify(ocrvalue.raw_text).replace(/"/g, '')}`);
-            // console.log(`ocrvalue la : ${JSON.stringify(ocrvalue)}`);
-        }
-    },[ocrvalue])
+    // useEffect(() =>{
+    //     if(ocrvalue){
+    //         console.log(`ocrvalue.raw_text la : ${JSON.stringify(ocrvalue.raw_text).replace(/"/g, '')}`);
+    //         console.log(`ocrvalue.raw_text la : ${ocrvalue.raw_text}`);
+    //     }
+    // },[ocrvalue])
     // const isEmptyObject = (obj) => {
     //     return Object.keys(obj).length === 0 && obj.constructor === Object;
     // };
@@ -104,27 +103,35 @@ function Process() {
         try{
             setcollectprocess(true);
             if (Object.keys(objectfield).length === 0 && objectfield.constructor === Object) {
-                // console.log('no config!');
                 throw new Error("You haven't config template yet.");
             }
-            // const jsonObject = { "id": "", "họ và tên": "" };
+            // const jsonObject = { "Tên của B": "", "lương": "" };
 
             // const formData = new FormData();
             // const jsonBlob = new Blob([JSON.stringify(objectfield)], { type: 'application/json' });
             // formData.append('file', jsonBlob, 'data.json');
 
-            const response = await fetch(`https://fastapi-r12h.onrender.com/convert?raw_text=${JSON.stringify(ocrvalue.raw_text).replace(/"/g, '')}&template=${JSON.stringify(objectfield)}`,{
-                method:"POST",
-                headers:{
-                    "Content-Type": "application/json"
+            // const rawText = "LUẬT THÀNH CÔNG Căn cứ: - CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM Độc lập - Tư do - Hanh phúc HỢP ĐỒNG LAO ĐỘNG XÁC ĐỊNH THỜI HẠN (Số 2508 HĐLĐ) Bộ luật lao động 2019 & các Nghị định hướng dẫn Khả năng và nhu cầu của các bên Hôm nay, ngày 25 tháng 08 năm 2020, tại Công ty Cổ phần Dược phẩm Á Châu, chúng tôi gồm: Bên A : Người sử dụng lao động Công ty Mã số thuế Dia chi Điện thoại Đại diện : CÔNG TY CỔ PHẦN DƯỢC PHẨM Á CHÂU : 1934803729 : Số 188 Mai Dịch, Cầu Giấy, Hà Nội : 0247593788 : Bà Nguyễn Bảo Châu Chức vụ: Giám đốc Bên B: Người lao động Họ và tên : HOÀNG THỊ NGỌC LAN Sinh ngày : 10/09/1990 CMND số Địa chỉ Điện thoại Giới tỉnh: Nữ : 0204783678 – Ngày cấp: 20/2/2010–Nơi cấp: Công an thành phố Hà Nội : phường Dịch Vọng, quận Cầu Giấy, Hà Nội : 0857490394 Cùng thoả thuận ký kết hợp đồng lao động và cam kết làm đúng những điều khoản sau đây: Điều 1: Công việc, địa điểm làm việc và thời hạn của Hợp đồng - Công việc phải làm: Nhân viên Kế Toán - Địa điểm làm việc: Số 188 Mai Dịch, Cầu Giấy, Hà Nội - Loại hợp đồng: Hợp đồng lao động xác định thời hạn – Kỷ lần thứ nhất - Thời hạn hợp đồng: 01 năm - Từ ngày 5 tháng 03 năm 2021 đến ngày 5 tháng 03 năm 2022 Điều 2: Lương, phụ cấp, các khoản bổ sung khác Lương căn bản: 7.000.000 đồng /tháng Phụ cấp: 300.000ding thing LUẬT SƯ TƯ VẤN PHÁP LUẬT 24/7 GỌI 1900 633 710";
+            // const template = {
+            //     "tên của B": "",
+            //     "lương": ""
+            // };
+
+            const encodedRawText = encodeURIComponent(ocrvalue.raw_text);
+            const encodedTemplate = encodeURIComponent(JSON.stringify(objectfield));
+
+            const response = await fetch(`https://fastapi-r12h.onrender.com/convert?raw_text=${encodedRawText}&template=${encodedTemplate}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
                 },
-                body:""
             });
 
             const json = await response.json();
-            // if (!response.ok) {
-            //     throw new Error(json.msg);
-            // }
+            if (!response.ok) {
+                throw new Error(json.msg);
+            }
             setocrjson(json);
             setcollectprocess(false);
             setcollecterror("");
@@ -138,10 +145,10 @@ function Process() {
     useEffect(() => {
         if(ocrjson){
             // console.log(`raw_text : ${ocrvalue.raw_text}`)
-            console.log("OCRJSON :",ocrjson);
+            // console.log("OCRJSON :",ocrjson);
             // Remove the ```json and ``` from the string
             const cleanedJsonString = ocrjson.reply.replace(/```json\n|```/g, '');
-            console.log("cleanedjson :",cleanedJsonString)
+            // console.log("cleanedjson :",cleanedJsonString)
             // Parse the cleaned JSON string into an object
             const parsedObject = JSON.parse(cleanedJsonString);
 
@@ -149,12 +156,11 @@ function Process() {
             setobjectfield(parsedObject);
         }
     },[ocrjson])
-    useEffect(() => {
-        if(objectfield){
-            console.log(`objectfield : ${JSON.stringify(objectfield)}`);
-            // setMyJsonData(JSON.parse(ocrjson));
-        }
-    },[objectfield])
+    // useEffect(() => {
+    //     if(objectfield){
+    //         console.log(`objectfield : ${JSON.stringify(objectfield)}`);
+    //     }
+    // },[objectfield])
     // useEffect(() => {
     //     if(ocrvalue){
     //         console.log("ocrvalue :",ocrvalue.raw_text);
@@ -244,7 +250,7 @@ function Process() {
                     }
                     {
                         ocrvalue ? (
-                            <div className="md:max-w-28 overflow-auto border-none text-green-500 max-h-34 border-4 whitespace-pre-line">
+                            <div className="md:max-w-28 overflow-auto border-none text-green-500 max-h-34 border-4">
                                 {ocrvalue.raw_text}
                             </div>
                         ) : (
