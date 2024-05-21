@@ -93,6 +93,7 @@ function Process() {
         if(ocrvalue){
             // console.log(`ocrvalue.raw_text la : ${JSON.stringify(ocrvalue.raw_text).replace(/"/g, '')}`);
             console.log(`ocrvalue.raw_text la : ${JSON.stringify(ocrvalue.raw_text).replace(/"/g, '')}`);
+            // console.log(`ocrvalue la : ${JSON.stringify(ocrvalue)}`);
         }
     },[ocrvalue])
     // const isEmptyObject = (obj) => {
@@ -112,12 +113,12 @@ function Process() {
             // const jsonBlob = new Blob([JSON.stringify(objectfield)], { type: 'application/json' });
             // formData.append('file', jsonBlob, 'data.json');
 
-            const response = await fetch(`https://fastapi-r12h.onrender.com/convert?raw_text=${JSON.stringify(ocrvalue.raw_text).replace(/"/g, '')}`,{
+            const response = await fetch(`https://fastapi-r12h.onrender.com/convert?raw_text=${JSON.stringify(ocrvalue.raw_text).replace(/"/g, '')}&template=${JSON.stringify(objectfield)}`,{
                 method:"POST",
                 headers:{
                     "Content-Type": "application/json"
                 },
-                body:JSON.stringify(objectfield)
+                body:""
             });
 
             const json = await response.json();
