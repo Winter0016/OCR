@@ -226,7 +226,7 @@ function Process() {
     };
 
     return (
-        <div className="bg-gray-900 font-mono">
+        <div className="bg-gray-900 font-mono w-full h-full">
             <div className='md:m-auto flex flex-col flex-wrap text-wrap pb-24' style={{ maxWidth: "1450px" }}>
                 <div className="flex justify-center flex-wrap w-auto h-auto">
                     <div className="flex flex-col items-center mt-9">
