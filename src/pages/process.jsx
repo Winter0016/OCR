@@ -250,7 +250,7 @@ function Process() {
                     }
                     {
                         ocrvalue ? (
-                            <div className="md:max-w-28 overflow-auto border-none text-green-500 max-h-34 border-4">
+                            <div className="md:max-w-28 overflow-auto border-none text-green-500 max-h-34 border-4 whitespace-pre-line">
                                 {ocrvalue.raw_text}
                             </div>
                         ) : (
