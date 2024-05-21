@@ -9,7 +9,7 @@ function Process() {
     const [ocrvalue, setocrvalue] = useState("");
     const [ocrjson, setocrjson] = useState("");
     const [processing, setProcessing] = useState(false);
-    const [myJsonData, setMyJsonData] = useState(null);
+    // const [myJsonData, setMyJsonData] = useState(null);
     const [switchtype, setswitchtype] = useState("text");
     const [error, seterror] = useState("");
     const [inputservice, setinputservice] = useState("");
@@ -89,6 +89,12 @@ function Process() {
             seterror(err.message);
         }
     };
+    useEffect(() =>{
+        if(ocrvalue){
+            // console.log(`ocrvalue.raw_text la : ${JSON.stringify(ocrvalue.raw_text).replace(/"/g, '')}`);
+            console.log(`ocrvalue.raw_text la : ${JSON.stringify(ocrvalue.raw_text).replace(/"/g, '')}`);
+        }
+    },[ocrvalue])
     // const isEmptyObject = (obj) => {
     //     return Object.keys(obj).length === 0 && obj.constructor === Object;
     // };
@@ -102,13 +108,16 @@ function Process() {
             }
             // const jsonObject = { "id": "", "họ và tên": "" };
 
-            const formData = new FormData();
-            const jsonBlob = new Blob([JSON.stringify(objectfield)], { type: 'application/json' });
-            formData.append('file', jsonBlob, 'data.json');
+            // const formData = new FormData();
+            // const jsonBlob = new Blob([JSON.stringify(objectfield)], { type: 'application/json' });
+            // formData.append('file', jsonBlob, 'data.json');
 
-            const response = await fetch(`https://fastapi-r12h.onrender.com/convert?raw_text=${ocrvalue.raw_text}`,{
+            const response = await fetch(`https://fastapi-r12h.onrender.com/convert?raw_text=${JSON.stringify(ocrvalue.raw_text).replace(/"/g, '')}`,{
                 method:"POST",
-                body:formData
+                headers:{
+                    "Content-Type": "application/json"
+                },
+                body:JSON.stringify(objectfield)
             });
 
             const json = await response.json();
@@ -127,23 +136,24 @@ function Process() {
     }
     useEffect(() => {
         if(ocrjson){
-            // console.log("OCRJSON :",ocrjson);
-        // Remove the ```json and ``` from the string
-        const cleanedJsonString = ocrjson.reply.replace(/```json\n|```/g, '');
+            // console.log(`raw_text : ${ocrvalue.raw_text}`)
+            console.log("OCRJSON :",ocrjson);
+            // Remove the ```json and ``` from the string
+            const cleanedJsonString = ocrjson.reply.replace(/```json\n|```/g, '');
+            console.log("cleanedjson :",cleanedJsonString)
+            // Parse the cleaned JSON string into an object
+            const parsedObject = JSON.parse(cleanedJsonString);
 
-        // Parse the cleaned JSON string into an object
-        const parsedObject = JSON.parse(cleanedJsonString);
-
-        setMyJsonData(parsedObject);
-        setobjectfield(parsedObject);
+            // setMyJsonData(parsedObject);
+            setobjectfield(parsedObject);
         }
     },[ocrjson])
-    // useEffect(() => {
-    //     if(objectfield){
-    //         console.log("objectfield :",objectfield);
-    //         // setMyJsonData(JSON.parse(ocrjson));
-    //     }
-    // },[objectfield])
+    useEffect(() => {
+        if(objectfield){
+            console.log(`objectfield : ${JSON.stringify(objectfield)}`);
+            // setMyJsonData(JSON.parse(ocrjson));
+        }
+    },[objectfield])
     // useEffect(() => {
     //     if(ocrvalue){
     //         console.log("ocrvalue :",ocrvalue.raw_text);
@@ -296,8 +306,8 @@ function Process() {
                         <select className="mt-2 p-2 text-md border-none rounded-md hover:cursor-pointer" onChange={(e) => setinputservice(e.target.value)}>
                             <option value="">Select OCR services</option>
                             <option value="Veryfi">Veryfi (recommend)</option>
-                            <option value="Amazon Textract">Amazon Textract</option>
-                            <option value="Google vision">Google vision</option>
+                            <option value="Amazon_Textract">Amazon Textract</option>
+                            <option value="GG_vision">Google vision</option>
                         </select>
                         <button className={!processing ? "text-white mt-4 text-md p-2 rounded-md w-52 bg-yellow-400 hover:bg-yellow-200" : "text-white mt-6 text-md p-2 rounded-md w-52 bg-yellow-500 opacity-50 cursor-not-allowed"} disabled={processing} onClick={sendFiles}> {processing ? "PROCESSING....." : "START OCR"}</button>
                         {
