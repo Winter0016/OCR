@@ -303,7 +303,7 @@ function Process() {
                     {
                         imgurl ? (
                             
-                            <div className="flex flex-col items-center p-4 h-28 mt-9">
+                            <div className="flex flex-col items-center p-4 mt-4">
                                 <img className="object-contain h-fit md:max-w-28" src={imgurl} alt="imginput" />
                                 <h1 className="text-3xl text-yellow-400 mt-3">{selectedFile}</h1>
                                 <h1 className="text-3xl text-white mt-3 border-2 rounded-md p-2 hover:cursor-pointer" onClick={() => setModalOpen(true)}>CROP IMAGE</h1>
@@ -325,7 +325,7 @@ function Process() {
                     }
                     {
                         ocrvalue ? (
-                            <div className="md:max-w-28 overflow-auto border-none text-green-500 max-h-34 border-4 whitespace-pre-line p-4 mt-9">
+                            <div className="md:max-w-28 overflow-auto border-none text-green-500 max-h-34 border-4 whitespace-pre-line p-4 mt-4">
                                 {ocrvalue.raw_text}
                             </div>
                         ) : (
