@@ -200,9 +200,9 @@ function Process() {
         const newobject = {}
         for(const key in original){
             if(key === originalvalue){
-                newobject[modifyvalue] = "";
+                newobject[modifyvalue] = original[key];
             }else{
-                newobject[key] = "";
+                newobject[key] = original[key];
             }
         }
         setobjectfield(newobject);
@@ -331,9 +331,9 @@ function Process() {
                         ) : (
                             processing ? (
                                 <>
-                                    <div className="flex flex-col items-center md:max-w-28 overflow-auto text-blue-400 border-4 text-lg p-4 h-28 text-wrap bg-gray-900 gap-0">
+                                    <div className="flex flex-col items-center md:max-w-28 overflow-auto text-blue-400 border-4 text-lg p-4 mt-4 h-28 text-wrap bg-gray-900 gap-0">
                                         <div className="product-loading2">
-                                            <div className="mb-2">This could take a while, please wait...</div>
+                                            <div className="mb-2">This could take a while at first time, please wait...</div>
                                             <div className="tiktok-spinner">
                                                 <div className="ball red"></div>
                                                 <div className="ball blue"></div>
@@ -405,115 +405,106 @@ function Process() {
                             <div className="border-2 p-5 text-center hover:cursor-pointer hover:bg-green-600" onClick={() => setswitchtype("json")}> .JSON </div>
                             <div className="border-2 p-5 text-center hover:cursor-pointer hover:bg-gray-300" onClick={() => setswitchtype("text")}> Text </div>
                         </div>
-                        {
-                            convertprocess ? (
-                                <>
-                                    <div className="flex flex-col items-center w-fit overflow-auto text-blue-400 text-lg p-4 h-fit text-wrap bg-gray-900 gap-0">
-                                        <div className="product-loading2">
-                                            <div>CONVERTING......</div>
-                                            <div className="tiktok-spinner">
-                                                <div className="ball red opacity-100"></div>
-                                                <div className="ball blue opacity-100"></div>
+                        <>
+                            {
+                                switchtype === "json" && ocrvalue && objectfield ? (
+                                    <>
+                                        <pre>
+                                            {JSON.stringify(objectfield,null,2)}
+                                        </pre>
+                                        <button onClick={handleDownload} class="cursor-pointer group relative flex gap-1.5 px-8 py-4 bg-black bg-opacity-80 text-[#f1f1f1] rounded-3xl hover:bg-opacity-70 transition font-semibold shadow-md">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="24px" width="24px"><g stroke-width="0" id="SVGRepo_bgCarrier"></g><g stroke-linejoin="round" stroke-linecap="round" id="SVGRepo_tracerCarrier"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Download"> <path stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#f1f1f1" d="M6 21H18M12 3V17M12 17L17 12M12 17L7 12" id="Vector"></path> </g> </g></svg>
+                                            Download
+                                            <div class="absolute opacity-0 -bottom-full rounded-md py-2 px-2 bg-black bg-opacity-70 left-1/2 -translate-x-1/2 group-hover:opacity-100 transition-opacity shadow-lg">
+                                                Download
                                             </div>
+                                        </button>                                            </>
+                                ) : switchtype === "text" && ocrvalue ? (
+                                    <div className="text-gray-300 flex flex-col gap-4">
+                                        <div className="overflow-auto flex gap-5 justify-center">
+                                            <div className="border-2 p-3 rounded-xl hover:cursor-pointer hover:bg-blue-600" onClick={() => {setdeletefield(false);setmodifyfield(false); setshowform(prevshowform => !prevshowform)}}>ADD FIELD</div>
+                                            <div className="border-2 p-3 rounded-xl hover:cursor-pointer hover:bg-red-600" onClick={() => {setshowform(false);setmodifyfield(false); setdeletefield(prev => !prev)}}>DELETE FIELD</div>
+                                            <div className="border-2 p-3 rounded-xl hover:cursor-pointer hover:bg-yellow-600" onClick={() => {setshowform(false);setdeletefield(false); setmodifyfield(prev => !prev)}}>MODIFY</div>
                                         </div>
-                                    </div>
-                                </>
-                            ) :(
-                                <>
-                                    {
-                                        switchtype === "json" && ocrvalue && objectfield ? (
-                                            <>
-                                                <pre>
-                                                    {JSON.stringify(objectfield,null,2)}
-                                                </pre>
-                                                <button onClick={handleDownload} class="cursor-pointer group relative flex gap-1.5 px-8 py-4 bg-black bg-opacity-80 text-[#f1f1f1] rounded-3xl hover:bg-opacity-70 transition font-semibold shadow-md">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="24px" width="24px"><g stroke-width="0" id="SVGRepo_bgCarrier"></g><g stroke-linejoin="round" stroke-linecap="round" id="SVGRepo_tracerCarrier"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Download"> <path stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#f1f1f1" d="M6 21H18M12 3V17M12 17L17 12M12 17L7 12" id="Vector"></path> </g> </g></svg>
-                                                    Download
-                                                    <div class="absolute opacity-0 -bottom-full rounded-md py-2 px-2 bg-black bg-opacity-70 left-1/2 -translate-x-1/2 group-hover:opacity-100 transition-opacity shadow-lg">
-                                                        Download
-                                                    </div>
-                                                </button>                                            </>
-                                        ) : switchtype === "text" && ocrvalue ? (
-                                            <div className="text-gray-300 flex flex-col gap-4">
-                                                <div className="overflow-auto flex gap-5 justify-center">
-                                                    <div className="border-2 p-3 rounded-xl hover:cursor-pointer hover:bg-blue-600" onClick={() => {setdeletefield(false);setmodifyfield(false); setshowform(prevshowform => !prevshowform)}}>ADD FIELD</div>
-                                                    <div className="border-2 p-3 rounded-xl hover:cursor-pointer hover:bg-red-600" onClick={() => {setshowform(false);setmodifyfield(false); setdeletefield(prev => !prev)}}>DELETE FIELD</div>
-                                                    <div className="border-2 p-3 rounded-xl hover:cursor-pointer hover:bg-yellow-600" onClick={() => {setshowform(false);setdeletefield(false); setmodifyfield(prev => !prev)}}>MODIFY</div>
-                                                </div>
-                                                {
-                                                    showform ? (
-                                                        <form className="mb-6 text-blue-600" onSubmit={addfunction}>
-                                                            <h1>ADD FIELD</h1>
-                                                            <div className="flex">
-                                                                <input type="text" value={addvalue} onChange={(e) => setaddvalue(e.target.value)} className="p-2 rounded-lg"/>
-                                                                <button type="submit" className="ml-3 border-2 pl-4 pr-4 p-2 rounded-lg flex gap-1 hover:opacity-60 hover:translate-x-1">
-                                                                    ADD
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                                                                    </svg>
+                                        {
+                                            showform ? (
+                                                <form className="mb-6 text-blue-600" onSubmit={addfunction}>
+                                                    <h1>ADD FIELD</h1>
+                                                    <div className="flex">
+                                                        <input type="text" value={addvalue} onChange={(e) => setaddvalue(e.target.value)} className="p-2 rounded-lg"/>
+                                                        <button type="submit" className="ml-3 border-2 pl-4 pr-4 p-2 rounded-lg flex gap-1 hover:opacity-60 hover:translate-x-1">
+                                                            ADD
+                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                                            </svg>
 
-                                                                </button>                                                    
-                                                            </div>
-                                                        </form>
-                                                    ) : deletefield ? (
-                                                        <>
-                                                            <h1 className=" text-red-600">Choose a field u want to delete (toggle the button to stop) </h1>
-                                                        </>
-                                                    ) : modifyfield ? (
-                                                        <>
-                                                            <h1 className=" text-yellow-600">Choose a field u want to modify (toggle the button to stop) </h1>
-                                                            {
-                                                                modifyfield ? (
-                                                                    <form className="mb-6 text-yellow-600" onSubmit={modifyfunction}>
-                                                                        <h1>Modify for {originalvalue}</h1>
-                                                                        <div className="flex">
-                                                                            <input type="text" value={modifyvalue} onChange={(e) => setmodifyvalue(e.target.value)} className="p-2 rounded-lg"/>
-                                                                            <button type="submit" className="ml-3 border-2 pl-4 pr-4 p-2 rounded-lg flex gap-1 hover:opacity-60 hover:translate-x-1">
-                                                                                CHANGE
-                                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                                                    <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
-                                                                                </svg>
-                                                                            </button>                                                    
-                                                                        </div>
-                                                                    </form>
-                                                                ):(
-                                                                    <>
-                                                                    </>
-                                                                )
-                                                            }
-                                                        </>
-                                                    ) : (
-                                                        <></>
-                                                    )
-                                                }
-                                                <div className="flex flex-col gap-5">
-                                                    <div>
-                                                        {  
-                                                                Object.entries(objectfield).map(([key, value]) => (
-                                                                    <div key={key} className={deletefield ? "hover:cursor-pointer hover:bg-red-600 border-2 p-2": modifyfield ? "hover:cursor-pointer hover:bg-yellow-600 border-2 p-2" : "border-2 p-2"} onClick={() => {deletefunction(key);setmodifyvalue(key);setoriginalvalue(key)}}>
-                                                                        {key} : {value}
-                                                                    </div>
-                                                                ))
-                                                                // <>
-                                                                //     <div>convert to text template</div>
-                                                                // </>
-                                                        }
+                                                        </button>                                                    
                                                     </div>
-                                                    <button className={collectprocess ? "border-2 p-2 bg-green-600 text-2xl rounded-xl opacity-50 cursor-not-allowed" : "border-2 p-2 hover:bg-green-600 text-2xl rounded-xl"} onClick={convertjson} disabled={collectprocess}>{collectprocess ? "COLLECTING..." : "COLLECT"}</button>
+                                                </form>
+                                            ) : deletefield ? (
+                                                <>
+                                                    <h1 className=" text-red-600">Choose a field u want to delete (toggle the button to stop) </h1>
+                                                </>
+                                            ) : modifyfield ? (
+                                                <>
+                                                    <h1 className=" text-yellow-600">Choose a field u want to modify (toggle the button to stop) </h1>
                                                     {
-                                                        collecterror ? (
-                                                            <h1 className="text-red-600 mt-1">{collecterror}</h1>
-                                                        ) :(
-                                                            <></>
+                                                        modifyfield ? (
+                                                            <form className="mb-6 text-yellow-600" onSubmit={modifyfunction}>
+                                                                <h1>Modify for {originalvalue}</h1>
+                                                                <div className="flex">
+                                                                    <input type="text" value={modifyvalue} onChange={(e) => setmodifyvalue(e.target.value)} className="p-2 rounded-lg"/>
+                                                                    <button type="submit" className="ml-3 border-2 pl-4 pr-4 p-2 rounded-lg flex gap-1 hover:opacity-60 hover:translate-x-1">
+                                                                        CHANGE
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                                            <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
+                                                                        </svg>
+                                                                    </button>                                                    
+                                                                </div>
+                                                            </form>
+                                                        ):(
+                                                            <>
+                                                            </>
                                                         )
                                                     }
-                                                </div>
+                                                </>
+                                            ) : (
+                                                <></>
+                                            )
+                                        }
+                                        <div className="flex flex-col gap-5">
+                                            <div>
+                                                {  
+                                                        Object.entries(objectfield).map(([key, value]) => (
+                                                            <div className="flex flex-col">
+                                                                <div className="flex gap-4" key={key}>
+                                                                    <div key={key} className={deletefield ? "hover:cursor-pointer hover:bg-red-600 border-[1px] p-2 w-full flex items-center": modifyfield ? "hover:cursor-pointer hover:bg-yellow-600 border-[1px] p-2 w-full flex items-center" : "border-[1px] p-2 w-full flex items-center"} onClick={() => {deletefunction(key);setmodifyvalue(key);setoriginalvalue(key)}}>
+                                                                        {key}
+                                                                    </div>
+                                                                    <div key={key} className="border-[1px] p-2 w-full flex items-center">
+                                                                        {value}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        ))
+                                                        // <>
+                                                        //     <div>convert to text template</div>
+                                                        // </>
+                                                }
                                             </div>
-                                        ) : null
-                                    }
-                                </>
-                            )
-                        }
+                                            <button className={collectprocess ? "border-2 p-2 bg-green-600 text-2xl rounded-xl opacity-50 cursor-not-allowed" : "border-2 p-2 hover:bg-green-600 text-2xl rounded-xl"} onClick={convertjson} disabled={collectprocess}>{collectprocess ? "COLLECTING..." : "COLLECT"}</button>
+                                            {
+                                                collecterror ? (
+                                                    <h1 className="text-red-600 mt-1">{collecterror}</h1>
+                                                ) :(
+                                                    <></>
+                                                )
+                                            }
+                                        </div>
+                                    </div>
+                                ) : null
+                            }
+                        </>
                     </div>
                 </div>
             </div>

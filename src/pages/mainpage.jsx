@@ -26,7 +26,7 @@ export const Mainpage = () => {
                                 <h3 className="ml-2 text-white">Need to process a lot of documents and are looking for an individual solution to make your work easier</h3>
                             </div>
                             <div className="flex ml-5 gap-3">
-                                <button className=" text-white border-4 w-fit md:p-2 md:pl-7 md:pr-7 md:text-lg  text-sm rounded-full p-1 hover:bg-yellow-400" onClick={() => navigate("/integration")}>Get started with our services</button>
+                                <button className=" text-white border-4 w-fit md:p-2 md:pl-7 md:pr-7 md:text-lg  text-sm rounded-full p-1 hover:bg-yellow-400" onClick={() => navigate("/process")}>Get started with our services</button>
                                 <button className=" text-white border-4 w-fit md:p-2 md:pl-7 md:pr-7 md:text-lg  text-sm rounded-full p-1 hover:bg-yellow-400">Find out more</button>
                             </div>
                         </div>
