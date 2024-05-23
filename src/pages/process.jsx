@@ -1,11 +1,21 @@
 import img from "../imgs/img";
-import { useState,useRef, useEffect} from "react";
+import { useState,useRef, useEffect,useContext} from "react";
 import Webcam from 'react-webcam';
+import { Usercontext } from "../App";
+import { useNavigate } from "react-router-dom";
+import Modal from "./Modal";
+import PencilIcon from "./PencilIcon";
+import "react-image-crop/dist/ReactCrop.css";
+
+
+
 
 
 function Process() {
+    const navigate = useNavigate();
+
     const [selectedFile, setSelectedFile] = useState(null);
-    const [imgurl, setImgUrl] = useState(null);
+    const {imgurl , setImgUrl} = useContext(Usercontext)
     const [ocrvalue, setocrvalue] = useState("");
     const [ocrjson, setocrjson] = useState("");
     const [processing, setProcessing] = useState(false);
@@ -23,10 +33,9 @@ function Process() {
     const [originalvalue , setoriginalvalue] = useState();
     const [collectprocess,setcollectprocess] = useState(false);
     const [collecterror,setcollecterror] = useState("");
-
+    const [croperror,setcroperror] = useState("");
     const [cameraEnabled, setCameraEnabled] = useState(false);
     const webcamRef = useRef(null);
-    const [capturedImage, setCapturedImage] = useState(null);
 
 
     //camera
@@ -200,9 +209,38 @@ function Process() {
     }
 
 
+    const updateinput = async (imgsrc) => {
+        try {
+            // console.log(`imgsrc : ${imgsrc}`)
+            if(imgsrc == "data:,"){
+                // console.log(`imgsrc is null`);
+                throw new Error("You haven't cropped the image yet")
+            }
+            const response = await fetch(imgsrc);
+            const blob = await response.blob();
+            
+            const file = new File([blob], 'cropped_image.jpeg', { type: 'image/jpeg' });
+            
+            const fileList = new DataTransfer();
+            fileList.items.add(file);
+            
+            const myFilesInput = document.getElementById('myFiles');
+            myFilesInput.files = fileList.files;
+            
+            const event = new Event('change', { bubbles: true });
+            myFilesInput.dispatchEvent(event);
+            setcroperror("");
+        } catch (error) {
+            // console.error('Error updating input:', error);
+            setcroperror(error.message);
+        }
+    };
+    
+
+
     const captureImage = () => {
         const imageSrc = webcamRef.current.getScreenshot();
-        setCapturedImage(imageSrc);
+        console.log(`imageSrc : ${imageSrc}`)
         setCameraEnabled(false);
 
         const byteCharacters = atob(imageSrc.split(',')[1]);
@@ -211,6 +249,8 @@ function Process() {
             byteNumbers[i] = byteCharacters.charCodeAt(i);
         }
         const byteArray = new Uint8Array(byteNumbers);
+
+        console.log(`bytearray : ${byteArray}`);
         const blob = new Blob([byteArray], { type: 'image/jpeg' });
 
         const file = new File([blob], 'captured_image.jpeg', { type: 'image/jpeg' });
@@ -225,6 +265,24 @@ function Process() {
         myFilesInput.dispatchEvent(event);
     };
 
+    const handleDownload = () => {
+        const jsonString = JSON.stringify(objectfield, null, 2);
+        const blob = new Blob([jsonString], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'info.json';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    };
+
+    const [modalOpen, setModalOpen] = useState(false);
+        
+
+
+
     return (
         <div className="bg-gray-900 font-mono w-full h-full">
             <div className='md:m-auto flex flex-col flex-wrap text-wrap pb-24' style={{ maxWidth: "1450px" }}>
@@ -234,13 +292,30 @@ function Process() {
                         <h1 className="break-words text-center mt-2 text-white md:text-lg text-sm" style={{ maxWidth: "52rem" }}>Choose from invoices, account & credit card statements, trade register excerpts, payroll statements, identification document and convince yourself.</h1>
                     </div>
                 </div>
+                {modalOpen && (
+                    <Modal
+                    updateinput={updateinput}
+                    currentimg={imgurl}
+                    closeModal={() => setModalOpen(false)}
+                    />
+                )}
                 <div className="flex gap-10 mt-12 flex-wrap justify-center border-2 border-yellow-200">
                     {
                         imgurl ? (
-                            <div className="flex flex-col items-center">
-                                <img className="object-contain h-fit md:max-w-28" src={imgurl} alt="" />
+                            
+                            <div className="flex flex-col items-center p-4 h-28 mt-9">
+                                <img className="object-contain h-fit md:max-w-28" src={imgurl} alt="imginput" />
                                 <h1 className="text-3xl text-yellow-400 mt-3">{selectedFile}</h1>
-                                <h1 className="text-3xl text-white mt-3 border-2 rounded-md p-2 hover:cursor-pointer">CROP IMAGE</h1>
+                                <h1 className="text-3xl text-white mt-3 border-2 rounded-md p-2 hover:cursor-pointer" onClick={() => setModalOpen(true)}>CROP IMAGE</h1>
+                                {
+                                    croperror ? (
+                                        <>
+                                            <h1 className="text-red-600 text-xl mt-2">{croperror}</h1>
+                                        </>
+                                    ):(
+                                        <></>
+                                    )
+                                }
                             </div>
                         ) : (
                             <div className="flex justify-center items-center md:max-w-28 overflow-auto text-green-500 border-2 text-4xl p-4 h-28 mt-9" style={{ whiteSpace: 'pre-wrap' }}>
@@ -250,7 +325,7 @@ function Process() {
                     }
                     {
                         ocrvalue ? (
-                            <div className="md:max-w-28 overflow-auto border-none text-green-500 max-h-34 border-4 whitespace-pre-line">
+                            <div className="md:max-w-28 overflow-auto border-none text-green-500 max-h-34 border-4 whitespace-pre-line p-4 mt-9">
                                 {ocrvalue.raw_text}
                             </div>
                         ) : (
@@ -297,7 +372,6 @@ function Process() {
                                         type="file"
                                         id="myFiles"
                                         accept="*/*"
-                                        multiple
                                         className="hidden"
                                         onChange={handleFileUpload}
                                     />
@@ -312,9 +386,9 @@ function Process() {
                         </div>
                         <select className="mt-2 p-2 text-md border-none rounded-md hover:cursor-pointer" onChange={(e) => setinputservice(e.target.value)}>
                             <option value="">Select OCR services</option>
-                            <option value="Veryfi">Veryfi (recommend)</option>
+                            <option value="GG_vision">Google vision (recommend)</option>
+                            <option value="Veryfi">Veryfi</option>
                             <option value="Amazon_Textract">Amazon Textract</option>
-                            <option value="GG_vision">Google vision</option>
                         </select>
                         <button className={!processing ? "text-white mt-4 text-md p-2 rounded-md w-52 bg-yellow-400 hover:bg-yellow-200" : "text-white mt-6 text-md p-2 rounded-md w-52 bg-yellow-500 opacity-50 cursor-not-allowed"} disabled={processing} onClick={sendFiles}> {processing ? "PROCESSING....." : "START OCR"}</button>
                         {
@@ -352,7 +426,13 @@ function Process() {
                                                 <pre>
                                                     {JSON.stringify(objectfield,null,2)}
                                                 </pre>
-                                            </>
+                                                <button onClick={handleDownload} class="cursor-pointer group relative flex gap-1.5 px-8 py-4 bg-black bg-opacity-80 text-[#f1f1f1] rounded-3xl hover:bg-opacity-70 transition font-semibold shadow-md">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="24px" width="24px"><g stroke-width="0" id="SVGRepo_bgCarrier"></g><g stroke-linejoin="round" stroke-linecap="round" id="SVGRepo_tracerCarrier"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Download"> <path stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#f1f1f1" d="M6 21H18M12 3V17M12 17L17 12M12 17L7 12" id="Vector"></path> </g> </g></svg>
+                                                    Download
+                                                    <div class="absolute opacity-0 -bottom-full rounded-md py-2 px-2 bg-black bg-opacity-70 left-1/2 -translate-x-1/2 group-hover:opacity-100 transition-opacity shadow-lg">
+                                                        Download
+                                                    </div>
+                                                </button>                                            </>
                                         ) : switchtype === "text" && ocrvalue ? (
                                             <div className="text-gray-300 flex flex-col gap-4">
                                                 <div className="overflow-auto flex gap-5 justify-center">
@@ -439,6 +519,7 @@ function Process() {
             </div>
         </div>
     );
+
 }
 
 export default Process;
