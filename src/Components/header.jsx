@@ -1,12 +1,14 @@
 import React from 'react'
 import {useNavigate} from 'react-router-dom'
+import img from '../imgs/img';
 
 export const Header = () => {
     const navigate = useNavigate();
   return (
     <div className='bg-gray-700'>
         <div className='md:m-auto flex flex-col flex-wrap text-wrap w-auto h-auto' style={{maxWidth:"1450px"}} >
-            <div className="flex justify-around items-center pt-4 pb-4 font-mono flex-wrap text-white">
+            <div className="flex gap-8 justify-center items-center pt-4 font-mono flex-wrap text-white pb-10">
+                <img className=" w-[6rem] fill-yellow-300" src={img.logo} alt="" />
                 <div className='flex md:flex-row flex-col md:gap-12 gap-2 lg:p-0 md:text-lg text-sm'>
                     <div className='hover:border-yellow-300 hover:cursor-pointer border-b-4 border-gray-700' onClick={()=> navigate("/")}>HOME</div>
                     <div className='hover:border-yellow-300 hover:cursor-pointer border-b-4 border-gray-700'>PRODUCT</div>

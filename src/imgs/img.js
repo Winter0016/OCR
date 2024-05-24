@@ -9,6 +9,7 @@ import contract from "../assets/contract.png"
 import payroll from "../assets/payroll.png"
 import credit from "../assets/credit.png"
 import document from "../assets/document.png"
+import logo from "../assets/logo-Photoroom.png-Photoroom.png"
 
 export default{
     testimg : testimg,
@@ -22,4 +23,5 @@ export default{
     payroll: payroll,
     credit: credit,
     document: document,
+    logo: logo,
 }
