@@ -299,7 +299,7 @@ function Process() {
                     closeModal={() => setModalOpen(false)}
                     />
                 )}
-                <div className="flex gap-10 mt-12 flex-wrap justify-center border-2 border-yellow-200">
+                <div className="flex gap-10 mt-12 flex-wrap justify-center  border-yellow-200">
                     {
                         imgurl ? (
                             
@@ -398,10 +398,10 @@ function Process() {
                         }
                     </div>
                 </div>
-                <div className="flex justify-center items-center p-10 flex-wrap border-4 border-blue-400 text-white">
-                    <div className={switchtype !== "json" ? "border-4 border-gray-300 p-10 flex flex-col items-center gap-4 rounded-lg" : "border-4 border-green-500 p-10 flex flex-col items-center gap-4 rounded-lg"}>
+                <div className="flex justify-center items-center p-10 flex-wrap border-blue-400 text-white">
+                    <div className={switchtype !== "json" ? "border-[1px] border-gray-300 p-10 flex flex-col items-center gap-4 rounded-lg" : "border-4 border-green-500 p-10 flex flex-col items-center gap-4 rounded-lg"}>
                         <h1 className="mb-2 text-3xl text-yellow-400">Config Template for collecting info</h1>
-                        <div className="flex border-2">
+                        <div className="flex">
                             <div className="border-2 p-5 text-center hover:cursor-pointer hover:bg-green-600" onClick={() => setswitchtype("json")}> .JSON </div>
                             <div className="border-2 p-5 text-center hover:cursor-pointer hover:bg-gray-300" onClick={() => setswitchtype("text")}> Text </div>
                         </div>

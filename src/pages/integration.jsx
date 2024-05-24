@@ -26,33 +26,33 @@ function Integration(){
                     <div className="grid md:grid-cols-3 grid-cols-1 mt-5 gap-7">
                         <div className="flex flex-col justify-center items-center rounded-2xl p-5 gap-5" style={{boxShadow: "0 5px 40px rgba(0, 0, 0, 0.1)"}}>
                             <img className=" md:h-44 h-32" src={img.invoice} alt="" />
-                            <h1 className="font-extrabold md:text-2xl text-lg">Invoices and receipts</h1>
-                            <h3 className="lg:text-lg text-center text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</h3>
+                            <h1 className="font-extrabold md:text-2xl text-lg text-center">Invoices and Receipts</h1>
+                            {/* <h3 className="lg:text-lg text-center text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</h3> */}
                         </div>
                         <div className="flex flex-col justify-center items-center rounded-2xl p-5 gap-5" style={{boxShadow: "0 5px 40px rgba(0, 0, 0, 0.1)"}}>
-                            <img className=" md:h-44 h-32" src={img.invoice} alt="" />
-                            <h1 className="font-extrabold md:text-2xl text-lg">Invoices and receipts</h1>
-                            <h3 className="lg:text-lg text-center text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</h3>
+                            <img className=" md:h-44 h-32" src={img.iden} alt="" />
+                            <h1 className="font-extrabold md:text-2xl text-lg text-center">Identification Cards</h1>
+                            {/* <h3 className="lg:text-lg text-center text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</h3> */}
                         </div>
                         <div className="flex flex-col justify-center items-center rounded-2xl p-5 gap-5" style={{boxShadow: "0 5px 40px rgba(0, 0, 0, 0.1)"}}>
-                            <img className=" md:h-44 h-32" src={img.invoice} alt="" />
-                            <h1 className="font-extrabold md:text-2xl text-lg">Invoices and receipts</h1>
-                            <h3 className="lg:text-lg text-center text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</h3>
+                            <img className=" md:h-44 h-32" src={img.contract} alt="" />
+                            <h1 className="font-extrabold md:text-2xl text-lg text-center">Contracts</h1>
+                            {/* <h3 className="lg:text-lg text-center text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</h3> */}
                         </div>
                         <div className="flex flex-col justify-center items-center rounded-2xl p-5 gap-5" style={{boxShadow: "0 5px 40px rgba(0, 0, 0, 0.1)"}}>
-                            <img className=" md:h-44 h-32" src={img.invoice} alt="" />
-                            <h1 className="font-extrabold md:text-2xl text-lg">Invoices and receipts</h1>
-                            <h3 className="lg:text-lg text-center text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</h3>
+                            <img className=" md:h-44 h-32" src={img.payroll} alt="" />
+                            <h1 className="font-extrabold md:text-2xl text-lg text-center">Payroll Accounting</h1>
+                            {/* <h3 className="lg:text-lg text-center text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</h3> */}
                         </div>
                         <div className="flex flex-col justify-center items-center rounded-2xl p-5 gap-5" style={{boxShadow: "0 5px 40px rgba(0, 0, 0, 0.1)"}}>
-                            <img className=" md:h-44 h-32" src={img.invoice} alt="" />
-                            <h1 className="font-extrabold md:text-2xl text-lg">Invoices and receipts</h1>
-                            <h3 className="lg:text-lg text-center text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</h3>
+                            <img className=" md:h-44 h-32" src={img.credit} alt="" />
+                            <h1 className="font-extrabold md:text-2xl text-lg text-center">Account and Credit Card statements</h1>
+                            {/* <h3 className="lg:text-lg text-center text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</h3> */}
                         </div>
                         <div className="flex flex-col justify-center items-center rounded-2xl p-5 gap-5" style={{boxShadow: "0 5px 40px rgba(0, 0, 0, 0.1)"}}>
-                            <img className=" md:h-44 h-32" src={img.invoice} alt="" />
-                            <h1 className="font-extrabold md:text-2xl text-lg">Invoices and receipts</h1>
-                            <h3 className="lg:text-lg text-center text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</h3>
+                            <img className=" md:h-44 h-32" src={img.document} alt="" />
+                            <h1 className="font-extrabold md:text-2xl text-lg text-center">Many More Types</h1>
+                            {/* <h3 className="lg:text-lg text-center text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</h3> */}
                         </div> 
                     </div>
                 </div>

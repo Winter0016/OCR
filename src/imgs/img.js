@@ -4,6 +4,11 @@ import fileupload from "../assets/fileupload.png"
 import myocr from "../assets/3hoadon-Photoroom.png"
 import background from "../assets/background.png"
 import invoice from "../assets/invoice.png"
+import iden from "../assets/identification.png"
+import contract from "../assets/contract.png"
+import payroll from "../assets/payroll.png"
+import credit from "../assets/credit.png"
+import document from "../assets/document.png"
 
 export default{
     testimg : testimg,
@@ -12,4 +17,9 @@ export default{
     hoadonocr: myocr,
     background: background,
     invoice : invoice,
+    iden: iden,
+    contract: contract,
+    payroll: payroll,
+    credit: credit,
+    document: document,
 }
