@@ -11,8 +11,10 @@ import "react-image-crop/dist/ReactCrop.css";
 
 
 
+
 function Process() {
     const navigate = useNavigate();
+
 
     const [selectedFile, setSelectedFile] = useState(null);
     const {imgurl , setImgUrl} = useContext(Usercontext)
@@ -35,11 +37,10 @@ function Process() {
     const [collecterror,setcollecterror] = useState("");
     const [croperror,setcroperror] = useState("");
     const [cameraEnabled, setCameraEnabled] = useState(false);
+    const [shareurl,setshareurl] = useState("");
+    const [shareurl2,setshareurl2]=useState("");
     const webcamRef = useRef(null);
-
-
-    //camera
-    //
+    const [copySuccess, setCopySuccess] = useState(false);
 
     const allowedExtensions = ['jpg', 'jpeg', 'png', 'pdf'];
 
@@ -279,9 +280,24 @@ function Process() {
     };
 
     const [modalOpen, setModalOpen] = useState(false);
+
         
+    const handleShare = () => {
+        const jsonString = JSON.stringify(objectfield);
+        const encodedJsonString = encodeURIComponent(jsonString);
+        setshareurl2(`/share?objectfield=${encodedJsonString}`);
+        // navigate(shareUrl);
+        setshareurl(`${window.location.origin}/share?objectfield=${encodedJsonString}`);
+    };
 
-
+    const copyToClipboard = async () => {
+        try {
+            await navigator.clipboard.writeText(shareurl);
+            setCopySuccess(true);
+        } catch (err) {
+            console.error('Failed to copy: ', err);
+        }
+    };
 
     return (
         <div className="bg-gray-900 font-mono w-full h-full">
@@ -412,13 +428,34 @@ function Process() {
                                         <pre>
                                             {JSON.stringify(objectfield,null,2)}
                                         </pre>
-                                        <button onClick={handleDownload} class="cursor-pointer group relative flex gap-1.5 px-8 py-4 bg-black bg-opacity-80 text-[#f1f1f1] rounded-3xl hover:bg-opacity-70 transition font-semibold shadow-md">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="24px" width="24px"><g stroke-width="0" id="SVGRepo_bgCarrier"></g><g stroke-linejoin="round" stroke-linecap="round" id="SVGRepo_tracerCarrier"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Download"> <path stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#f1f1f1" d="M6 21H18M12 3V17M12 17L17 12M12 17L7 12" id="Vector"></path> </g> </g></svg>
-                                            Download
-                                            <div class="absolute opacity-0 -bottom-full rounded-md py-2 px-2 bg-black bg-opacity-70 left-1/2 -translate-x-1/2 group-hover:opacity-100 transition-opacity shadow-lg">
+                                        {
+                                            shareurl ? (
+                                                <>
+                                                    <div className="flex gap-2">
+                                                        <h1 className="text-lg text-blue-400 border-[1px] text-center p-2 hover:cursor-pointer rounded-xl" onClick={()=>navigate(shareurl2)}>SHARE URL</h1>
+                                                        <button className="text-lg border-[1px] p-2 rounded-xl" onClick={copyToClipboard}>COPY</button>
+                                                    </div>
+                                                    {copySuccess && <span style={{color: "green"}}>Copied!</span>}
+                                                </>
+                                            ):(
+                                                <></>
+                                            )
+                                        }
+                                        <div className="flex gap-6">
+                                            <button onClick={handleDownload} class="cursor-pointer group relative flex gap-1.5 px-8 py-4 bg-black bg-opacity-80 text-[#f1f1f1] rounded-3xl hover:bg-opacity-70 transition font-semibold shadow-md">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="24px" width="24px"><g stroke-width="0" id="SVGRepo_bgCarrier"></g><g stroke-linejoin="round" stroke-linecap="round" id="SVGRepo_tracerCarrier"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Download"> <path stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#f1f1f1" d="M6 21H18M12 3V17M12 17L17 12M12 17L7 12" id="Vector"></path> </g> </g></svg>
                                                 Download
-                                            </div>
-                                        </button>                                            </>
+                                                <div class="absolute opacity-0 -bottom-full rounded-md py-2 px-2 bg-black bg-opacity-70 left-1/2 -translate-x-1/2 group-hover:opacity-100 transition-opacity shadow-lg">
+                                                    Download
+                                                </div>
+                                            </button>
+                                            <button onClick={handleShare} className="cursor-pointer group relative flex gap-1.5 px-8 py-4 bg-black bg-opacity-80 text-[#f1f1f1] rounded-3xl hover:bg-opacity-70 transition font-semibold shadow-md">
+                                                Share
+                                                <div class="absolute opacity-0 -bottom-full rounded-md py-2 px-2 bg-black bg-opacity-70 left-1/2 -translate-x-1/2 group-hover:opacity-100 transition-opacity shadow-lg">
+                                                    SHARE
+                                                </div>
+                                            </button>  
+                                        </div>                                          </>
                                 ) : switchtype === "text" && ocrvalue ? (
                                     <div className="text-gray-300 flex flex-col gap-4">
                                         <div className="overflow-auto flex gap-5 justify-center">

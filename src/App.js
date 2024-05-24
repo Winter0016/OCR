@@ -9,6 +9,8 @@ import {Mainpage} from './pages/mainpage';
 import { lazy } from 'react';
 import Integration from './pages/integration.jsx';
 import img from './imgs/img.js';
+import SharedJson from './pages/share.jsx';
+
 
 const Process = lazy(() => import("./pages/process.jsx"));
 const Solution = lazy(() => import("./pages/solution.jsx"));
@@ -18,6 +20,8 @@ export const Usercontext = createContext("");
 
 function App() {
   const [imgurl, setImgUrl] = useState(null);
+  // const [objectfield,setobjectfield] = useState({});
+
 
   const LoadingIndicator = () => (
     <div className="product-loading">
@@ -37,6 +41,7 @@ function App() {
             <Route path="/integration" element={<Suspense fallback={<LoadingIndicator />}><Integration/></Suspense>} />
             <Route path="/solution" element={<Suspense fallback={<LoadingIndicator />}><Solution/></Suspense>} />
             <Route path='/' element={ <Mainpage/> } />
+            <Route path='/share' element={ <SharedJson/> } />
           </Routes>
         </BrowserRouter>
       </Usercontext.Provider>
