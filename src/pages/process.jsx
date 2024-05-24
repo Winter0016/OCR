@@ -21,11 +21,9 @@ function Process() {
     const [ocrvalue, setocrvalue] = useState("");
     const [ocrjson, setocrjson] = useState("");
     const [processing, setProcessing] = useState(false);
-    // const [myJsonData, setMyJsonData] = useState(null);
     const [switchtype, setswitchtype] = useState("text");
     const [error, seterror] = useState("");
     const [inputservice, setinputservice] = useState("");
-    const [convertprocess,setconvertprocess] = useState(false);
     const [showform,setshowform] = useState(false);
     const [deletefield,setdeletefield] = useState(false);
     const [addvalue,setaddvalue] = useState("");
@@ -38,7 +36,7 @@ function Process() {
     const [croperror,setcroperror] = useState("");
     const [cameraEnabled, setCameraEnabled] = useState(false);
     const [shareurl,setshareurl] = useState("");
-    const [shareurl2,setshareurl2]=useState("");
+    const [urlprocess,seturlprocess]= useState(false);
     const webcamRef = useRef(null);
     const [copySuccess, setCopySuccess] = useState(false);
 
@@ -281,14 +279,45 @@ function Process() {
 
     const [modalOpen, setModalOpen] = useState(false);
 
-        
-    const handleShare = () => {
+    const handleShare = async () => {
         const jsonString = JSON.stringify(objectfield);
         const encodedJsonString = encodeURIComponent(jsonString);
-        setshareurl2(`/share?objectfield=${encodedJsonString}`);
-        // navigate(shareUrl);
-        setshareurl(`${window.location.origin}/share?objectfield=${encodedJsonString}`);
+        const longUrl = `${window.location.origin}/share?objectfield=${encodedJsonString}`;
+
+        try {
+            seturlprocess(true)
+            const response = await fetch(`https://api.tinyurl.com/create`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer eTjWEHD5vJb56KLAWgpDGBSN8yUVgkqBaegy0zJY6U6Kjiox7hfH4U5e6xr8'
+                },
+                body: JSON.stringify({
+                    url: longUrl,
+                    domain: 'tiny.one'
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+            const shortenedUrl = data.data.tiny_url;
+            setshareurl(shortenedUrl);
+            seturlprocess(false);
+        } catch (error) {
+            seturlprocess(false);
+            console.error('Error shortening URL: ', error);
+        }
     };
+    // const handleShare = () => {
+    //     const jsonString = JSON.stringify(objectfield);
+    //     const encodedJsonString = encodeURIComponent(jsonString);
+    //     setshareurl2(`/share?objectfield=${encodedJsonString}`);
+    //     // navigate(shareUrl);
+    //     setshareurl(`${window.location.origin}/share?objectfield=${encodedJsonString}`);
+    // };
 
     const copyToClipboard = async () => {
         try {
@@ -432,13 +461,23 @@ function Process() {
                                             shareurl ? (
                                                 <>
                                                     <div className="flex gap-2">
-                                                        <h1 className="text-lg text-blue-400 border-[1px] text-center p-2 hover:cursor-pointer rounded-xl" onClick={()=>navigate(shareurl2)}>SHARE URL</h1>
+                                                        <h1 className="text-lg text-blue-400 border-[1px] text-center p-2 rounded-xl" >SHARE URL</h1>
                                                         <button className="text-lg border-[1px] p-2 rounded-xl" onClick={copyToClipboard}>COPY</button>
                                                     </div>
                                                     {copySuccess && <span style={{color: "green"}}>Copied!</span>}
                                                 </>
                                             ):(
-                                                <></>
+                                                <>
+                                                    {
+                                                        urlprocess ? (
+                                                            <>
+                                                                <div>creating url....</div>
+                                                            </>
+                                                        ):(
+                                                            <></>
+                                                        )
+                                                    }
+                                                </>
                                             )
                                         }
                                         <div className="flex gap-6">
