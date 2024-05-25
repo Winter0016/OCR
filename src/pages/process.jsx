@@ -89,6 +89,7 @@ function Process() {
 
             const json = await response.json();
             setocrvalue(json);
+            localStorage.setItem("ocrvalue", JSON.stringify(json)); // Store json directly
             setProcessing(false);
             seterror("");
             setswitchtype("text");
@@ -97,15 +98,32 @@ function Process() {
             seterror(err.message);
         }
     };
-    // useEffect(() =>{
-    //     if(ocrvalue){
-    //         console.log(`ocrvalue.raw_text la : ${JSON.stringify(ocrvalue.raw_text).replace(/"/g, '')}`);
-    //         console.log(`ocrvalue.raw_text la : ${ocrvalue.raw_text}`);
-    //     }
-    // },[ocrvalue])
-    // const isEmptyObject = (obj) => {
-    //     return Object.keys(obj).length === 0 && obj.constructor === Object;
-    // };
+    useEffect(() => {
+        const localocrvalue = localStorage.getItem("ocrvalue");
+        const localocrjson = JSON.parse(localStorage.getItem("ocrjson"));
+        if (localocrvalue) {
+            // console.log(`localocrvalue: `, localocrvalue);
+            setocrvalue(JSON.parse(localocrvalue)); // Parse the JSON string back to an object
+        }if(localocrjson){
+            // console.log(`found localocrjson`)
+            setocrjson(localocrjson);
+            // const cleanedJsonString = ocrjson.reply.replace(/```json\n|```/g, '');
+
+            // const parsedObject = JSON.parse(cleanedJsonString);
+
+            // setobjectfield(parsedObject);
+        }
+
+
+    }, []);
+
+    const clearall = () => {
+        localStorage.clear();
+        window.location.reload();
+    }
+
+    // localStorage.clear();
+
 
     const convertjson = async () => {
         try{
@@ -113,17 +131,6 @@ function Process() {
             if (Object.keys(objectfield).length === 0 && objectfield.constructor === Object) {
                 throw new Error("You haven't config template yet.");
             }
-            // const jsonObject = { "Tên của B": "", "lương": "" };
-
-            // const formData = new FormData();
-            // const jsonBlob = new Blob([JSON.stringify(objectfield)], { type: 'application/json' });
-            // formData.append('file', jsonBlob, 'data.json');
-
-            // const rawText = "LUẬT THÀNH CÔNG Căn cứ: - CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM Độc lập - Tư do - Hanh phúc HỢP ĐỒNG LAO ĐỘNG XÁC ĐỊNH THỜI HẠN (Số 2508 HĐLĐ) Bộ luật lao động 2019 & các Nghị định hướng dẫn Khả năng và nhu cầu của các bên Hôm nay, ngày 25 tháng 08 năm 2020, tại Công ty Cổ phần Dược phẩm Á Châu, chúng tôi gồm: Bên A : Người sử dụng lao động Công ty Mã số thuế Dia chi Điện thoại Đại diện : CÔNG TY CỔ PHẦN DƯỢC PHẨM Á CHÂU : 1934803729 : Số 188 Mai Dịch, Cầu Giấy, Hà Nội : 0247593788 : Bà Nguyễn Bảo Châu Chức vụ: Giám đốc Bên B: Người lao động Họ và tên : HOÀNG THỊ NGỌC LAN Sinh ngày : 10/09/1990 CMND số Địa chỉ Điện thoại Giới tỉnh: Nữ : 0204783678 – Ngày cấp: 20/2/2010–Nơi cấp: Công an thành phố Hà Nội : phường Dịch Vọng, quận Cầu Giấy, Hà Nội : 0857490394 Cùng thoả thuận ký kết hợp đồng lao động và cam kết làm đúng những điều khoản sau đây: Điều 1: Công việc, địa điểm làm việc và thời hạn của Hợp đồng - Công việc phải làm: Nhân viên Kế Toán - Địa điểm làm việc: Số 188 Mai Dịch, Cầu Giấy, Hà Nội - Loại hợp đồng: Hợp đồng lao động xác định thời hạn – Kỷ lần thứ nhất - Thời hạn hợp đồng: 01 năm - Từ ngày 5 tháng 03 năm 2021 đến ngày 5 tháng 03 năm 2022 Điều 2: Lương, phụ cấp, các khoản bổ sung khác Lương căn bản: 7.000.000 đồng /tháng Phụ cấp: 300.000ding thing LUẬT SƯ TƯ VẤN PHÁP LUẬT 24/7 GỌI 1900 633 710";
-            // const template = {
-            //     "tên của B": "",
-            //     "lương": ""
-            // };
 
             const encodedRawText = encodeURIComponent(ocrvalue.raw_text);
             const encodedTemplate = encodeURIComponent(JSON.stringify(objectfield));
@@ -143,6 +150,7 @@ function Process() {
             setocrjson(json);
             setcollectprocess(false);
             setcollecterror("");
+            localStorage.setItem("ocrjson",JSON.stringify(json))
 
         }catch(err){
             console.log(err.message);
@@ -152,29 +160,14 @@ function Process() {
     }
     useEffect(() => {
         if(ocrjson){
-            // console.log(`raw_text : ${ocrvalue.raw_text}`)
-            // console.log("OCRJSON :",ocrjson);
-            // Remove the ```json and ``` from the string
             const cleanedJsonString = ocrjson.reply.replace(/```json\n|```/g, '');
-            // console.log("cleanedjson :",cleanedJsonString)
-            // Parse the cleaned JSON string into an object
+
             const parsedObject = JSON.parse(cleanedJsonString);
 
-            // setMyJsonData(parsedObject);
             setobjectfield(parsedObject);
         }
     },[ocrjson])
-    // useEffect(() => {
-    //     if(objectfield){
-    //         console.log(`objectfield : ${JSON.stringify(objectfield)}`);
-    //     }
-    // },[objectfield])
-    // useEffect(() => {
-    //     if(ocrvalue){
-    //         console.log("ocrvalue :",ocrvalue.raw_text);
-    //         // setMyJsonData(JSON.parse(ocrjson));
-    //     }
-    // },[ocrvalue])
+
 
     const addfunction = (e) => {
         e.preventDefault();
@@ -311,13 +304,6 @@ function Process() {
             console.error('Error shortening URL: ', error);
         }
     };
-    // const handleShare = () => {
-    //     const jsonString = JSON.stringify(objectfield);
-    //     const encodedJsonString = encodeURIComponent(jsonString);
-    //     setshareurl2(`/share?objectfield=${encodedJsonString}`);
-    //     // navigate(shareUrl);
-    //     setshareurl(`${window.location.origin}/share?objectfield=${encodedJsonString}`);
-    // };
 
     const copyToClipboard = async () => {
         try {
@@ -443,7 +429,7 @@ function Process() {
                         }
                     </div>
                 </div>
-                <div className="flex justify-center items-center p-10 flex-wrap border-blue-400 text-white">
+                <div className="flex flex-col justify-center items-center p-10 flex-wrap border-blue-400 text-white">
                     <div className={switchtype !== "json" ? "border-[1px] border-gray-300 p-10 flex flex-col items-center gap-4 rounded-lg" : "border-4 border-green-500 p-10 flex flex-col items-center gap-4 rounded-lg"}>
                         <h1 className="mb-2 text-3xl text-yellow-400">Config Template for collecting info</h1>
                         <div className="flex">
@@ -454,7 +440,7 @@ function Process() {
                             {
                                 switchtype === "json" && ocrvalue && objectfield ? (
                                     <>
-                                        <pre>
+                                        <pre className="text-green-500">
                                             {JSON.stringify(objectfield,null,2)}
                                         </pre>
                                         {
@@ -581,6 +567,11 @@ function Process() {
                                 ) : null
                             }
                         </>
+                    </div>
+                    <div className="flex justify-center items-center mt-5">
+                        <button onClick={clearall} class="cursor-pointer group relative flex gap-1.5 px-8 py-4 bg-black bg-opacity-80 text-[#f1f1f1] rounded-3xl hover:bg-opacity-70 transition font-semibold shadow-md">
+                            Clear all process
+                        </button>
                     </div>
                 </div>
             </div>
