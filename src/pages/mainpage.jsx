@@ -6,7 +6,7 @@ export const Mainpage = () => {
     const navigate = useNavigate()
     return (
         <>  
-            <div className="font-mono h-screen relative backgroundimg">
+            <div className="font-mono bg-gray-700">
                 <div className='md:m-auto flex flex-col flex-wrap text-wrap w-auto h-auto pt-8 pb-16' style={{maxWidth:"1450px"}} >
                     <div className="flex flex-wrap w-auto h-auto">
                         <div className="flex flex-col flex-nowrap gap-3 flex-1">
