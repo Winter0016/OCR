@@ -2,9 +2,7 @@ import img from "../imgs/img";
 import { useState,useRef, useEffect,useContext} from "react";
 import Webcam from 'react-webcam';
 import { Usercontext } from "../App";
-import { useNavigate } from "react-router-dom";
 import Modal from "./Modal";
-import PencilIcon from "./PencilIcon";
 import "react-image-crop/dist/ReactCrop.css";
 
 
@@ -13,7 +11,6 @@ import "react-image-crop/dist/ReactCrop.css";
 
 
 function Process() {
-    const navigate = useNavigate();
 
 
     const [selectedFile, setSelectedFile] = useState(null);
@@ -204,7 +201,7 @@ function Process() {
     const updateinput = async (imgsrc) => {
         try {
             // console.log(`imgsrc : ${imgsrc}`)
-            if(imgsrc == "data:,"){
+            if(imgsrc === "data:,"){
                 // console.log(`imgsrc is null`);
                 throw new Error("You haven't cropped the image yet")
             }

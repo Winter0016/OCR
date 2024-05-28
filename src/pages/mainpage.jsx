@@ -1,5 +1,5 @@
-import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
-import {MainContainer,ChatContainer,MessageList,Message,MessageInput,TypingIndicator,} from "@chatscope/chat-ui-kit-react";
+// import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
+// import {MainContainer,ChatContainer,MessageList,Message,MessageInput,TypingIndicator,} from "@chatscope/chat-ui-kit-react";
 import img from "../imgs/img";
 import {useNavigate} from "react-router-dom"
 export const Mainpage = () => {

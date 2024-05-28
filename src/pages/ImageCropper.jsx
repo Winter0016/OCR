@@ -14,7 +14,6 @@ const ImageCropper = ({ closeModal,currentimg,updateinput}) => {
   const previewCanvasRef = useRef(null);
   const [imgSrc, setImgSrc] = useState("");
   const [crop, setCrop] = useState();
-  const [error, setError] = useState("");
 
   useEffect(() =>{
     if(currentimg){

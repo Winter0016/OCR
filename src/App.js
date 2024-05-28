@@ -9,7 +9,6 @@ import {Mainpage} from './pages/mainpage';
 import { Footer } from './Components/footer.jsx';
 import { lazy } from 'react';
 import Integration from './pages/integration.jsx';
-import img from './imgs/img.js';
 import SharedJson from './pages/share.jsx';
 
 
