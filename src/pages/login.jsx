@@ -72,7 +72,7 @@ function Login () {
                         ) : (
                             <>
                                 <div>
-                                    <h1 className="text-3xl font-semibold">Please Login to Dashborad</h1>
+                                    <h1 className="text-3xl font-semibold">Please Login to Dashboard</h1>
                                 </div>
                                 <div className="divide-y divide-gray-200">
                                     <form onSubmit={onSubmit} className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
@@ -83,13 +83,12 @@ function Login () {
                                             <input id="password" name="password" type="password" className="peer h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder="Password" required value={password} onChange={(e)=> setPassword(e.target.value)} />
                                         </div>
                                         <div>
-                                            <p>{errorMessage ? <span className='text-blue-500 text-sm'>Email or Username is not valid!</span> : ''}</p>
+                                            <p>{errorMessage ? <span className='text-red-500 text-md'>Email or Username is not valid!</span> : ''}</p>
                                             <p className='text-base mt-1'>If you haven't an account. Please create here <Link to='/sign' className='underline text-blue-600'>Sign Up</Link></p>
 
                                         </div>
                                         <div className="relative">
                                             <button type='submit' className="bg-blue-500 text-white rounded px-6 py-1" disabled={isSigningIn} >{isSigningIn ? "Signing In..." : "Sign In"}</button>
-
                                         </div>
                                     </form>
                                 </div>

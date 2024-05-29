@@ -4,12 +4,8 @@ import Webcam from 'react-webcam';
 import { Usercontext } from "../App";
 import Modal from "./Modal";
 import "react-image-crop/dist/ReactCrop.css";
-import { auth } from "../Firebase/firebase-config";
-
-
-
-
-
+import { auth,db } from "../Firebase/firebase-config";
+import { getDocs, collection,setDoc,updateDoc,doc,getDoc } from "firebase/firestore";
 
 function Process() {
 
@@ -39,6 +35,35 @@ function Process() {
     const [copySuccess, setCopySuccess] = useState(false);
 
     const allowedExtensions = ['jpg', 'jpeg', 'png', 'pdf'];
+    
+  const getCurrentDateTime = () => {
+    const now = new Date();
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const year = now.getFullYear();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+};
+
+    const onsubmitproduct = async () => {
+        try {
+            const documentPath = `${auth?.currentUser?.email}`;
+            const productDoc = doc(db, "history", documentPath);
+            const date = getCurrentDateTime();
+            const dataToUpdate = {
+                [date]: {
+                    ocr_text: ocrvalue ? ocrvalue.raw_text : "",
+                    ocr_json: objectfield ? JSON.stringify(objectfield) : "",
+                }
+            };
+            await setDoc(productDoc, dataToUpdate, { merge: true });
+            // console.log("Document updated successfully");
+        } catch (err) {
+            console.error(err);
+        }
+      };
 
     const isFileExtensionAllowed = (filename) => {
         const fileExtension = filename.split('.').pop().toLowerCase();
@@ -171,6 +196,13 @@ function Process() {
             setobjectfield(parsedObject);
         }
     },[ocrjson])
+
+
+    useEffect(() =>{
+        if(ocrjson && objectfield){
+            onsubmitproduct();
+        }
+    },[objectfield])
 
 
     const addfunction = (e) => {
@@ -433,7 +465,7 @@ function Process() {
                     </div>
                 </div>
                 <div className="flex flex-col justify-center items-center p-10 flex-wrap border-blue-400 text-white">
-                    <div className={switchtype !== "json" ? "border-[1px] border-gray-300 p-10 flex flex-col items-center gap-4 rounded-lg" : "border-4 border-green-500 p-10 flex flex-col items-center gap-4 rounded-lg"}>
+                    <div className={switchtype !== "json" ? "border-[1px] border-gray-300 p-10 flex flex-col items-center gap-4 rounded-lg" : "border-[1px] border-green-500 p-10 flex flex-col items-center gap-4 rounded-lg"}>
                         <h1 className="mb-2 text-3xl text-yellow-400">Config Template for collecting info</h1>
                         <div className="flex">
                             <div className="border-2 p-5 text-center hover:cursor-pointer hover:bg-green-600" onClick={() => setswitchtype("json")}> .JSON </div>
@@ -543,10 +575,10 @@ function Process() {
                                                         Object.entries(objectfield).map(([key, value]) => (
                                                             <div className="flex flex-col">
                                                                 <div className="flex gap-4" key={key}>
-                                                                    <div key={key} className={deletefield ? "hover:cursor-pointer hover:bg-red-600 border-[1px] p-2 w-full flex items-center": modifyfield ? "hover:cursor-pointer hover:bg-yellow-600 border-[1px] p-2 w-full flex items-center" : "border-[1px] p-2 w-full flex items-center"} onClick={() => {deletefunction(key);setmodifyvalue(key);setoriginalvalue(key)}}>
+                                                                    <div className={deletefield ? "hover:cursor-pointer hover:bg-red-600 border-[1px] p-2 w-full flex items-center": modifyfield ? "hover:cursor-pointer hover:bg-yellow-600 border-[1px] p-2 w-full flex items-center" : "border-[1px] p-2 w-full flex items-center"} onClick={() => {deletefunction(key);setmodifyvalue(key);setoriginalvalue(key)}}>
                                                                         {key}
                                                                     </div>
-                                                                    <div key={key} className="border-[1px] p-2 w-full flex items-center">
+                                                                    <div className="border-[1px] p-2 w-full flex items-center">
                                                                         {value}
                                                                     </div>
                                                                 </div>

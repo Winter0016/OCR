@@ -10,6 +10,7 @@ import payroll from "../assets/payroll.png"
 import credit from "../assets/credit.png"
 import document from "../assets/document.png"
 import logo from "../assets/logo-Photoroom.png-Photoroom.png"
+import profile from "../assets/profile-circle.png"
 
 export default{
     testimg : testimg,
@@ -24,4 +25,5 @@ export default{
     credit: credit,
     document: document,
     logo: logo,
+    profile:profile,
 }
