@@ -47,7 +47,7 @@ function Login () {
     useEffect(() => {
         if (userLoggedIn) {
             if(auth?.currentUser?.emailVerified === false){
-                console.log(`email is not verified yet!`)
+                // console.log(`email is not verified yet!`)
                 setnotverified(true);
             }
             if(auth?.currentUser?.emailVerified){

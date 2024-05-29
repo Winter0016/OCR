@@ -43,12 +43,12 @@ export const doSignInWithGoogle = async () => {
     const user = result.user;
     // console.log(`user: ${JSON.stringify(user)}`);
     if(user && user.emailVerified){
-      console.log(`email is verified`);
+      // console.log(`email is verified`);
       // console.log(auth.currentUser.photoURL);
-      console.log(`emailverified: ${user.emailVerified}`);
+      // console.log(`emailverified: ${user.emailVerified}`);
     }
     else{
-      console.log("email is not verified!");
+      // console.log("email is not verified!");
       await doSendEmailVerification();
     }
   }
