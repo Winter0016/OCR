@@ -25,7 +25,7 @@ export const Header = () => {
                     </svg>
                 </div> */}
                 {
-                    auth?.currentUser?.email ? (
+                    auth?.currentUser?.email && auth?.currentUser?.emailVerified ? (
                         <div className='flex flex-row gap-10 md:text-lg text-sm flex-1 justify-end'>
                             <div>{auth.currentUser.displayName}</div>
                             <div className='hover:border-yellow-300 hover:cursor-pointer border-b-4 border-gray-700' onClick={doSignOut}>LOGOUT</div>

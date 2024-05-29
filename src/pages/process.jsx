@@ -4,6 +4,7 @@ import Webcam from 'react-webcam';
 import { Usercontext } from "../App";
 import Modal from "./Modal";
 import "react-image-crop/dist/ReactCrop.css";
+import { auth } from "../Firebase/firebase-config";
 
 
 
@@ -60,6 +61,12 @@ function Process() {
 
             if (!inputservice) {
                 throw new Error("Please select a service");
+            }
+            if(!auth?.currentUser?.email){
+                throw new Error("Please login to use our services");
+            }
+            if(auth?.currentUser?.email && !auth?.currentUser?.emailVerified){
+                throw new Error("Please verify your email");
             }
             const formData = new FormData();
             const myFiles = document.getElementById('myFiles').files;
