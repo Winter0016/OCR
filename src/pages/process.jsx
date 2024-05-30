@@ -48,15 +48,55 @@ function Process() {
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 };
 
+    const handleFileUpload = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            const base64data = reader.result;
+            setImgUrl(base64data);
+            // console.log(`imgurl :`,base64data);
+        };
+        reader.readAsDataURL(file);
+        setSelectedFile(file.name);
+        }
+    };
+
+    // const tinyimgurl = async (longurl) =>{
+    //     try{
+    //         const response = await fetch("https://api.tinyurl.com/create",{
+    //             method: "POST",
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //                 'Authorization': 'Bearer eTjWEHD5vJb56KLAWgpDGBSN8yUVgkqBaegy0zJY6U6Kjiox7hfH4U5e6xr8'
+    //             },
+    //             body: JSON.stringify({
+    //                 url: longurl,
+    //                 domain: 'pan.ocr'
+    //             })
+    //         })
+    //         if (!response.ok) {
+    //             throw new Error('Network response was not ok');
+    //         }
+
+    //         const data = await response.json();
+    //         const shortenedUrl = data.data.tiny_url;
+    //         return shortenedUrl;
+    //     }catch(error){
+    //         console.error('Error shortening URL: ', error);
+    //     }
+    // }
     const onsubmitproduct = async () => {
         try {
+            // const shorturl= await tinyimgurl(imgurl);
             const documentPath = `${auth?.currentUser?.email}`;
             const productDoc = doc(db, "history", documentPath);
             const date = getCurrentDateTime();
             const dataToUpdate = {
                 [date]: {
-                    ocr_text: ocrvalue ? ocrvalue.raw_text : "",
+                    // ocr_text: ocrvalue ? ocrvalue.raw_text : "",
                     ocr_json: objectfield ? JSON.stringify(objectfield) : "",
+                    ocr_picture: imgurl ? imgurl : "",
                 }
             };
             await setDoc(productDoc, dataToUpdate, { merge: true });
@@ -71,13 +111,7 @@ function Process() {
         return allowedExtensions.includes(fileExtension);
     };
 
-    const handleFileUpload = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setSelectedFile(file.name);
-            setImgUrl(URL.createObjectURL(file));
-        }
-    };
+    
 
     const sendFiles = async (e) => {
         e.preventDefault();
@@ -131,6 +165,7 @@ function Process() {
     useEffect(() => {
         const localocrvalue = localStorage.getItem("ocrvalue");
         const localocrjson = JSON.parse(localStorage.getItem("ocrjson"));
+        const ocrpicture = localStorage.getItem("ocrpicture");
         if (localocrvalue) {
             // console.log(`localocrvalue: `, localocrvalue);
             setocrvalue(JSON.parse(localocrvalue)); // Parse the JSON string back to an object
@@ -142,6 +177,9 @@ function Process() {
             // const parsedObject = JSON.parse(cleanedJsonString);
 
             // setobjectfield(parsedObject);
+        }if(ocrpicture){
+            setImgUrl(ocrpicture);
+            // console.log(`ocrpicture:`,ocrpicture)
         }
 
 
@@ -182,6 +220,7 @@ function Process() {
             setcollectprocess(false);
             setcollecterror("");
             localStorage.setItem("ocrjson",JSON.stringify(json))
+            localStorage.setItem("ocrpicture", imgurl);
 
         }catch(err){
             console.log(err.message);
@@ -189,6 +228,7 @@ function Process() {
             setcollectprocess(false);
         }
     }
+
     useEffect(() => {
         if(ocrjson){
             const cleanedJsonString = ocrjson.reply.replace(/```json\n|```/g, '');
@@ -204,6 +244,7 @@ function Process() {
         if(ocrjson && objectfield && triggersubmitproduct){
             onsubmitproduct();
             settriggersubmitproduct(false);
+            console.log(`ran submitproduct`)
         }
     },[objectfield])
 
@@ -271,7 +312,7 @@ function Process() {
 
     const captureImage = () => {
         const imageSrc = webcamRef.current.getScreenshot();
-        console.log(`imageSrc : ${imageSrc}`)
+        // console.log(`imageSrc : ${imageSrc}`)
         setCameraEnabled(false);
 
         const byteCharacters = atob(imageSrc.split(',')[1]);
@@ -310,6 +351,8 @@ function Process() {
     };
 
     const [modalOpen, setModalOpen] = useState(false);
+    
+
 
     const handleShare = async () => {
         const jsonString = JSON.stringify(objectfield);
@@ -326,7 +369,7 @@ function Process() {
                 },
                 body: JSON.stringify({
                     url: longUrl,
-                    domain: 'tiny.one'
+                    domain: 'pan.ocr'
                 })
             });
 

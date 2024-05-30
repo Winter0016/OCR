@@ -15,7 +15,7 @@ function History() {
         const docRef = doc(db, "history", userEmail);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-          console.log("Document data:", docSnap.data());
+          // console.log("Document data:", docSnap.data());
           setProductlist(docSnap.data());
         } else {
           console.log("No such document!");
@@ -99,7 +99,9 @@ function History() {
             {Object.keys(productlist).map((key) => (
               <tr key={key}>
                 <td className="border-[1px] border-gray-300 p-2 text-blue-500">{key}</td>
-                <td className="border-[1px] border-gray-300 p-2 text-white whitespace-pre-line">{productlist[key].ocr_text}</td>
+                <td className="border-[1px] border-gray-300 p-2 flex justify-center">
+                  <img className="w-[20rem]" src={productlist[key].ocr_picture} alt="" />
+                </td>
                 <td className="border border-gray-300 p-2">
                     <pre className="text-green-500">
                     {JSON.stringify(JSON.parse(productlist[key].ocr_json), null, 2)}
