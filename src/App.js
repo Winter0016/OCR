@@ -20,6 +20,7 @@ const Process = lazy(() => import("./pages/process.jsx"));
 const Solution = lazy(() => import("./pages/solution.jsx"));
 const Sign = lazy(()=> import("./pages/signup.jsx"));
 const Login = lazy(()=> import("./pages/login.jsx"));
+const History = lazy(()=> import("./pages/history.jsx"));
 
 export const Usercontext = createContext("");
 
@@ -27,7 +28,7 @@ export const Usercontext = createContext("");
 function App() {
   const [imgurl, setImgUrl] = useState(null);
   const [userLoggedIn, setUserLoggedIn] = useState(false);
-  // const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
  
 
@@ -37,7 +38,7 @@ function App() {
     } else {
       setUserLoggedIn(false);
     }
-    // setLoading(false);
+    setLoading(false);
   };
 
 
@@ -56,7 +57,7 @@ function App() {
   );
   return (
     <>
-      <Usercontext.Provider value={{imgurl,setImgUrl,userLoggedIn}}>
+      <Usercontext.Provider value={{imgurl,setImgUrl,userLoggedIn,loading,setLoading}}>
         <BrowserRouter>
           <Header/>
           <Routes>
@@ -65,6 +66,7 @@ function App() {
             <Route path="/process" element={<Suspense fallback={<LoadingIndicator />}><Process/></Suspense>} />
             <Route path="/integration" element={<Suspense fallback={<LoadingIndicator />}><Integration/></Suspense>} />
             <Route path="/solution" element={<Suspense fallback={<LoadingIndicator />}><Solution/></Suspense>} />
+            <Route path="/history" element={<Suspense fallback={<LoadingIndicator />}><History/></Suspense>} />
             <Route path='/' element={ <Mainpage/> } />
             <Route path='/share' element={ <SharedJson/> } />
           </Routes>

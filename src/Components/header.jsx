@@ -17,6 +17,13 @@ export const Header = () => {
                     <div className='hover:border-yellow-300 hover:cursor-pointer border-b-4 border-gray-700' onClick={()=> navigate("/solution")}>SOLUTION</div>
                     <div className='hover:border-yellow-300 hover:cursor-pointer border-b-4 border-gray-700' onClick={() => navigate("/integration")}>INTERGRATION</div>
                     <div className='hover:border-yellow-300 hover:cursor-pointer border-b-4 border-gray-700'>ABOUT US</div>
+                    {
+                        auth?.currentUser?.email && auth?.currentUser?.emailVerified ? (
+                            <div className='hover:border-yellow-300 hover:cursor-pointer border-b-4 border-gray-700' onClick={()=>navigate("/history")}>HISTORY</div>
+                        ) :(
+                            <></>
+                        )
+                    }
                 </div>
                 {/* <div className='flex rounded-lg pl-3 pr-3 pt-1 pb-1 md:mt-0 mt-4 bg-yellow-300 gap-2 hover:cursor-pointer flex-wrap' onClick={() => navigate("/integration")}>
                     <div className=''>GET STARTED</div>
