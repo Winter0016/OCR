@@ -33,6 +33,7 @@ function Process() {
     const [urlprocess,seturlprocess]= useState(false);
     const webcamRef = useRef(null);
     const [copySuccess, setCopySuccess] = useState(false);
+    const [triggersubmitproduct,settriggersubmitproduct] = useState(false);
 
     const allowedExtensions = ['jpg', 'jpeg', 'png', 'pdf'];
     
@@ -90,7 +91,7 @@ function Process() {
             if(!auth?.currentUser?.email){
                 throw new Error("Please login to use our services");
             }
-            if(auth?.currentUser?.email && !auth?.currentUser?.emailVerified){
+            if(auth?.currentUser?.email && auth?.currentUser?.emailVerified == false){
                 throw new Error("Please verify your email");
             }
             const formData = new FormData();
@@ -156,6 +157,7 @@ function Process() {
 
     const convertjson = async () => {
         try{
+            settriggersubmitproduct(true);
             setcollectprocess(true);
             if (Object.keys(objectfield).length === 0 && objectfield.constructor === Object) {
                 throw new Error("You haven't config template yet.");
@@ -199,8 +201,9 @@ function Process() {
 
 
     useEffect(() =>{
-        if(ocrjson && objectfield){
+        if(ocrjson && objectfield && triggersubmitproduct){
             onsubmitproduct();
+            settriggersubmitproduct(false);
         }
     },[objectfield])
 
