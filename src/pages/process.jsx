@@ -125,7 +125,7 @@ function Process() {
             if(!auth?.currentUser?.email){
                 throw new Error("Please login to use our services");
             }
-            if(auth?.currentUser?.email && auth?.currentUser?.emailVerified == false){
+            if(auth?.currentUser?.email && !auth?.currentUser?.emailVerified){
                 throw new Error("Please verify your email");
             }
             const formData = new FormData();

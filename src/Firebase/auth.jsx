@@ -20,10 +20,10 @@ export const doCreateUserWithEmailAndPassword = async (email, password,username)
     })
     
     if (user && user.emailVerified) {
-      console.log(`Email is verified`);
-      console.log(`Email verified: ${user.emailVerified}`);
+      // console.log(`Email is verified`);
+      // console.log(`Email verified: ${user.emailVerified}`);
     } else {
-      console.log(`Email is not verified!`);
+      // console.log(`Email is not verified!`);
       await doSendEmailVerification();
     }
   } catch (err) {
