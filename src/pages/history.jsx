@@ -91,7 +91,7 @@ function History() {
           <thead>
             <tr>
               <th className="border-[1px] border-gray-300 p-4 text-blue-500">Time</th>
-              <th className="border-[1px] border-gray-300 p-4 text-white">OCR Text</th>
+              <th className="border-[1px] border-gray-300 p-4 text-white">OCR Picture</th>
               <th className="border-[1px] border-gray-300 p-4 text-green-500">OCR JSON</th>
             </tr>
           </thead>

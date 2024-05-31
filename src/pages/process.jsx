@@ -153,6 +153,8 @@ function Process() {
 
             const json = await response.json();
             setocrvalue(json);
+            // console.log(`ocrvalue : ${JSON.stringify(json)}`);
+            // console.log(`ocrvalue without stringcify: `,json);
             localStorage.setItem("ocrvalue", JSON.stringify(json)); // Store json directly
             setProcessing(false);
             seterror("");
@@ -369,7 +371,7 @@ function Process() {
                 },
                 body: JSON.stringify({
                     url: longUrl,
-                    domain: 'pan.ocr'
+                    domain: 'tiny.one'
                 })
             });
 
@@ -386,6 +388,36 @@ function Process() {
             console.error('Error shortening URL: ', error);
         }
     };
+    // const handleShare = async () => {
+    //     const jsonString = JSON.stringify(objectfield);
+    //     const encodedJsonString = encodeURIComponent(jsonString);
+    //     const longUrl = `${window.location.origin}/share?objectfield=${encodedJsonString}`;
+    
+    //     try {
+    //         seturlprocess(true);
+            
+    //         const response = await fetch(`https://ocr-46b8b.cloudfunctions.net/createShortUrl`, {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json'
+    //             },
+    //             body: JSON.stringify({ url: longUrl })
+    //         });
+    
+    //         if (!response.ok) {
+    //             throw new Error('Network response was not ok');
+    //         }
+    
+    //         const data = await response.json();
+    //         const shortenedUrl = data.shortUrl;
+    //         setshareurl(shortenedUrl);
+    //         seturlprocess(false);
+    //     } catch (error) {
+    //         seturlprocess(false);
+    //         console.error('Error shortening URL: ', error);
+    //     }
+    // };
+    
 
     const copyToClipboard = async () => {
         try {
