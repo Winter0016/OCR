@@ -11,7 +11,7 @@ export const Mainpage = () => {
                     <div className="flex flex-wrap w-auto h-auto gap-4">
                         <div className="flex flex-col flex-nowrap gap-6 flex-1">
                             <h1 className="md:text-7xl text-4xl text-wrap text-yellow-400">OCR SERVICES</h1>
-                            <h2 className="md:text-lg text-lg text-white">fintract extracts all data relevant to you from documents and provides it for use in your application, fintract is the right solution for you, if you:</h2>
+                            <h2 className="md:text-lg text-lg text-white">PAN extracts all data relevant to you from documents and provides it for use in your purposes, PAN is the right solution for you, if you:</h2>
                         
                             <div className="flex ml-5">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-yellow-400">
