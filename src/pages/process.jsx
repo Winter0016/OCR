@@ -463,7 +463,7 @@ function Process() {
                                 }
                             </div>
                         ) : (
-                            <div className="flex justify-center items-center md:max-w-28 overflow-auto text-green-500 border-2 text-4xl p-4 h-28 mt-9" style={{ whiteSpace: 'pre-wrap' }}>
+                            <div className="flex justify-center items-center md:max-w-28 overflow-auto text-green-500 bg-gray-300 rounded-lg text-4xl p-4 h-28 mt-9" style={{ whiteSpace: 'pre-wrap' }}>
                                 Your file input
                             </div>
                         )
@@ -488,7 +488,7 @@ function Process() {
                                 </>
                                 
                             ) : (
-                                <div className="flex flex-col justify-center items-center md:max-w-28 overflow-auto text-green-500 border-2 text-4xl p-4 h-28 mt-9" style={{ whiteSpace: 'pre-wrap' }}>
+                                <div className="flex flex-col justify-center items-center md:max-w-28 overflow-auto text-green-500 rounded-lg text-4xl p-4 h-28 mt-9 bg-gray-300" style={{ whiteSpace: 'pre-wrap' }}>
                                     <div>YOUR RESULT</div>
                                 </div>
                             )
