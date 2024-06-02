@@ -6,7 +6,7 @@ function Integration(){
     return(
         <>
             <div className="font-mono bg-gray-700">
-                <div className='md:m-auto flex flex-col flex-wrap text-wrap pb-16' style={{maxWidth:"1450px"}} >
+                <div className='md:m-auto flex flex-col flex-wrap text-wrap pb-16 pt-[9rem]' style={{maxWidth:"1450px"}} >
                     <div className="flex justify-center flex-wrap w-auto h-auto">
                         <div className="flex flex-col items-center mt-9">
                             <h1 className="md:text-2xl text-md text-yellow-400">INTEGRATION</h1>

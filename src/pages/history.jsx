@@ -84,7 +84,7 @@ function History() {
     };
 
   return (
-    <div className="p-[4rem] min-h-screen font-mono bg-gray-700">
+    <div className="pt-[9rem] p-[4rem] min-h-screen font-mono bg-gray-700">
       {error ? (
           <div className="text-red-500 text-center text-4xl">{error}</div>
         ): (

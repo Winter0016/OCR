@@ -7,7 +7,7 @@ import { doSignOut } from '../Firebase/auth';
 export const Header = () => {
     const navigate = useNavigate();
   return (
-    <div className='bg-gray-700'>
+    <div className='bg-gray-700 fixed w-full'>
         <div className='md:m-auto flex flex-col flex-wrap text-wrap w-auto h-auto' style={{maxWidth:"1450px"}} >
             <div className="flex gap-16 justify-center items-center pt-4 font-mono flex-wrap text-white pb-4 pl-[7rem]">
                 <img className=" w-[6rem] fill-yellow-300" src={img.logo} alt="" />
