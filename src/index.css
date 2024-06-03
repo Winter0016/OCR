@@ -101,13 +101,17 @@ option:checked {
     from {width: 0}
 }
   
+/* styles.css or your CSS file */
 .header {
-    transition: transform 0.3s ease-in-out;
-}
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    opacity: 1;
+  }
   
 .header.hidden {
 transform: translateY(-100%);
+opacity: 0;
 }
+  
 
 
 .backgroundimg {

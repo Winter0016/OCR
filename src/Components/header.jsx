@@ -7,17 +7,16 @@ import { doSignOut } from '../Firebase/auth';
 export const Header = () => {
     const navigate = useNavigate();
     const [isHidden, setIsHidden] = useState(false);
+    const [lastScrollY, setLastScrollY] = useState(0);
 
     useEffect(() => {
-        let lastScrollY = window.scrollY;
-
         const handleScroll = () => {
             if (window.scrollY > lastScrollY && window.scrollY > 100) {
                 setIsHidden(true);
             } else {
                 setIsHidden(false);
             }
-            lastScrollY = window.scrollY;
+            setLastScrollY(window.scrollY);
         };
 
         window.addEventListener('scroll', handleScroll);
@@ -25,7 +24,7 @@ export const Header = () => {
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
-    }, []);
+    }, [lastScrollY]);
 
     return (
         <div className={`bg-gray-700 fixed w-full header ${isHidden ? 'hidden' : ''}`}>
