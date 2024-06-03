@@ -102,7 +102,7 @@ function History() {
                   {Object.keys(productlist).map((key) => (
                     <tr key={key}>
                       <td className="border-[1px] border-gray-300 p-2 text-blue-500">{key}</td>
-                      <td className="border-gray-300 p-2 flex justify-center items-center">
+                      <td className="border-gray-300 border-[1px] p-2 flex justify-center items-center">
                         <img className="w-[20rem]" src={productlist[key].ocr_picture} alt="" />
                       </td>
                       <td className="border border-gray-300 p-2">
