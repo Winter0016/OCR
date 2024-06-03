@@ -92,7 +92,7 @@ option:checked {
     overflow: hidden;
     animation: 
         typing 2.3s infinite alternate,
-        cursor .4s step-end infinite alternate;
+        cursor 0.4s step-end infinite alternate;
 }
 @keyframes cursor{
     50%{ border-color: transparent;}
@@ -101,7 +101,13 @@ option:checked {
     from {width: 0}
 }
   
+.header {
+    transition: transform 0.3s ease-in-out;
+}
   
+.header.hidden {
+transform: translateY(-100%);
+}
 
 
 .backgroundimg {
