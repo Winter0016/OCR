@@ -4,7 +4,9 @@ import Webcam from 'react-webcam';
 import { Usercontext } from "../App";
 import Modal from "./Modal";
 import "react-image-crop/dist/ReactCrop.css";
-import { auth,db } from "../Firebase/firebase-config";
+import { auth,db,storage } from "../Firebase/firebase-config";
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+
 import { getDocs, collection,setDoc,updateDoc,doc,getDoc } from "firebase/firestore";
 
 function Process() {
@@ -58,45 +60,29 @@ function Process() {
             // console.log(`imgurl :`,base64data);
         };
         reader.readAsDataURL(file);
-        setSelectedFile(file.name);
+        setSelectedFile(file);
         }
     };
 
-    // const tinyimgurl = async (longurl) =>{
-    //     try{
-    //         const response = await fetch("https://api.tinyurl.com/create",{
-    //             method: "POST",
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //                 'Authorization': 'Bearer eTjWEHD5vJb56KLAWgpDGBSN8yUVgkqBaegy0zJY6U6Kjiox7hfH4U5e6xr8'
-    //             },
-    //             body: JSON.stringify({
-    //                 url: longurl,
-    //                 domain: 'pan.ocr'
-    //             })
-    //         })
-    //         if (!response.ok) {
-    //             throw new Error('Network response was not ok');
-    //         }
-
-    //         const data = await response.json();
-    //         const shortenedUrl = data.data.tiny_url;
-    //         return shortenedUrl;
-    //     }catch(error){
-    //         console.error('Error shortening URL: ', error);
-    //     }
-    // }
     const onsubmitproduct = async () => {
         try {
+            const user = auth.currentUser;
+            const date = getCurrentDateTime();
+            const email = user.email.replace(/[@.]/g, '_'); // Replace @ and . to avoid issues in the filename
+            const fileName = `${email}_${date}.${selectedFile.type.split('/')[1]}`; // e.g., user_email_2024-08-02-14-30-00.jpg
+            const storageRef = ref(storage, `images/${fileName}`);
+      
+            // Upload the file to Firebase Storage
+            const snapshot = await uploadBytes(storageRef, selectedFile);
+            const downloadURL = await getDownloadURL(snapshot.ref);
             // const shorturl= await tinyimgurl(imgurl);
             const documentPath = `${auth?.currentUser?.email}`;
             const productDoc = doc(db, "history", documentPath);
-            const date = getCurrentDateTime();
             const dataToUpdate = {
                 [date]: {
                     // ocr_text: ocrvalue ? ocrvalue.raw_text : "",
                     ocr_json: objectfield ? JSON.stringify(objectfield) : "",
-                    ocr_picture: imgurl ? imgurl : "",
+                    ocr_picture: downloadURL, // Add the image URL to Firestore
                 }
             };
             await setDoc(productDoc, dataToUpdate, { merge: true });
@@ -104,7 +90,7 @@ function Process() {
         } catch (err) {
             console.error(err);
         }
-      };
+    };
 
     const isFileExtensionAllowed = (filename) => {
         const fileExtension = filename.split('.').pop().toLowerCase();
@@ -192,7 +178,7 @@ function Process() {
         window.location.reload();
     }
 
-    // localStorage.clear();
+    localStorage.clear();
 
 
     const convertjson = async () => {
@@ -234,6 +220,7 @@ function Process() {
     useEffect(() => {
         if(ocrjson){
             const cleanedJsonString = ocrjson.reply.replace(/```json\n|```/g, '');
+            console.log(`cleanedjson string : ${cleanedJsonString}`);
 
             const parsedObject = JSON.parse(cleanedJsonString);
 
@@ -388,35 +375,7 @@ function Process() {
             console.error('Error shortening URL: ', error);
         }
     };
-    // const handleShare = async () => {
-    //     const jsonString = JSON.stringify(objectfield);
-    //     const encodedJsonString = encodeURIComponent(jsonString);
-    //     const longUrl = `${window.location.origin}/share?objectfield=${encodedJsonString}`;
-    
-    //     try {
-    //         seturlprocess(true);
-            
-    //         const response = await fetch(`https://ocr-46b8b.cloudfunctions.net/createShortUrl`, {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json'
-    //             },
-    //             body: JSON.stringify({ url: longUrl })
-    //         });
-    
-    //         if (!response.ok) {
-    //             throw new Error('Network response was not ok');
-    //         }
-    
-    //         const data = await response.json();
-    //         const shortenedUrl = data.shortUrl;
-    //         setshareurl(shortenedUrl);
-    //         seturlprocess(false);
-    //     } catch (error) {
-    //         seturlprocess(false);
-    //         console.error('Error shortening URL: ', error);
-    //     }
-    // };
+
     
 
     const copyToClipboard = async () => {
@@ -450,7 +409,7 @@ function Process() {
                             
                             <div className="flex flex-col items-center p-4 mt-4">
                                 <img className="object-contain h-fit md:max-w-28" src={imgurl} alt="imginput" />
-                                <h1 className="text-3xl text-yellow-400 mt-3">{selectedFile}</h1>
+                                <h1 className="text-3xl text-yellow-400 mt-3">{selectedFile.name}</h1>
                                 <h1 className="text-3xl text-white mt-3 border-2 rounded-md p-2 hover:cursor-pointer" onClick={() => setModalOpen(true)}>CROP IMAGE</h1>
                                 {
                                     croperror ? (
