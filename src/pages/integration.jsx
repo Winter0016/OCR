@@ -5,7 +5,7 @@ function Integration(){
     const navigate = useNavigate();
     return(
         <>
-            <div className="font-mono bg-gray-700">
+            <div className="font-mono bg-gray-900">
                 <div className='md:m-auto flex flex-col flex-wrap text-wrap pb-16 pt-[9rem]' style={{maxWidth:"1450px"}} >
                     <div className="flex justify-center flex-wrap w-auto h-auto">
                         <div className="flex flex-col items-center mt-9">

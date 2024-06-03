@@ -532,7 +532,7 @@ function Process() {
                         <select className="mt-2 p-2 text-md border-none rounded-md hover:cursor-pointer" onChange={(e) => setinputservice(e.target.value)}>
                             <option value="">Select OCR services</option>
                             <option value="GG_vision">Google vision (recommend)</option>
-                            <option value="Veryfi">Veryfi</option>
+                            <option value="Veryfi">Veryfi (Limit) </option>
                         </select>
                         <button className={!processing ? "text-white mt-4 text-md p-2 rounded-md w-52 bg-yellow-400 hover:bg-yellow-200" : "text-white mt-6 text-md p-2 rounded-md w-52 bg-yellow-500 opacity-50 cursor-not-allowed"} disabled={processing} onClick={sendFiles}> {processing ? "PROCESSING....." : "START OCR"}</button>
                         {

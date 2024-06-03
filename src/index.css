@@ -85,6 +85,23 @@ option:checked {
     }
 }
 
+.text-animation{
+    width: 100%;
+    border-right:5px solid;
+    white-space:nowrap;
+    overflow: hidden;
+    animation: 
+        typing 2.3s infinite alternate,
+        cursor .4s step-end infinite alternate;
+}
+@keyframes cursor{
+    50%{ border-color: transparent;}
+}
+@keyframes typing{
+    from {width: 0}
+}
+  
+  
 
 
 .backgroundimg {
