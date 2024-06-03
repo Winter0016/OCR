@@ -18,7 +18,7 @@ function History() {
           // console.log("Document data:", docSnap.data());
           setProductlist(docSnap.data());
         } else {
-          console.log("No such document!");
+          // console.log("No such document!");
           setError("There is no document");
         }
       } catch (error) {
