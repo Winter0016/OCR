@@ -36,6 +36,7 @@ function Process() {
     const webcamRef = useRef(null);
     const [copySuccess, setCopySuccess] = useState(false);
     const [triggersubmitproduct,settriggersubmitproduct] = useState(false);
+    const [imgname,setimgname] = useState("");
 
     const allowedExtensions = ['jpg', 'jpeg', 'png', 'pdf'];
     
@@ -61,6 +62,7 @@ function Process() {
         };
         reader.readAsDataURL(file);
         setSelectedFile(file);
+        setimgname(file.name)
         }
     };
 
@@ -153,11 +155,12 @@ function Process() {
     useEffect(() => {
         const localocrvalue = localStorage.getItem("ocrvalue");
         const localocrjson = JSON.parse(localStorage.getItem("ocrjson"));
-        const ocrpicture = localStorage.getItem("ocrpicture");
+        const ocrpicture = localStorage.getItem("uploadedImage");
         if (localocrvalue) {
             // console.log(`localocrvalue: `, localocrvalue);
             setocrvalue(JSON.parse(localocrvalue)); // Parse the JSON string back to an object
-        }if(localocrjson){
+        }
+        if(localocrjson){
             // console.log(`found localocrjson`)
             setocrjson(localocrjson);
             // const cleanedJsonString = ocrjson.reply.replace(/```json\n|```/g, '');
@@ -165,7 +168,8 @@ function Process() {
             // const parsedObject = JSON.parse(cleanedJsonString);
 
             // setobjectfield(parsedObject);
-        }if(ocrpicture){
+        }
+        if(ocrpicture){
             setImgUrl(ocrpicture);
             // console.log(`ocrpicture:`,ocrpicture)
         }
@@ -178,7 +182,7 @@ function Process() {
         window.location.reload();
     }
 
-    localStorage.clear();
+    // localStorage.clear();
 
 
     const convertjson = async () => {
@@ -208,7 +212,7 @@ function Process() {
             setcollectprocess(false);
             setcollecterror("");
             localStorage.setItem("ocrjson",JSON.stringify(json))
-            localStorage.setItem("ocrpicture", imgurl);
+            localStorage.setItem('uploadedImage', imgurl);
 
         }catch(err){
             console.log(err.message);
@@ -220,7 +224,7 @@ function Process() {
     useEffect(() => {
         if(ocrjson){
             const cleanedJsonString = ocrjson.reply.replace(/```json\n|```/g, '');
-            console.log(`cleanedjson string : ${cleanedJsonString}`);
+            // console.log(`cleanedjson string : ${cleanedJsonString}`);
 
             const parsedObject = JSON.parse(cleanedJsonString);
 
@@ -233,7 +237,7 @@ function Process() {
         if(ocrjson && objectfield && triggersubmitproduct){
             onsubmitproduct();
             settriggersubmitproduct(false);
-            console.log(`ran submitproduct`)
+            // console.log(`ran submitproduct`)
         }
     },[objectfield])
 
@@ -409,7 +413,7 @@ function Process() {
                             
                             <div className="flex flex-col items-center p-4 mt-4">
                                 <img className="object-contain h-fit md:max-w-28" src={imgurl} alt="imginput" />
-                                <h1 className="text-3xl text-yellow-400 mt-3">{selectedFile.name}</h1>
+                                <h1 className="text-3xl text-yellow-400 mt-3">{imgname}</h1>
                                 <h1 className="text-3xl text-white mt-3 border-2 rounded-md p-2 hover:cursor-pointer" onClick={() => setModalOpen(true)}>CROP IMAGE</h1>
                                 {
                                     croperror ? (
