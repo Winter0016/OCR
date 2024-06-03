@@ -155,7 +155,7 @@ function Process() {
     useEffect(() => {
         const localocrvalue = localStorage.getItem("ocrvalue");
         const localocrjson = JSON.parse(localStorage.getItem("ocrjson"));
-        const ocrpicture = localStorage.getItem("uploadedImage");
+        // const ocrpicture = localStorage.getItem("uploadedImage");
         if (localocrvalue) {
             // console.log(`localocrvalue: `, localocrvalue);
             setocrvalue(JSON.parse(localocrvalue)); // Parse the JSON string back to an object
@@ -169,10 +169,10 @@ function Process() {
 
             // setobjectfield(parsedObject);
         }
-        if(ocrpicture){
-            setImgUrl(ocrpicture);
-            // console.log(`ocrpicture:`,ocrpicture)
-        }
+        // if(ocrpicture){
+        //     setImgUrl(ocrpicture);
+        //     // console.log(`ocrpicture:`,ocrpicture)
+        // }
 
 
     }, []);
@@ -212,7 +212,7 @@ function Process() {
             setcollectprocess(false);
             setcollecterror("");
             localStorage.setItem("ocrjson",JSON.stringify(json))
-            localStorage.setItem('uploadedImage', imgurl);
+            // localStorage.setItem('uploadedImage', imgurl);
 
         }catch(err){
             console.log(err.message);
