@@ -83,6 +83,20 @@ function History() {
         }
     };
 
+    const handleDownload = (objectfield) => {
+      const jsonString = JSON.stringify(objectfield, null, 2);
+      const blob = new Blob([jsonString], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'info.json';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+  };
+
+
   return (
     <div className="pt-[9rem] p-[4rem] min-h-screen font-mono bg-gray-700">
       {error ? (
@@ -132,12 +146,20 @@ function History() {
                                   </>
                               )
                           }
-                          <button onClick={() => handleShare(productlist[key].ocr_json)} className="cursor-pointer group relative flex gap-1.5 px-8 py-2 bg-black bg-opacity-80 text-[#f1f1f1] rounded-3xl hover:bg-opacity-70 transition font-semibold shadow-md mt-2">
-                              Share
-                              <div class="absolute opacity-0 -bottom-full rounded-md py-2 px-2 bg-black bg-opacity-70 left-1/2 -translate-x-1/2 group-hover:opacity-100 transition-opacity shadow-lg">
-                                  SHARE
-                              </div>
-                          </button>  
+                          <div className="flex gap-3">
+                            <button onClick={() => handleShare(productlist[key].ocr_json)} className="cursor-pointer group relative flex gap-1.5 px-8 py-2 bg-black bg-opacity-80 text-[#f1f1f1] rounded-3xl hover:bg-opacity-70 transition font-semibold shadow-md mt-2">
+                                Share
+                                <div class="absolute opacity-0 -bottom-full rounded-md py-2 px-2 bg-black bg-opacity-70 left-1/2 -translate-x-1/2 group-hover:opacity-100 transition-opacity shadow-lg">
+                                    SHARE
+                                </div>
+                            </button>  
+                            <button onClick={() => handleDownload(productlist[key].ocr_json)} className="cursor-pointer group relative flex gap-1.5 px-8 py-2 bg-black bg-opacity-80 text-[#f1f1f1] rounded-3xl hover:bg-opacity-70 transition font-semibold shadow-md mt-2">
+                                Download
+                                <div class="absolute opacity-0 -bottom-full rounded-md py-2 px-2 bg-black bg-opacity-70 left-1/2 -translate-x-1/2 group-hover:opacity-100 transition-opacity shadow-lg">
+                                    Download
+                                </div>
+                            </button>  
+                          </div>
                       </td>        
                     </tr>
                   ))}
