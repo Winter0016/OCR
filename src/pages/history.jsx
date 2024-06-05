@@ -92,7 +92,51 @@ function History() {
       URL.revokeObjectURL(url);
   };
 
-  const handleDelete = async (time) => {
+  // const handleDelete = async (time) => {
+  //   const userEmail = auth.currentUser.email;
+  //   const docRef = doc(db, "history", userEmail);
+  
+  //   try {
+  //     const docSnapshot = await getDoc(docRef);
+  //     if (docSnapshot.exists()) {
+  //       const data = docSnapshot.data();
+  //       if (data.hasOwnProperty(time)) {
+  //         const newData = { ...data };
+  //         delete newData[time]; // Delete the entire subdocument
+  //         await setDoc(docRef, newData); // Overwrite the document with updated data
+  //         // console.log(`Subdocument '${time}' deleted successfully.`);
+  //       } else {
+  //         // console.log(`Subdocument '${time}' does not exist.`);
+  //       }
+  //     } else {
+  //       // console.log("Document does not exist.");
+  //     }
+  //   } catch (err) {
+  //     console.error("Error deleting subdocument:", err);
+  //   }finally{
+  //     await fetchUserData();
+  //   }
+  // }
+  
+  const array=[];
+
+  if(productlist){
+    for(let key in productlist){
+      array.unshift(productlist[key]);
+    }
+    array.sort((a,b) => new Date(b.date) - new Date(a.date))
+
+  }
+  const [checkedItems, setCheckedItems] = useState({});
+  const [checkederror,setcheckederror] = useState();
+  const handleCheckboxChange = (key, isChecked) => {
+    setCheckedItems((prevCheckedItems) => ({
+      ...prevCheckedItems,
+      [key]: isChecked,
+    }));
+  };
+
+  const handleDeleteChecked = async () => {
     const userEmail = auth.currentUser.email;
     const docRef = doc(db, "history", userEmail);
   
@@ -100,34 +144,27 @@ function History() {
       const docSnapshot = await getDoc(docRef);
       if (docSnapshot.exists()) {
         const data = docSnapshot.data();
-        if (data.hasOwnProperty(time)) {
-          const newData = { ...data };
-          delete newData[time]; // Delete the entire subdocument
-          await setDoc(docRef, newData); // Overwrite the document with updated data
-          // console.log(`Subdocument '${time}' deleted successfully.`);
-        } else {
-          // console.log(`Subdocument '${time}' does not exist.`);
-        }
-      } else {
-        // console.log("Document does not exist.");
+        const newData = { ...data };
+        Object.keys(checkedItems).forEach((key) => {
+          if (checkedItems[key]) {
+            delete newData[key];
+          }
+        });
+        await setDoc(docRef, newData);
+        // console.log("Checked items deleted successfully.");
+        setCheckedItems({});
+        setcheckederror("");
+      }
+      if(Object.entries(checkedItems).length <= 0){
+        throw new Error("You haven't checked any item yet.")
       }
     } catch (err) {
-      console.error("Error deleting subdocument:", err);
+      // console.error("Error deleting checked items:", err);
+      setcheckederror(err.message);
     }finally{
       await fetchUserData();
     }
-  }
-  
-  const array=[];
-
-  if(productlist){
-    // console.log(`${JSON.stringify(productlist)}`)
-    for(let key in productlist){
-      array.unshift(productlist[key]);
-    }
-    array.sort((a,b) => new Date(b.date) - new Date(a.date))
-    // console.log(`${JSON.stringify(array)}`)
-  }
+  };
 
 
   useEffect(() => {
@@ -138,13 +175,25 @@ function History() {
 
   return (
     <div className="pt-[9rem] p-[4rem] min-h-screen font-mono bg-gray-700">
-      {error ? (
-          <div className="text-red-500 text-center text-4xl">{error}</div>
+      {array.length <= 0 ? (
+          <div className="text-red-500 text-center text-4xl">There is no document</div>
         ): (
           <>
             {array && (
               <table className="min-w-full bg-gray-800 border-none rounded-3xl">
                 <thead>
+                  <div className="flex flex-col items-center w-full mt-5">
+                    <button className="mt-4 p-4 rounded-xl text-white bg-red-900" onClick={handleDeleteChecked}>Delete Checked Items</button>
+                    {
+                      checkederror ? (
+                        <>
+                          <div className="text-red-700 text-lg mt-2">{checkederror}</div>
+                        </>
+                      ):(
+                        <></>
+                      )
+                    }
+                  </div>
                   <tr>
                     <th className="border-gray-300 p-9 text-blue-500 text-3xl">Time</th>
                     <th className="border-gray-300 p-9 text-white text-3xl">OCR Picture</th>
@@ -154,7 +203,12 @@ function History() {
                 <tbody>
                   {Object.keys(array).map((key) => (
                     <tr key={array[key].date}>
-                      <td className="border-gray-300 p-7 text-blue-500 text-xl">{array[key].date}</td>
+                      <td className="border-gray-300 p-7 text-blue-500 text-xl">
+                        <div className="flex items-center">
+                          <input className="mr-5 size-8" type="checkbox" onChange={(e) => handleCheckboxChange(array[key].date, e.target.checked)} />
+                          <span className="">{array[key].date}</span>
+                        </div>
+                      </td>
                       <td className="border-gray-300 p-7 flex justify-center items-center">
                         <img className="w-[20rem]" src={array[key].ocr_picture} alt="" />
                       </td>
@@ -193,11 +247,11 @@ function History() {
                               Download
                             </button>  
                           </div>
-                          <div className="flex w-full mt-1">
+                          {/* <div className="flex w-full mt-1">
                             <button onClick={() => handleDelete(array[key].date)} className="cursor-pointer group relative flex gap-1.5 px-8 py-2 bg-red-600 bg-opacity-80 text-[#f1f1f1] rounded-3xl hover:bg-opacity-70 transition font-semibold shadow-md mt-2">
                               Delete
                             </button>  
-                          </div>
+                          </div> */}
                       </td>        
                     </tr>
                   ))}
