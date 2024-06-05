@@ -129,12 +129,7 @@ function History() {
   }
   const [checkedItems, setCheckedItems] = useState({});
   const [checkederror,setcheckederror] = useState();
-  const handleCheckboxChange = (key, isChecked) => {
-    setCheckedItems((prevCheckedItems) => ({
-      ...prevCheckedItems,
-      [key]: isChecked,
-    }));
-  };
+
 
   const handleDeleteChecked = async () => {
     const userEmail = auth.currentUser.email;
@@ -173,6 +168,31 @@ function History() {
     }
   }, [loading]);
 
+  const handleCheckboxChange = (key, isChecked) => {
+    setCheckedItems((prevCheckedItems) => ({
+      ...prevCheckedItems,
+      [key]: isChecked,
+    }));
+
+  };
+
+  if(checkedItems){
+    console.log(JSON.stringify(checkedItems));
+  }
+
+
+  const handleMasterCheckboxChange = (isChecked) => {
+    const newCheckedItems = {};
+    for (let key in productlist) {
+      newCheckedItems[productlist[key].date] = isChecked;
+    }
+    setCheckedItems(newCheckedItems);
+    const checkboxes = document.querySelectorAll("input[type='checkbox']");
+    checkboxes.forEach((checkbox) => {
+      checkbox.checked = isChecked;
+    });
+  };
+
   return (
     <div className="pt-[9rem] p-[4rem] min-h-screen font-mono bg-gray-700">
       {array.length <= 0 ? (
@@ -193,6 +213,13 @@ function History() {
                         <></>
                       )
                     }
+                    <div className="flex items-center mt-6 gap-3 text-white">
+                      <input className="size-8"
+                        type="checkbox"
+                        onChange={(e) => handleMasterCheckboxChange(e.target.checked)}
+                      />
+                      <label>Select All</label>
+                    </div>
                   </div>
                   <tr>
                     <th className="border-gray-300 p-9 text-blue-500 text-3xl">Time</th>
