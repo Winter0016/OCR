@@ -631,7 +631,7 @@ function Process() {
                                                         // </>
                                                 }
                                             </div>
-                                            <button className={collectprocess ? "border-2 p-2 bg-green-600 text-2xl rounded-xl opacity-50 cursor-not-allowed" : "border-2 p-2 hover:bg-green-600 text-2xl rounded-xl"} onClick={convertjson} disabled={collectprocess}>{collectprocess ? "COLLECTING..." : "COLLECT"}</button>
+                                            <button className={collectprocess || selectedFile == undefined ? "p-2 bg-green-600 text-2xl rounded-xl opacity-50 cursor-not-allowed" : "p-2 bg-green-700 hover:bg-green-600 text-2xl rounded-xl"} onClick={convertjson} disabled={collectprocess || selectedFile == undefined}>{collectprocess ? "COLLECTING..." : "COLLECT"}</button>
                                             {
                                                 collecterror ? (
                                                     <h1 className="text-red-600 mt-1">{collecterror}</h1>
