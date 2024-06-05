@@ -440,7 +440,7 @@ function Process() {
                         ) : (
                             processing ? (
                                 <>
-                                    <div className="flex flex-col items-center md:max-w-28 overflow-auto text-blue-400 border-4 text-lg p-4 mt-4 h-28 text-wrap bg-gray-900 gap-0">
+                                    <div className="flex flex-col items-center md:max-w-28 overflow-auto text-blue-400 text-lg p-4 mt-4 h-28 text-wrap bg-gray-900 gap-0">
                                         <div className="product-loading2">
                                             <div className="mb-2">This could take a while at first time, please wait...</div>
                                             <div className="tiktok-spinner">
@@ -507,7 +507,7 @@ function Process() {
                     </div>
                 </div>
                 <div className="flex flex-col justify-center items-center p-10 flex-wrap border-blue-400 text-white">
-                    <div className={switchtype !== "json" ? "border-[1px] border-gray-300 p-10 flex flex-col items-center gap-4 rounded-lg" : "border-[1px] border-green-500 p-10 flex flex-col items-center gap-4 rounded-lg"}>
+                    <div className={switchtype !== "json" ? " bg-gray-800 p-10 flex flex-col items-center gap-4 rounded-lg" : "border-[1px] border-green-500 p-10 flex flex-col items-center gap-4 rounded-lg"}>
                         <h1 className="mb-2 text-3xl text-yellow-400">Config Template for collecting info</h1>
                         <div className="flex">
                             <div className="border-2 p-5 text-center hover:cursor-pointer hover:bg-green-600" onClick={() => setswitchtype("json")}> .JSON </div>
