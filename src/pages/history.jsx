@@ -1,10 +1,10 @@
 import { useState, useEffect, useContext } from "react";
-import { getDoc, doc } from "firebase/firestore";
+import { getDoc, doc,deleteDoc } from "firebase/firestore";
 import { auth, db } from "../Firebase/firebase-config";
 import { Usercontext } from "../App";
 
 function History() {
-  const [productlist, setProductlist] = useState({});
+  const [productlist, setProductlist] = useState([]);
   const [error, setError] = useState("");
   const { loading } = useContext(Usercontext);
 
@@ -96,6 +96,30 @@ function History() {
       URL.revokeObjectURL(url);
   };
 
+  const handledelete = async (time)=>{
+    const userEmail = auth.currentUser.email;
+    try{
+      const docRef = doc(db, "history", userEmail,time);
+      await deleteDoc(docRef)
+    }catch(err){
+      console.log(err)
+    }
+  }
+  const array=[];
+
+  if(productlist){
+    for(let key in productlist){
+      array.unshift(productlist[key]);
+    }
+    array.sort((a,b) => new Date(b.date) - new Date(a.date))
+    // console.log(`${JSON.stringify(array)}`)
+  }
+
+
+  // if(array){
+  //   console.log(`array: ${array}`);
+  //   console.log(array.length);
+  // }
 
   return (
     <div className="pt-[9rem] p-[4rem] min-h-screen font-mono bg-gray-700">
@@ -104,24 +128,24 @@ function History() {
         ): (
           <>
             {productlist && (
-              <table className="min-w-full border border-gray-300">
+              <table className="min-w-full bg-gray-800 border-none rounded-3xl">
                 <thead>
                   <tr>
-                    <th className="border-[1px] border-gray-300 p-4 text-blue-500">Time</th>
-                    <th className="border-[1px] border-gray-300 p-4 text-white">OCR Picture</th>
-                    <th className="border-[1px] border-gray-300 p-4 text-green-500">OCR JSON</th>
+                    <th className="border-gray-300 p-9 text-blue-500 text-3xl">Time</th>
+                    <th className="border-gray-300 p-9 text-white text-3xl">OCR Picture</th>
+                    <th className="border-gray-300 p-9 text-green-500 text-3xl">OCR JSON</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {Object.keys(productlist).map((key) => (
-                    <tr key={key}>
-                      <td className="border-[1px] border-gray-300 p-2 text-blue-500">{key}</td>
-                      <td className="border-gray-300 border-[1px] p-2 flex justify-center items-center">
-                        <img className="w-[20rem]" src={productlist[key].ocr_picture} alt="" />
+                  {Object.keys(array).map((key) => (
+                    <tr key={array[key].date}>
+                      <td className="border-gray-300 p-7 text-blue-500 text-xl">{array[key].date}</td>
+                      <td className="border-gray-300 p-7 flex justify-center items-center">
+                        <img className="w-[20rem]" src={array[key].ocr_picture} alt="" />
                       </td>
-                      <td className="border border-gray-300 p-2">
+                      <td className="border-gray-300 p-7">
                           <pre className="text-green-500">
-                          {JSON.stringify(JSON.parse(productlist[key].ocr_json), null, 2)}
+                          {JSON.stringify(JSON.parse(array[key].ocr_json), null, 2)}
                           </pre>
                           {
                               shareurl ? (
@@ -147,13 +171,13 @@ function History() {
                               )
                           }
                           <div className="flex gap-3">
-                            <button onClick={() => handleShare(productlist[key].ocr_json)} className="cursor-pointer group relative flex gap-1.5 px-8 py-2 bg-black bg-opacity-80 text-[#f1f1f1] rounded-3xl hover:bg-opacity-70 transition font-semibold shadow-md mt-2">
+                            <button onClick={() => handleShare(array[key].ocr_json)} className="cursor-pointer group relative flex gap-1.5 px-8 py-2 bg-black bg-opacity-80 text-[#f1f1f1] rounded-3xl hover:bg-opacity-70 transition font-semibold shadow-md mt-2">
                                 Share
                                 <div class="absolute opacity-0 -bottom-full rounded-md py-2 px-2 bg-black bg-opacity-70 left-1/2 -translate-x-1/2 group-hover:opacity-100 transition-opacity shadow-lg">
                                     SHARE
                                 </div>
                             </button>  
-                            <button onClick={() => handleDownload(productlist[key].ocr_json)} className="cursor-pointer group relative flex gap-1.5 px-8 py-2 bg-black bg-opacity-80 text-[#f1f1f1] rounded-3xl hover:bg-opacity-70 transition font-semibold shadow-md mt-2">
+                            <button onClick={() => handleDownload(array[key].ocr_json)} className="cursor-pointer group relative flex gap-1.5 px-8 py-2 bg-black bg-opacity-80 text-[#f1f1f1] rounded-3xl hover:bg-opacity-70 transition font-semibold shadow-md mt-2">
                                 Download
                                 <div class="absolute opacity-0 -bottom-full rounded-md py-2 px-2 bg-black bg-opacity-70 left-1/2 -translate-x-1/2 group-hover:opacity-100 transition-opacity shadow-lg">
                                     Download

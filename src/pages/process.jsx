@@ -85,6 +85,7 @@ function Process() {
                     // ocr_text: ocrvalue ? ocrvalue.raw_text : "",
                     ocr_json: objectfield ? JSON.stringify(objectfield) : "",
                     ocr_picture: downloadURL, // Add the image URL to Firestore
+                    date: date
                 }
             };
             await setDoc(productDoc, dataToUpdate, { merge: true });
