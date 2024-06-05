@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { getDoc, doc,deleteDoc } from "firebase/firestore";
+import { getDoc, doc,deleteDoc,setDoc } from "firebase/firestore";
 import { auth, db } from "../Firebase/firebase-config";
 import { Usercontext } from "../App";
 
@@ -31,11 +31,7 @@ function History() {
     }
   };
 
-  useEffect(() => {
-    if (!loading) {
-      fetchUserData();
-    }
-  }, [loading]);
+
 
     const copyToClipboard = async () => {
         try {
@@ -96,18 +92,36 @@ function History() {
       URL.revokeObjectURL(url);
   };
 
-  const handledelete = async (time)=>{
+  const handleDelete = async (time) => {
     const userEmail = auth.currentUser.email;
-    try{
-      const docRef = doc(db, "history", userEmail,time);
-      await deleteDoc(docRef)
-    }catch(err){
-      console.log(err)
+    const docRef = doc(db, "history", userEmail);
+  
+    try {
+      const docSnapshot = await getDoc(docRef);
+      if (docSnapshot.exists()) {
+        const data = docSnapshot.data();
+        if (data.hasOwnProperty(time)) {
+          const newData = { ...data };
+          delete newData[time]; // Delete the entire subdocument
+          await setDoc(docRef, newData); // Overwrite the document with updated data
+          // console.log(`Subdocument '${time}' deleted successfully.`);
+        } else {
+          // console.log(`Subdocument '${time}' does not exist.`);
+        }
+      } else {
+        // console.log("Document does not exist.");
+      }
+    } catch (err) {
+      console.error("Error deleting subdocument:", err);
+    }finally{
+      await fetchUserData();
     }
   }
+  
   const array=[];
 
   if(productlist){
+    // console.log(`${JSON.stringify(productlist)}`)
     for(let key in productlist){
       array.unshift(productlist[key]);
     }
@@ -116,10 +130,11 @@ function History() {
   }
 
 
-  // if(array){
-  //   console.log(`array: ${array}`);
-  //   console.log(array.length);
-  // }
+  useEffect(() => {
+    if (!loading) {
+      fetchUserData();
+    }
+  }, [loading]);
 
   return (
     <div className="pt-[9rem] p-[4rem] min-h-screen font-mono bg-gray-700">
@@ -127,7 +142,7 @@ function History() {
           <div className="text-red-500 text-center text-4xl">{error}</div>
         ): (
           <>
-            {productlist && (
+            {array && (
               <table className="min-w-full bg-gray-800 border-none rounded-3xl">
                 <thead>
                   <tr>
@@ -143,7 +158,7 @@ function History() {
                       <td className="border-gray-300 p-7 flex justify-center items-center">
                         <img className="w-[20rem]" src={array[key].ocr_picture} alt="" />
                       </td>
-                      <td className="border-gray-300 p-7">
+                      <td className="border-gray-300 pt-7">
                           <pre className="text-green-500">
                           {JSON.stringify(JSON.parse(array[key].ocr_json), null, 2)}
                           </pre>
@@ -170,18 +185,17 @@ function History() {
                                   </>
                               )
                           }
-                          <div className="flex gap-3">
+                          <div className="flex gap-3 w-full mt-2">
                             <button onClick={() => handleShare(array[key].ocr_json)} className="cursor-pointer group relative flex gap-1.5 px-8 py-2 bg-black bg-opacity-80 text-[#f1f1f1] rounded-3xl hover:bg-opacity-70 transition font-semibold shadow-md mt-2">
-                                Share
-                                <div class="absolute opacity-0 -bottom-full rounded-md py-2 px-2 bg-black bg-opacity-70 left-1/2 -translate-x-1/2 group-hover:opacity-100 transition-opacity shadow-lg">
-                                    SHARE
-                                </div>
+                              Share
                             </button>  
                             <button onClick={() => handleDownload(array[key].ocr_json)} className="cursor-pointer group relative flex gap-1.5 px-8 py-2 bg-black bg-opacity-80 text-[#f1f1f1] rounded-3xl hover:bg-opacity-70 transition font-semibold shadow-md mt-2">
-                                Download
-                                <div class="absolute opacity-0 -bottom-full rounded-md py-2 px-2 bg-black bg-opacity-70 left-1/2 -translate-x-1/2 group-hover:opacity-100 transition-opacity shadow-lg">
-                                    Download
-                                </div>
+                              Download
+                            </button>  
+                          </div>
+                          <div className="flex w-full mt-1">
+                            <button onClick={() => handleDelete(array[key].date)} className="cursor-pointer group relative flex gap-1.5 px-8 py-2 bg-red-600 bg-opacity-80 text-[#f1f1f1] rounded-3xl hover:bg-opacity-70 transition font-semibold shadow-md mt-2">
+                              Delete
                             </button>  
                           </div>
                       </td>        
