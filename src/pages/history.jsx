@@ -176,9 +176,9 @@ function History() {
 
   };
 
-  if(checkedItems){
-    console.log(JSON.stringify(checkedItems));
-  }
+  // if(checkedItems){
+  //   console.log(JSON.stringify(checkedItems));
+  // }
 
 
   const handleMasterCheckboxChange = (isChecked) => {
@@ -203,7 +203,7 @@ function History() {
               <table className="min-w-full bg-gray-800 border-none rounded-3xl">
                 <thead>
                   <div className="flex flex-col items-center w-full mt-5">
-                    <button className="mt-4 p-4 rounded-xl text-white bg-red-900" onClick={handleDeleteChecked}>Delete Checked Items</button>
+                    <button className="mt-[4rem] p-4 rounded-xl text-white bg-red-900" onClick={handleDeleteChecked}>Delete Checked Items</button>
                     {
                       checkederror ? (
                         <>
@@ -239,8 +239,8 @@ function History() {
                       <td className="border-gray-300 p-7 flex justify-center items-center">
                         <img className="w-[20rem]" src={array[key].ocr_picture} alt="" />
                       </td>
-                      <td className="border-gray-300 pt-7">
-                          <pre className="text-green-500">
+                      <td className="border-gray-300 pt-7 pb-7">
+                          <pre className="text-green-500 text-wrap">
                           {JSON.stringify(JSON.parse(array[key].ocr_json), null, 2)}
                           </pre>
                           {
