@@ -103,6 +103,7 @@ function History() {
   }
   const [checkedItems, setCheckedItems] = useState({});
   const [checkederror,setcheckederror] = useState();
+  const [deleteprocess,setdeleteprocess] = useState(false);
 
 
   const handleDeleteChecked = async () => {
@@ -110,6 +111,7 @@ function History() {
     const docRef = doc(db, "history", userEmail);
   
     try {
+      setdeleteprocess(true);
       const docSnapshot = await getDoc(docRef);
       if (docSnapshot.exists()) {
         const data = docSnapshot.data();
@@ -128,10 +130,12 @@ function History() {
         throw new Error("You haven't checked any item yet.")
       }
     } catch (err) {
+      setdeleteprocess(false)
       // console.error("Error deleting checked items:", err);
       setcheckederror(err.message);
     }finally{
       await fetchUserData();
+      setdeleteprocess(false)
     }
   };
 
@@ -177,7 +181,7 @@ function History() {
               <table className="min-w-full bg-gray-800 border-none rounded-3xl">
                 <thead>
                   <div className="flex flex-col items-center w-full mt-5">
-                    <button className="mt-[4rem] p-4 rounded-xl text-white bg-red-900" onClick={handleDeleteChecked}>Delete Checked Items</button>
+                    <button className="mt-[4rem] p-4 rounded-xl text-white bg-red-900" disabled={deleteprocess} onClick={handleDeleteChecked}>{deleteprocess? "Deleting..." : "Delete Checked Items"}</button>
                     {
                       checkederror ? (
                         <>

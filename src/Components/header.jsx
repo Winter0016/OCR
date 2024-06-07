@@ -40,7 +40,7 @@ export const Header = () => {
                             auth?.currentUser?.email && auth?.currentUser?.emailVerified ? (
                                 <>
                                     <div className='hover:border-yellow-300 hover:cursor-pointer border-b-4 border-gray-700' onClick={()=>navigate("/history")}>HISTORY</div>
-                                    <div className='hover:border-yellow-300 hover:cursor-pointer border-b-4 border-gray-700'>TEMPLATE</div>
+                                    <div className='hover:border-yellow-300 hover:cursor-pointer border-b-4 border-gray-700' onClick={() => navigate("/template")}>TEMPLATE</div>
                                 </>
                                 
                             ) :(
