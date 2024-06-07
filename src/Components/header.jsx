@@ -33,13 +33,16 @@ export const Header = () => {
                     <img className=" w-[6rem] fill-yellow-300" src={img.logo} alt="" />
                     <div className='flex md:flex-row flex-col md:gap-12 gap-2 lg:p-0 md:text-lg text-sm'>
                         <div className='hover:border-yellow-300 hover:cursor-pointer border-b-4 border-gray-700' onClick={()=> navigate("/")}>HOME</div>
-                        <div className='hover:border-yellow-300 hover:cursor-pointer border-b-4 border-gray-700'>PRODUCT</div>
                         <div className='hover:border-yellow-300 hover:cursor-pointer border-b-4 border-gray-700' onClick={()=> navigate("/solution")}>SOLUTION</div>
                         <div className='hover:border-yellow-300 hover:cursor-pointer border-b-4 border-gray-700' onClick={() => navigate("/integration")}>INTEGRATION</div>
                         <div className='hover:border-yellow-300 hover:cursor-pointer border-b-4 border-gray-700'>ABOUT US</div>
                         {
                             auth?.currentUser?.email && auth?.currentUser?.emailVerified ? (
-                                <div className='hover:border-yellow-300 hover:cursor-pointer border-b-4 border-gray-700' onClick={()=>navigate("/history")}>HISTORY</div>
+                                <>
+                                    <div className='hover:border-yellow-300 hover:cursor-pointer border-b-4 border-gray-700' onClick={()=>navigate("/history")}>HISTORY</div>
+                                    <div className='hover:border-yellow-300 hover:cursor-pointer border-b-4 border-gray-700'>TEMPLATE</div>
+                                </>
+                                
                             ) :(
                                 <></>
                             )
@@ -47,7 +50,7 @@ export const Header = () => {
                     </div>
                     {
                         auth?.currentUser?.email && auth?.currentUser?.emailVerified ? (
-                            <div className='flex flex-row md:text-lg text-sm flex-1 justify-end items-center'>
+                            <div className='flex flex-row md:text-lg text-sm justify-end items-center'>
                                 {
                                     auth.currentUser.photoURL ? (
                                         <>

@@ -91,32 +91,6 @@ function History() {
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
   };
-
-  // const handleDelete = async (time) => {
-  //   const userEmail = auth.currentUser.email;
-  //   const docRef = doc(db, "history", userEmail);
-  
-  //   try {
-  //     const docSnapshot = await getDoc(docRef);
-  //     if (docSnapshot.exists()) {
-  //       const data = docSnapshot.data();
-  //       if (data.hasOwnProperty(time)) {
-  //         const newData = { ...data };
-  //         delete newData[time]; // Delete the entire subdocument
-  //         await setDoc(docRef, newData); // Overwrite the document with updated data
-  //         // console.log(`Subdocument '${time}' deleted successfully.`);
-  //       } else {
-  //         // console.log(`Subdocument '${time}' does not exist.`);
-  //       }
-  //     } else {
-  //       // console.log("Document does not exist.");
-  //     }
-  //   } catch (err) {
-  //     console.error("Error deleting subdocument:", err);
-  //   }finally{
-  //     await fetchUserData();
-  //   }
-  // }
   
   const array=[];
 
@@ -194,7 +168,7 @@ function History() {
   };
 
   return (
-    <div className="pt-[9rem] p-[4rem] min-h-screen font-mono bg-gray-700">
+    <div className="pt-[16rem] p-[4rem] min-h-screen font-mono bg-gray-700">
       {array.length <= 0 ? (
           <div className="text-red-500 text-center text-4xl">There is no document</div>
         ): (

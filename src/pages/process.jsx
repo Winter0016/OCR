@@ -565,6 +565,7 @@ function Process() {
                                             <div className="border-2 p-3 rounded-xl hover:cursor-pointer hover:bg-red-600" onClick={() => {setshowform(false);setmodifyfield(false); setdeletefield(prev => !prev)}}>DELETE FIELD</div>
                                             <div className="border-2 p-3 rounded-xl hover:cursor-pointer hover:bg-yellow-600" onClick={() => {setshowform(false);setdeletefield(false); setmodifyfield(prev => !prev)}}>MODIFY</div>
                                         </div>
+                                        <div className="max-w-[28rem] text-wrap text-center text-red-600">NOTE: Besides English, please use diacritical marks for the most accurate results.</div>
                                         {
                                             showform ? (
                                                 <form className="mb-6 text-blue-600" onSubmit={addfunction}>

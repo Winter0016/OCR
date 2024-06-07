@@ -21,6 +21,7 @@ const Solution = lazy(() => import("./pages/solution.jsx"));
 const Sign = lazy(()=> import("./pages/signup.jsx"));
 const Login = lazy(()=> import("./pages/login.jsx"));
 const History = lazy(()=> import("./pages/history.jsx"));
+const Template = lazy(() =>import("./pages/template.jsx"));
 // const About = lazy(() => import("./pages/about.jsx"));
 
 export const Usercontext = createContext("");
@@ -68,6 +69,7 @@ function App() {
             <Route path="/integration" element={<Suspense fallback={<LoadingIndicator />}><Integration/></Suspense>} />
             <Route path="/solution" element={<Suspense fallback={<LoadingIndicator />}><Solution/></Suspense>} />
             <Route path="/history" element={<Suspense fallback={<LoadingIndicator />}><History/></Suspense>} />
+            <Route path="/template" element={<Suspense fallback={<LoadingIndicator />}><Template/></Suspense>} />
             {/* <Route path="/about" element={<Suspense fallback={<LoadingIndicator />}><About/></Suspense>} /> */}
             <Route path='/' element={ <Mainpage/> } />
             <Route path='/share' element={ <SharedJson/> } />
