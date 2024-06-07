@@ -214,6 +214,7 @@ function History() {
                         <img className="w-[20rem]" src={array[key].ocr_picture} alt="" />
                       </td>
                       <td className="border-gray-300 pt-7 pb-7">
+                        <div className="flex flex-col items-center">
                           <pre className="text-green-500 text-wrap">
                           {JSON.stringify(JSON.parse(array[key].ocr_json), null, 2)}
                           </pre>
@@ -240,7 +241,7 @@ function History() {
                                   </>
                               )
                           }
-                          <div className="flex gap-3 w-full mt-2">
+                          <div className="flex gap-3 w-fit mt-2">
                             <button onClick={() => handleShare(array[key].ocr_json)} className="cursor-pointer group relative flex gap-1.5 px-8 py-2 bg-black bg-opacity-80 text-[#f1f1f1] rounded-3xl hover:bg-opacity-70 transition font-semibold shadow-md mt-2">
                               Share
                             </button>  
@@ -248,11 +249,7 @@ function History() {
                               Download
                             </button>  
                           </div>
-                          {/* <div className="flex w-full mt-1">
-                            <button onClick={() => handleDelete(array[key].date)} className="cursor-pointer group relative flex gap-1.5 px-8 py-2 bg-red-600 bg-opacity-80 text-[#f1f1f1] rounded-3xl hover:bg-opacity-70 transition font-semibold shadow-md mt-2">
-                              Delete
-                            </button>  
-                          </div> */}
+                        </div>
                       </td>        
                     </tr>
                   ))}
