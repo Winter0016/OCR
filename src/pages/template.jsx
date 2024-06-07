@@ -168,20 +168,26 @@ function Template () {
                                     </div>
                                     <div className="flex flex-col gap-5 items-center">
                                       <div>
-                                        {  
-                                          Object.entries(objectfield).map(([key, value]) => (
-                                              <div className="flex flex-col min-w-[25rem]">
-                                                  <div className="flex gap-4 text-base text-wrap" key={key}>
-                                                      <div className={deletefield ? "hover:cursor-pointer hover:bg-red-600 border-[1px] p-2 w-full flex items-center": modifyfield ? "hover:cursor-pointer hover:bg-yellow-600 border-[1px] p-2 w-full flex items-center" : "border-[1px] p-2 w-full flex items-center"} onClick={() => {deletefunction(key);setmodifyvalue(key);setoriginalvalue(key)}}>
-                                                          {key}
-                                                      </div>
-                                                  </div>
-                                              </div>
-                                          ))
-                                          // <>
-                                          //     <div>convert to text template</div>
-                                          // </>
-                                        }
+                                        <div className="min-w-[25rem]">
+                                          {  
+                                            Object.entries(objectfield).map(([key, value]) => (
+                                                <div className="flex flex-col">
+                                                    <div className="flex gap-4 text-base text-wrap" key={key}>
+                                                        <div className={deletefield ? "hover:cursor-pointer hover:bg-red-600 border-[1px] p-2 w-full flex items-center": modifyfield ? "hover:cursor-pointer hover:bg-yellow-600 border-[1px] p-2 w-full flex items-center" : "border-[1px] p-2 w-full flex items-center"} onClick={() => {deletefunction(key);setmodifyvalue(key);setoriginalvalue(key)}}>
+                                                            {key}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                            ))
+                                            // <>
+                                            //     <div>convert to text template</div>
+                                            // </>
+                                          }
+                                          <div className="w-full flex justify-center">
+                                            <button className="mt-[1rem] border-2 min-w-[10rem] p-1 bg-green-700 hover:bg-green-600 text-lg rounded-xl">SAVE</button>
+                                          </div>
+                                        </div>
                                       </div>
                                     </div>
                                   </div>
@@ -196,7 +202,6 @@ function Template () {
                                     </pre> 
                                     <div className="border-2 p-3 rounded-lg hover:cursor-pointer hover:bg-blue-600 text-base" onClick={() => {setcrud(prevcrud => !prevcrud);setobjectfield(JSON.parse(productlist[key]))}}>EDIT</div>                                   
                                   </div>
-                                  <button className="border-2">SAVE</button>
                                 </td>
                               </>
                             )
