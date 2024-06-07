@@ -391,6 +391,39 @@ function Process() {
             console.error('Failed to copy: ', err);
         }
     };
+    const [productlist, setProductlist] = useState([]);
+    const [error2, setError2] = useState("");    
+    const { loading } = useContext(Usercontext);
+    const fetchUserData = async () => {
+        if (auth.currentUser) {
+            const userEmail = auth.currentUser.email;
+            try {
+            const docRef = doc(db, "customTemplate", userEmail);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                // console.log("Document data:", docSnap.data());
+                setProductlist(docSnap.data());
+            } else {
+                // console.log("No such document!");
+                throw new Error("There is no document");
+            }
+            } catch (error) {
+            setError2(error.message);
+            console.error("Error fetching document:", error);
+            }
+        } else {
+            console.error("User is not authenticated");
+            setError2("User is not authenticated");
+        }
+    };
+    const[template,setTemplate]= useState();
+
+
+    useEffect(() => {
+        if (!loading) {
+            fetchUserData();
+        }
+    }, [loading]);
 
     return (
         <div className="bg-gray-900 font-mono w-full h-full">
@@ -565,7 +598,17 @@ function Process() {
                                             <div className="border-2 p-3 rounded-xl hover:cursor-pointer hover:bg-red-600" onClick={() => {setshowform(false);setmodifyfield(false); setdeletefield(prev => !prev)}}>DELETE FIELD</div>
                                             <div className="border-2 p-3 rounded-xl hover:cursor-pointer hover:bg-yellow-600" onClick={() => {setshowform(false);setdeletefield(false); setmodifyfield(prev => !prev)}}>MODIFY</div>
                                         </div>
-                                        <div className="max-w-[28rem] text-wrap text-center text-red-600">NOTE: Besides English, please use diacritical marks for the most accurate results.</div>
+                                        <div className="max-w-[35rem] text-wrap text-center text-orange-500">NOTE: Besides English, please use diacritical marks for the most accurate results.</div>
+                                        <select className="mt-2 p-2 text-md border-none rounded-md hover:cursor-pointer text-black w-fit text-wrap" onChange={(e) => {setTemplate(e.target.value); e.target.value ? setobjectfield(JSON.parse(productlist[e.target.value].objectfield)) : setobjectfield([])}}>
+                                            <option value="">Select your saved template.</option>
+                                            {
+                                                Object.keys(productlist).map((key) => (
+                                                    <>
+                                                        <option className="text-wrap" value={key}>{key}</option>
+                                                    </>
+                                                ))
+                                            }
+                                        </select>
                                         {
                                             showform ? (
                                                 <form className="mb-6 text-blue-600" onSubmit={addfunction}>
@@ -615,21 +658,21 @@ function Process() {
                                         <div className="flex flex-col gap-5">
                                             <div>
                                                 {  
-                                                        Object.entries(objectfield).map(([key, value]) => (
-                                                            <div className="flex flex-col">
-                                                                <div className="flex gap-4" key={key}>
-                                                                    <div className={deletefield ? "hover:cursor-pointer hover:bg-red-600 border-[1px] p-2 w-full flex items-center": modifyfield ? "hover:cursor-pointer hover:bg-yellow-600 border-[1px] p-2 w-full flex items-center" : "border-[1px] p-2 w-full flex items-center"} onClick={() => {deletefunction(key);setmodifyvalue(key);setoriginalvalue(key)}}>
-                                                                        {key}
-                                                                    </div>
-                                                                    <div className="border-[1px] p-2 w-full flex items-center">
-                                                                        {value}
-                                                                    </div>
+                                                    Object.entries(objectfield).map(([key, value]) => (
+                                                        <div className="flex flex-col">
+                                                            <div className="flex gap-4" key={key}>
+                                                                <div className={deletefield ? "hover:cursor-pointer hover:bg-red-600 border-[1px] p-2 w-full flex items-center": modifyfield ? "hover:cursor-pointer hover:bg-yellow-600 border-[1px] p-2 w-full flex items-center" : "border-[1px] p-2 w-full flex items-center"} onClick={() => {deletefunction(key);setmodifyvalue(key);setoriginalvalue(key)}}>
+                                                                    {key}
+                                                                </div>
+                                                                <div className="border-[1px] p-2 w-full flex items-center">
+                                                                    {value}
                                                                 </div>
                                                             </div>
-                                                        ))
-                                                        // <>
-                                                        //     <div>convert to text template</div>
-                                                        // </>
+                                                        </div>
+                                                    ))
+                                                    // <>
+                                                    //     <div>convert to text template</div>
+                                                    // </>
                                                 }
                                             </div>
                                             <button className={collectprocess || selectedFile == undefined ? "p-2 bg-green-600 text-2xl rounded-xl opacity-50 cursor-not-allowed" : "p-2 bg-green-700 hover:bg-green-600 text-2xl rounded-xl"} onClick={convertjson} disabled={collectprocess || selectedFile == undefined}>{collectprocess ? "COLLECTING..." : "COLLECT"}</button>
