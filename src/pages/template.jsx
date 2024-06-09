@@ -150,6 +150,39 @@ function Template() {
     setObjectField(newobject);
   };
 
+  const [deleteprocess,setdeleteprocess] = useState(false);
+  
+  const [confirm,setconfirm] = useState(false);
+  const [currentkey,setcurrentkey] = useState();
+
+  const handledelete = async(date) =>{
+    const userEmail = auth.currentUser.email;
+    const docRef =doc(db,"customTemplate",userEmail);
+    try {
+      setdeleteprocess(true);
+      const docSnapshot = await getDoc(docRef);
+      if (docSnapshot.exists()) {
+        const data = docSnapshot.data();
+        const newData = { ...data };
+        Object.keys(newData).forEach((key) => {
+          if (newData[key].date == date) {
+            delete newData[key];
+          }
+        });
+        await setDoc(docRef, newData);
+        // console.log("Checked items deleted successfully.");
+        setconfirm(false);
+      }
+    } catch (err) {
+      setdeleteprocess(false)
+      // console.error("Error deleting checked items:", err);
+    }finally{
+      await fetchUserData();
+      setdeleteprocess(false)
+    }
+
+  }
+
   const [adding,setadding] = useState(false);
   return (
     <>
@@ -327,17 +360,19 @@ function Template() {
                             </div>
                           </td>
                           <td className="border-gray-300 pr-9 text-white text-xl">
-                            <div
-                              className="p-3 rounded-lg hover:cursor-pointer bg-green-700 hover:bg-blue-600 text-base w-full text-center"
-                              disabled={saveprocess}
-                              onClick={saveFunction}
+                            <div className="flex flex-col items-center">
+                              <div
+                                className="rounded-lg hover:cursor-pointer bg-green-700 hover:bg-blue-600 text-base text-center px-8 py-2"
+                                disabled={saveprocess}
+                                onClick={saveFunction}
+                                >
+                                {saveprocess ? "Saving..." : "Save"}
+                              </div>
+                              <div className="rounded-lg hover:cursor-pointer bg-red-700 hover:bg-red-600 text-base text-center mt-3 px-8 py-2"
+                                onClick={() => {setCrud(false)}}
                               >
-                              {saveprocess ? "Saving..." : "Save"}
-                            </div>
-                            <div className="p-3 rounded-lg hover:cursor-pointer bg-red-700 hover:bg-red-600 text-base w-full text-center mt-3"
-                              onClick={() => {setCrud(false)}}
-                            >
-                              Cancel
+                                Cancel
+                              </div>
                             </div>
                           </td>
                         </>
@@ -355,19 +390,35 @@ function Template() {
                             </div>
                           </td>
                           <td className="border-gray-300  pr-9 text-white text-xl">
-                            <div
-                              className="border-[1px] p-3 rounded-lg hover:cursor-pointer hover:bg-blue-600 text-base w-full text-center"
-                              onClick={() => {
-                                setCrud(true);
-                                setadding(false);
-                                setcurretname(array[key].name)
-                                setCustomName(array[key].name)
-                                setObjectField(
-                                  JSON.parse(array[key].objectfield)
-                                );
-                                setActiveKey(key);
-                              }}>
-                              EDIT
+                            <div className="flex flex-col items-center">
+                              <div
+                                className="border-[1px] px-8 py-2 rounded-lg hover:cursor-pointer hover:bg-blue-600 text-base text-center"
+                                onClick={() => {
+                                  setCrud(true);
+                                  setadding(false);
+                                  setcurretname(array[key].name)
+                                  setCustomName(array[key].name)
+                                  setObjectField(
+                                    JSON.parse(array[key].objectfield)
+                                  );
+                                  setActiveKey(key);
+                                }}>
+                                EDIT
+                              </div>
+                              <button onClick={() => {setconfirm((prev) => !prev);setcurrentkey(key)}} className="cursor-pointer group relative flex gap-1.5 px-8 py-2 bg-red-700 hover:bg-red-600 bg-opacity-80 text-[#f1f1f1] rounded-lg hover:bg-opacity-70 transition font-semibold shadow-md mt-5 text-base">
+                                  {confirm && key == currentkey ? "Cancel" : "Delete"}
+                              </button> 
+                              {
+                                confirm && key == currentkey ? (
+                                  <>
+                                    <button disabled={deleteprocess} onClick={() => handledelete(array[key].date)} className="cursor-pointer group relative flex gap-1.5 px-8 py-2 bg-green-700 hover:bg-green-600 bg-opacity-80 text-[#f1f1f1] rounded-lg hover:bg-opacity-70 transition font-semibold shadow-md mt-4 text-base">
+                                      {deleteprocess? "Deleting..." : "Confirm"}
+                                    </button>                     
+                                  </>
+                                ) :(
+                                  <></>
+                                )
+                              }
                             </div>
                           </td>
                         </>
@@ -555,17 +606,19 @@ function Template() {
                         </div>
                       </td>
                       <td className="border-gray-300 pr-9 text-white text-base pt-9 pb-9">
-                        <div
-                          className="p-3 rounded-lg hover:cursor-pointer bg-green-700 hover:bg-blue-600 text-base w-full text-center"
-                          disabled={saveprocess}
-                          onClick={()=>{saveFunction()}}
+                        <div className="flex flex-col items-center">
+                          <div
+                            className="px-8 py-2 rounded-lg hover:cursor-pointer bg-green-700 hover:bg-blue-600 text-base text-center"
+                            disabled={saveprocess}
+                            onClick={()=>{saveFunction()}}
+                            >
+                            {saveprocess ? "ADDING..." : "ADD"}
+                          </div>
+                          <div className="px-8 py-2 rounded-lg hover:cursor-pointer bg-red-700 hover:bg-red-600 text-base text-center mt-3"
+                            onClick={() => {setadding(false)}}
                           >
-                          {saveprocess ? "ADDING..." : "ADD"}
-                        </div>
-                        <div className="p-3 rounded-lg hover:cursor-pointer bg-red-700 hover:bg-red-600 text-base w-full text-center mt-3"
-                          onClick={() => {setadding(false)}}
-                        >
-                          Cancel
+                            Cancel
+                          </div>
                         </div>
                       </td>
                     </>
@@ -575,20 +628,22 @@ function Template() {
 
                       </td>
                       <td className="border-gray-300  pr-9 text-white text-xl pt-9 pb-9">
-                        <div
-                          className="border-[1px] p-3 rounded-lg hover:cursor-pointer hover:bg-blue-600 text-base w-full text-center"
-                          onClick={() => {
-                            setadding(true);
-                            setCrud(false);
-                            setObjectField([]);
-                            setShowForm(false);
-                            setModifyField(false);
-                            setDeleteField(false);
-                            setAddValue("");
-                            setModifyValue("");
-                            setOriginalValue("");
-                          }}>
-                          Create
+                        <div className="flex flex-col items-center">
+                          <div
+                            className="border-[1px] px-8 py-2 rounded-lg hover:cursor-pointer hover:bg-blue-600 text-base text-center"
+                            onClick={() => {
+                              setadding(true);
+                              setCrud(false);
+                              setObjectField([]);
+                              setShowForm(false);
+                              setModifyField(false);
+                              setDeleteField(false);
+                              setAddValue("");
+                              setModifyValue("");
+                              setOriginalValue("");
+                            }}>
+                            Create
+                          </div>
                         </div>
                       </td>
                     </>
