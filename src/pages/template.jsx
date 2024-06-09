@@ -188,33 +188,14 @@ function Template() {
                           <td className="border-gray-300 pb-9 pt-9 text-blue-500">
                             <div className="text-gray-300 flex flex-col gap-4">
                               <div className="overflow-auto flex gap-5 justify-center">
-                                <div
-                                  className="border-2 p-3 rounded-lg hover:cursor-pointer hover:bg-blue-600 text-base"
-                                  onClick={() => {
-                                    setDeleteField(false);
-                                    setModifyField(false);
-                                    setShowForm((prevShowForm) => !prevShowForm);
-                                  }}
-                                >
+                                <div className="border-2 p-3 rounded-lg hover:cursor-pointer hover:bg-blue-600 text-base" onClick={() => { setDeleteField(false);setModifyField(false);setShowForm((prevShowForm) => !prevShowForm);}}>
                                   ADD FIELD
                                 </div>
-                                <div
-                                  className="border-2 p-3 rounded-lg hover:cursor-pointer hover:bg-red-600 text-base"
-                                  onClick={() => {
-                                    setShowForm(false);
-                                    setModifyField(false);
-                                    setDeleteField((prev) => !prev);
-                                  }}
+                                <div className="border-2 p-3 rounded-lg hover:cursor-pointer hover:bg-red-600 text-base" onClick={() => {setShowForm(false);setModifyField(false);setDeleteField((prev) => !prev);}}
                                 >
                                   DELETE FIELD
                                 </div>
-                                <div
-                                  className="border-2 p-3 rounded-lg hover:cursor-pointer hover:bg-yellow-600 text-base"
-                                  onClick={() => {
-                                    setShowForm(false);
-                                    setDeleteField(false);
-                                    setModifyField((prev) => !prev);
-                                  }}
+                                <div className="border-2 p-3 rounded-lg hover:cursor-pointer hover:bg-yellow-600 text-base" onClick={() => {setShowForm(false);setDeleteField(false);setModifyField((prev) => !prev); }}
                                 >
                                   MODIFY
                                 </div>
@@ -353,6 +334,11 @@ function Template() {
                               >
                               {saveprocess ? "Saving..." : "Save"}
                             </div>
+                            <div className="p-3 rounded-lg hover:cursor-pointer bg-red-700 hover:bg-red-600 text-base w-full text-center mt-3"
+                              onClick={() => {setCrud(false)}}
+                            >
+                              Cancel
+                            </div>
                           </td>
                         </>
                       ) : (
@@ -373,6 +359,7 @@ function Template() {
                               className="border-[1px] p-3 rounded-lg hover:cursor-pointer hover:bg-blue-600 text-base w-full text-center"
                               onClick={() => {
                                 setCrud(true);
+                                setadding(false);
                                 setcurretname(array[key].name)
                                 setCustomName(array[key].name)
                                 setObjectField(
@@ -575,6 +562,11 @@ function Template() {
                           >
                           {saveprocess ? "ADDING..." : "ADD"}
                         </div>
+                        <div className="p-3 rounded-lg hover:cursor-pointer bg-red-700 hover:bg-red-600 text-base w-full text-center mt-3"
+                          onClick={() => {setadding(false)}}
+                        >
+                          Cancel
+                        </div>
                       </td>
                     </>
                   ) : (
@@ -587,6 +579,7 @@ function Template() {
                           className="border-[1px] p-3 rounded-lg hover:cursor-pointer hover:bg-blue-600 text-base w-full text-center"
                           onClick={() => {
                             setadding(true);
+                            setCrud(false);
                             setObjectField([]);
                             setShowForm(false);
                             setModifyField(false);
