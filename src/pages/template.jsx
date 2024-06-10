@@ -187,7 +187,6 @@ function Template() {
   return (
     <>
       <div className="pt-[16rem] p-[4rem] min-h-screen font-mono bg-gray-700">
-        {productlist && (
           <>
             <table className="w-full m-auto bg-gray-800 border-none rounded-3xl">
               <thead className="">
@@ -652,7 +651,6 @@ function Template() {
               </tbody>
             </table>
           </>
-        )}
       </div>
     </>
   );
