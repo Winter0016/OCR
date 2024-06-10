@@ -108,6 +108,7 @@ function Template() {
       setadding(false);
       setsave_error("");
       setCustomName("");
+      setcurretname("");
     } catch (error) {
       setSaveProcess(false);
       setsave_error(error.message)
@@ -368,7 +369,7 @@ function Template() {
                                 {saveprocess ? "Saving..." : "Save"}
                               </div>
                               <div className="rounded-lg hover:cursor-pointer bg-red-700 hover:bg-red-600 text-base text-center mt-3 px-8 py-2"
-                                onClick={() => {setCrud(false)}}
+                                onClick={() => {setCrud(false);setsave_error("");setCustomName("");setcurretname("")}}
                               >
                                 Cancel
                               </div>
@@ -631,6 +632,8 @@ function Template() {
                           <div
                             className="border-[1px] px-8 py-2 rounded-lg hover:cursor-pointer hover:bg-blue-600 text-base text-center"
                             onClick={() => {
+                              setcurretname("");
+                              setCustomName("");
                               setadding(true);
                               setCrud(false);
                               setObjectField([]);
