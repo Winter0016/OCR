@@ -51,20 +51,21 @@ function Process() {
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 };
 
-    const handleFileUpload = (e) => {
-        const file = e.target.files[0];
-        if (file) {
+const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+        setSelectedFile(file);
+        setimgname(file.name);
+
+        // Optionally, generate a preview (not needed for upload)
         const reader = new FileReader();
         reader.onloadend = () => {
-            const base64data = reader.result;
-            setImgUrl(base64data);
-            // console.log(`imgurl :`,base64data);
+            setImgUrl(reader.result); // Only for preview purposes
         };
         reader.readAsDataURL(file);
-        setSelectedFile(file);
-        setimgname(file.name)
-        }
-    };
+    }
+};
+
 
     const onsubmitproduct = async () => {
         try {
@@ -185,6 +186,15 @@ function Process() {
 
     // localStorage.clear();
 
+    const keepFunctionWarm = async () => {
+        setInterval(async () => {
+            await fetch('https://fastapi-r12h.onrender.com/ping');
+        }, 300000); // Ping every 5 minutes
+    };
+    
+    // Call this function when your app starts
+    keepFunctionWarm();
+    
 
     const convertjson = async () => {
         try{
