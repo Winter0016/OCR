@@ -59,9 +59,7 @@ function App() {
   );
   
   const keepFunctionWarm = async () => {
-    setInterval(async () => {
-        await fetch('https://fastapi-r12h.onrender.com');
-    }, 300000); // Ping every 5 minutes
+      await fetch('https://fastapi-r12h.onrender.com');
   };
 
   // Call this function when your app starts
