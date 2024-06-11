@@ -17,6 +17,7 @@ option:checked {
 
 /* loading stuff */
 .product-loading{
+    margin-top: 10rem;
     max-width: 1270px;
     margin:auto;
     height:200px;

@@ -185,15 +185,6 @@ const handleFileUpload = (e) => {
     }
 
     // localStorage.clear();
-
-    const keepFunctionWarm = async () => {
-        setInterval(async () => {
-            await fetch('https://fastapi-r12h.onrender.com/ping');
-        }, 300000); // Ping every 5 minutes
-    };
-    
-    // Call this function when your app starts
-    keepFunctionWarm();
     
 
     const convertjson = async () => {
@@ -426,7 +417,6 @@ const handleFileUpload = (e) => {
             setError2("User is not authenticated");
         }
     };
-    const[template,setTemplate]= useState();
 
 
     useEffect(() => {
@@ -609,7 +599,7 @@ const handleFileUpload = (e) => {
                                             <div className="border-2 p-3 rounded-xl hover:cursor-pointer hover:bg-yellow-600" onClick={() => {setshowform(false);setdeletefield(false); setmodifyfield(prev => !prev)}}>MODIFY</div>
                                         </div>
                                         <div className="max-w-[35rem] text-wrap text-center text-orange-500">NOTE: Besides English, please use diacritical marks for the most accurate results.</div>
-                                        <select className="mt-2 p-2 text-md border-none rounded-md hover:cursor-pointer text-black w-fit text-wrap" onChange={(e) => {setTemplate(e.target.value); e.target.value ? setobjectfield(JSON.parse(productlist[e.target.value].objectfield)) : setobjectfield([])}}>
+                                        <select className="mt-2 p-2 text-md border-none rounded-md hover:cursor-pointer text-black w-fit text-wrap" onChange={(e) => { e.target.value ? setobjectfield(JSON.parse(productlist[e.target.value].objectfield)) : setobjectfield([])}}>
                                             <option value="">Select your saved template.</option>
                                             {
                                                 Object.keys(productlist).map((key) => (
