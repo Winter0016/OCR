@@ -36,6 +36,7 @@ export const Header = () => {
                         <div className='hover:border-yellow-300 hover:cursor-pointer border-b-4 border-gray-700' onClick={()=> navigate("/solution")}>SOLUTION</div>
                         <div className='hover:border-yellow-300 hover:cursor-pointer border-b-4 border-gray-700' onClick={() => navigate("/integration")}>INTEGRATION</div>
                         <div className='hover:border-yellow-300 hover:cursor-pointer border-b-4 border-gray-700'>ABOUT US</div>
+                        <div className='hover:border-yellow-300 hover:cursor-pointer border-b-4 border-gray-700' onClick={() => navigate("/process")}>SERVICE</div>
                         {
                             auth?.currentUser?.email && auth?.currentUser?.emailVerified ? (
                                 <>
@@ -68,8 +69,9 @@ export const Header = () => {
                                 <div className='hover:border-yellow-300 hover:cursor-pointer border-2 p-2 rounded-xl' onClick={doSignOut}>LOG OUT</div>
                             </div>
                         ) : (
-                            <div className='flex flex-row gap-10 md:text-lg text-sm'>
-                                <div className='hover:border-yellow-300 hover:cursor-pointer border-b-4 border-gray-700' onClick={()=> navigate("/sign")}>LOGIN / SIGN UP</div>
+                            <div className='flex flex-row gap-5 md:text-lg text-sm'>
+                                <div className='hover:border-yellow-300 hover:cursor-pointer border-2 p-2 px-4 rounded-xl' onClick={()=> navigate("/sign")}>SIGN UP</div>
+                                <div className='hover:border-yellow-300 hover:cursor-pointer border-2 p-2 px-4 rounded-xl' onClick={()=> navigate("/login")}>LOGIN</div>
                             </div>
                         )
                     }
