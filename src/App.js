@@ -17,7 +17,7 @@ import SharedJson from './pages/share.jsx';
 
 
 const Process = lazy(() => import("./pages/process.jsx"));
-const Solution = lazy(() => import("./pages/solution.jsx"));
+// const Solution = lazy(() => import("./pages/solution.jsx"));
 const Sign = lazy(()=> import("./pages/signup.jsx"));
 const Login = lazy(()=> import("./pages/login.jsx"));
 const History = lazy(()=> import("./pages/history.jsx"));
@@ -63,7 +63,9 @@ function App() {
   };
 
   // Call this function when your app starts
-  keepFunctionWarm();
+  useEffect(() => {
+    keepFunctionWarm();
+  },[])
 
 
   return (
@@ -76,7 +78,7 @@ function App() {
             <Route path='/login' element={<Suspense fallback={<LoadingIndicator />}><Login/></Suspense>} />         
             <Route path="/process" element={<Suspense fallback={<LoadingIndicator />}><Process/></Suspense>} />
             <Route path="/integration" element={<Suspense fallback={<LoadingIndicator />}><Integration/></Suspense>} />
-            <Route path="/solution" element={<Suspense fallback={<LoadingIndicator />}><Solution/></Suspense>} />
+            {/* <Route path="/solution" element={<Suspense fallback={<LoadingIndicator />}><Solution/></Suspense>} /> */}
             <Route path="/history" element={<Suspense fallback={<LoadingIndicator />}><History/></Suspense>} />
             <Route path="/template" element={<Suspense fallback={<LoadingIndicator />}><Template/></Suspense>} />
             {/* <Route path="/about" element={<Suspense fallback={<LoadingIndicator />}><About/></Suspense>} /> */}

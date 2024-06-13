@@ -7,7 +7,7 @@ import "react-image-crop/dist/ReactCrop.css";
 import { auth,db,storage } from "../Firebase/firebase-config";
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
-import { getDocs, collection,setDoc,updateDoc,doc,getDoc } from "firebase/firestore";
+import {setDoc,doc,getDoc } from "firebase/firestore";
 
 function Process() {
 

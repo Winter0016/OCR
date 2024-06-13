@@ -33,7 +33,6 @@ export const Header = () => {
                     <img className=" w-[6rem] fill-yellow-300" src={img.logo} alt="" />
                     <div className='flex md:flex-row flex-col md:gap-12 gap-2 lg:p-0 md:text-lg text-sm'>
                         <div className='hover:border-yellow-300 hover:cursor-pointer border-b-4 border-gray-700' onClick={()=> navigate("/")}>HOME</div>
-                        <div className='hover:border-yellow-300 hover:cursor-pointer border-b-4 border-gray-700' onClick={()=> navigate("/solution")}>SOLUTION</div>
                         <div className='hover:border-yellow-300 hover:cursor-pointer border-b-4 border-gray-700' onClick={() => navigate("/integration")}>INTEGRATION</div>
                         <div className='hover:border-yellow-300 hover:cursor-pointer border-b-4 border-gray-700'>ABOUT US</div>
                         <div className='hover:border-yellow-300 hover:cursor-pointer border-b-4 border-gray-700' onClick={() => navigate("/process")}>SERVICE</div>
