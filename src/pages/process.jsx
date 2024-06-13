@@ -332,55 +332,12 @@ const handleFileUpload = (e) => {
         myFilesInput.dispatchEvent(event);
     };
 
-    const handleDownload = () => {
-        const jsonString = objectfield;
-        const blob = new Blob([jsonString], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'info.json';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-    };
+
 
     const [modalOpen, setModalOpen] = useState(false);
     
 
 
-    const handleShare = async () => {
-        const jsonString = JSON.stringify(objectfield);
-        const encodedJsonString = encodeURIComponent(jsonString);
-        const longUrl = `${window.location.origin}/share?objectfield=${encodedJsonString}`;
-
-        try {
-            seturlprocess(true)
-            const response = await fetch(`https://api.tinyurl.com/create`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer eTjWEHD5vJb56KLAWgpDGBSN8yUVgkqBaegy0zJY6U6Kjiox7hfH4U5e6xr8'
-                },
-                body: JSON.stringify({
-                    url: longUrl,
-                    domain: 'tiny.one'
-                })
-            });
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const data = await response.json();
-            const shortenedUrl = data.data.tiny_url;
-            setshareurl(shortenedUrl);
-            seturlprocess(false);
-        } catch (error) {
-            seturlprocess(false);
-            console.error('Error shortening URL: ', error);
-        }
-    };
 
     
 
@@ -576,21 +533,7 @@ const handleFileUpload = (e) => {
                                                 </>
                                             )
                                         }
-                                        <div className="flex gap-6">
-                                            <button onClick={handleDownload} class="cursor-pointer group relative flex gap-1.5 px-8 py-4 bg-black bg-opacity-80 text-[#f1f1f1] rounded-3xl hover:bg-opacity-70 transition font-semibold shadow-md">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="24px" width="24px"><g stroke-width="0" id="SVGRepo_bgCarrier"></g><g stroke-linejoin="round" stroke-linecap="round" id="SVGRepo_tracerCarrier"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Download"> <path stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#f1f1f1" d="M6 21H18M12 3V17M12 17L17 12M12 17L7 12" id="Vector"></path> </g> </g></svg>
-                                                Download
-                                                <div class="absolute opacity-0 -bottom-full rounded-md py-2 px-2 bg-black bg-opacity-70 left-1/2 -translate-x-1/2 group-hover:opacity-100 transition-opacity shadow-lg">
-                                                    Download
-                                                </div>
-                                            </button>
-                                            <button onClick={handleShare} className="cursor-pointer group relative flex gap-1.5 px-8 py-4 bg-black bg-opacity-80 text-[#f1f1f1] rounded-3xl hover:bg-opacity-70 transition font-semibold shadow-md">
-                                                Share
-                                                <div class="absolute opacity-0 -bottom-full rounded-md py-2 px-2 bg-black bg-opacity-70 left-1/2 -translate-x-1/2 group-hover:opacity-100 transition-opacity shadow-lg">
-                                                    SHARE
-                                                </div>
-                                            </button>  
-                                        </div>                                          </>
+                                    </>
                                 ) : switchtype === "text" && ocrvalue ? (
                                     <div className="text-gray-300 flex flex-col gap-4">
                                         <div className="overflow-auto flex gap-5 justify-center">
