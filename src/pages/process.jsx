@@ -333,7 +333,7 @@ const handleFileUpload = (e) => {
     };
 
     const handleDownload = () => {
-        const jsonString = JSON.stringify(objectfield, null, 2);
+        const jsonString = objectfield;
         const blob = new Blob([jsonString], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
