@@ -1,7 +1,9 @@
 import React from 'react'
 import img from '../imgs/img'
+import { useNavigate } from 'react-router-dom'
 
 export const Footer = () => {
+    const navigate = useNavigate();
   return (
     <div className='bg-gray-600'>
         <div className='max-w-[1450px] flex flex-col flex-wrap gap-2 m-auto text-white font-mono'>
@@ -25,10 +27,7 @@ export const Footer = () => {
                 <div className='flex flex-col gap-1'>
                     <div className='text-3xl'>LEGAL</div>
                     <div className='flex gap-2'>
-                        <div className='text-lg'>Privacy Policy</div>
-                    </div>
-                    <div className='flex gap-2'>
-                        <div className='text-lg'>Terms & Conditions</div>
+                        <div className='text-lg cursor-pointer' onClick={()=> navigate("/privacy-policy")}>Privacy Policy</div>
                     </div>  
                 </div>
             </div>

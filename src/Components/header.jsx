@@ -27,7 +27,7 @@ export const Header = () => {
     }, [lastScrollY]);
 
     return (
-        <div className={`bg-gray-700 fixed w-full header ${isHidden ? 'hidden' : ''}`}>
+        <div className={`bg-gray-700 fixed w-full header z-[100] ${isHidden ? 'hidden' : ''}`}>
             <div className='md:m-auto flex flex-col flex-wrap text-wrap w-auto h-auto' style={{maxWidth:"1450px"}} >
                 <div className="flex gap-16 justify-center items-center pt-4 font-mono flex-wrap text-white pb-4">
                     <img className=" w-[6rem] fill-yellow-300" src={img.logo} alt="" />
