@@ -57,6 +57,10 @@ function Sign () {
                                 <div className="relative">
                                     <input id="confirm_password" name="confirm_password" type="password" className="peer h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder="Confirm password" required value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
                                 </div>
+                                <div className="relative flex items-center">
+                                    <input id="checkbox" name="checkbox" type="checkbox" className='mr-3 size-7' required />
+                                    <label htmlFor="" className=''>I accept web's <u className='hover:cursor-pointer text-blue-600' onClick={()=>navigate("/privacy-policy")}>Privacy Policy</u></label>
+                                </div>
                                 <div>
                                     <p className='text-base'>If you have an account. Please <Link to='/login' className='underline text-blue-600'>Login Now</Link> here</p>
                                 </div>

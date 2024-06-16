@@ -83,7 +83,7 @@ function Login () {
                                             <input id="password" name="password" type="password" className="peer h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder="Password" required value={password} onChange={(e)=> setPassword(e.target.value)} />
                                         </div>
                                         <div>
-                                            <p>{errorMessage ? <span className='text-red-500 text-md'>Email or Username is not valid!</span> : ''}</p>
+                                            <p>{errorMessage ? <span className='text-red-500 text-md'>Email or Password is not valid!</span> : ''}</p>
                                             <p className='text-base mt-1'>If you haven't an account. Please create here <Link to='/sign' className='underline text-blue-600'>Sign Up</Link></p>
 
                                         </div>
