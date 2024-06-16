@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { useState,useEffect } from 'react'
 import { useNavigate,Link } from 'react-router-dom'
-import {doSignInWithEmailAndPassword} from "../Firebase/auth"
+import {doSignInWithEmailAndPassword,doPasswordReset} from "../Firebase/auth"
 import { Usercontext } from '../App'
 import { auth } from '../Firebase/firebase-config'
 function Login () {
@@ -58,6 +58,7 @@ function Login () {
     }, [userLoggedIn,navigate]);
 
 
+
     return (
         <div className="min-h-screen bg-gray-900 flex flex-col justify-center pt-[15rem] pb-[15rem]">
             <div className="relative py-3 sm:max-w-xl sm:mx-auto">
@@ -91,6 +92,44 @@ function Login () {
                                             <button type='submit' className="bg-blue-500 text-white rounded px-6 py-1" disabled={isSigningIn} >{isSigningIn ? "Signing In..." : "Sign In"}</button>
                                         </div>
                                     </form>
+                                    {
+                                        forgotpass ? (                                
+                                            <form className='mt-2' onSubmit={(e) => {doPasswordReset(sendemailreset); e.preventDefault(); setforgotpass(false); setsendedemail(true) }}>
+                                                <label id='login-text-custom' htmlFor="resetpassword" className="block text-sm font-medium text-gray-700 mb-2">
+                                                    Enter your gmail
+                                                </label>
+                                                <input
+                                                    id="email"
+                                                    type="email"
+                                                    autoComplete="email"
+                                                    required
+                                                    value={sendemailreset}
+                                                    onChange={(e) => setsendemailreset(e.target.value)}
+                                                    className="mt-1 mb-4 block w-full px-3 py-2 border-2 border-gray-600 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none sm:text-sm"
+                                                />
+                                                <button
+                                                    type="submit"
+                                                    // disabled={isSigningIn}
+                                                    className={`w-full px-4 py-2 bg-indigo-600 text-white font-semibold rounded-md ${isSigningIn ? 'opacity-50 cursor-not-allowed' : 'hover:bg-indigo-700'}`}
+                                                >
+                                                    Send Email.
+                                                    {/* {isSigningIn ? 'Signing In...' : 'Sign In'} */}
+                                                </button>
+                                            </form>
+                                        ):(
+                                            <>
+                                                {
+                                                    sendedemail ? (
+                                                        <p id='reset-text-custom' className="text-center text-lg mt-3 text-red-500">Đã gửi resetpassword qua email.</p>
+                                                    ):(
+                                                        <>
+                                                            <p id='login-text-custom' className="text-center text-sm mt-3">Forgot password? <span className="text-indigo-600 font-semibold hover: cursor-pointer" onClick={()=> setforgotpass(true)}>Reset Password</span></p>
+                                                        </>
+                                                    )
+                                                }
+                                            </>
+                                        )
+                                    }
                                 </div>
                             </>
                         )
