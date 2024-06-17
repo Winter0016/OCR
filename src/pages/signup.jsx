@@ -22,11 +22,15 @@ function Sign () {
                 return;
             }
             try {
-                await doCreateUserWithEmailAndPassword(email, password,username);
+                await doCreateUserWithEmailAndPassword(email, password, username);
                 navigate('/login'); // Redirect to login after successful registration
             } catch (error) {
                 setIsRegistering(false);
-                setErrorMessage(error.message); // Set more informative error message
+                if (error.code === 'auth/email-already-in-use') {
+                    setErrorMessage(`${email} is already been used`);
+                } else {
+                    setErrorMessage(error.message); // Set more informative error message
+                }
             }
         }
     };
@@ -67,6 +71,7 @@ function Sign () {
                                 <div className="relative">
                                     <button type='submit' className={`bg-blue-500 text-white rounded px-6 py-1 ${isRegistering ? "cursor-not-allowed opacity-10" : "cursor-pointer"}`} disabled={isRegistering}>{isRegistering ? "Signing..." : "Sign up"}</button>
                                 </div>
+                                <p>{errorMessage ? <span className='text-red-500 text-md'>{errorMessage}</span> : ''}</p>
                             </form>
                         </div>
                     </div>
