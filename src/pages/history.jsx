@@ -80,15 +80,30 @@ function History() {
     };
 
     const handleDownload = (objectfield) => {
-      const jsonString = objectfield;
+      // Convert object to JSON string with pretty-print (2 spaces for indentation)
+      const jsonString = JSON.stringify(objectfield, null, 2);
+      
+      // Create a Blob from the JSON string
       const blob = new Blob([jsonString], { type: 'application/json' });
+      
+      // Create a URL for the Blob
       const url = URL.createObjectURL(blob);
+      
+      // Create a temporary anchor element
       const link = document.createElement('a');
       link.href = url;
       link.download = 'info.json';
+      
+      // Append the anchor to the body
       document.body.appendChild(link);
+      
+      // Programmatically click the anchor to trigger the download
       link.click();
+      
+      // Remove the anchor from the body
       document.body.removeChild(link);
+      
+      // Revoke the Blob URL to free up resources
       URL.revokeObjectURL(url);
   };
   

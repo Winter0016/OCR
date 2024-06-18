@@ -231,9 +231,70 @@ const handleFileUpload = (e) => {
             const parsedObject = JSON.parse(cleanedJsonString);
 
             setobjectfield(parsedObject);
+            // console.log(`${JSON.stringify(objectfield)}`)
         }
     },[ocrjson])
 
+    const handleDownload = (objectfield) => {
+        // Convert object to JSON string with pretty-print (2 spaces for indentation)
+        const jsonString = JSON.stringify(objectfield, null, 2);
+        
+        // Create a Blob from the JSON string
+        const blob = new Blob([jsonString], { type: 'application/json' });
+        
+        // Create a URL for the Blob
+        const url = URL.createObjectURL(blob);
+        
+        // Create a temporary anchor element
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'info.json';
+        
+        // Append the anchor to the body
+        document.body.appendChild(link);
+        
+        // Programmatically click the anchor to trigger the download
+        link.click();
+        
+        // Remove the anchor from the body
+        document.body.removeChild(link);
+        
+        // Revoke the Blob URL to free up resources
+        URL.revokeObjectURL(url);
+    };
+    
+    const handleShare = async (objectfield) => {
+        const jsonString = JSON.stringify(objectfield);
+        const encodedJsonString = encodeURIComponent(jsonString);
+        const longUrl = `${window.location.origin}/share?objectfield=${encodedJsonString}`;
+
+        try {
+            seturlprocess(true)
+            const response = await fetch(`https://api.tinyurl.com/create`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer eTjWEHD5vJb56KLAWgpDGBSN8yUVgkqBaegy0zJY6U6Kjiox7hfH4U5e6xr8'
+                },
+                body: JSON.stringify({
+                    url: longUrl,
+                    domain: 'tiny.one'
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+            const shortenedUrl = data.data.tiny_url;
+            setshareurl(shortenedUrl);
+            seturlprocess(false);
+        } catch (error) {
+            seturlprocess(false);
+            console.error('Error shortening URL: ', error);
+        }
+    };
 
     useEffect(() =>{
         if(ocrjson && objectfield && triggersubmitproduct){
@@ -617,7 +678,47 @@ const handleFileUpload = (e) => {
                                                     //     <div>convert to text template</div>
                                                     // </>
                                                 }
+                                                {
+                                                    shareurl ? (
+                                                        <>
+                                                            <div className="flex gap-2 mt-[1rem] mb-2">
+                                                                <h1 className="text-lg text-blue-400 border-[1px] text-center p-2 rounded-xl" >SHARE URL</h1>
+                                                                <button className="text-lg border-[1px] p-2 rounded-xl" onClick={copyToClipboard}>COPY</button>
+                                                            </div>
+                                                            {copySuccess && <span style={{color: "green"}}>Copied!</span>}
+                                                        </>
+                                                    ):(
+                                                        <>
+                                                            {
+                                                                urlprocess ? (
+                                                                    <>
+                                                                        <div className="mt-[1rem] mb-[1rem]">creating url....</div>
+                                                                    </>
+                                                                ):(
+                                                                    <></>
+                                                                )
+                                                            }
+                                                        </>
+                                                    )
+                                                }
                                             </div>
+                                            {
+                                                ocrjson && (
+                                                    <>
+                                                        <div className="flex gap-3 w-fit h-fit mt-2 mb-2">
+                                                            {/* <button onClick={() => handleShare(array[key].ocr_json)} className=" w-fit h-fit cursor-pointer group relative flex gap-1.5 px-8 py-2 bg-black bg-opacity-80 text-[#f1f1f1] rounded-3xl hover:bg-opacity-70 transition font-semibold shadow-md mt-2">
+                                                                Share
+                                                            </button>   */}
+                                                            <button onClick={() => handleDownload(objectfield)} className=" w-fit h-fit cursor-pointer group relative flex gap-1.5 px-8 py-2 bg-black bg-opacity-80 text-[#f1f1f1] rounded-3xl hover:bg-opacity-70 transition font-semibold shadow-md mt-2">
+                                                                Download
+                                                            </button>
+                                                            <button onClick={() => handleShare(objectfield)} className=" w-fit h-fit cursor-pointer group relative flex gap-1.5 px-8 py-2 bg-black bg-opacity-80 text-[#f1f1f1] rounded-3xl hover:bg-opacity-70 transition font-semibold shadow-md mt-2">
+                                                                Share
+                                                            </button>    
+                                                        </div>
+                                                    </>
+                                                )
+                                            }
                                             <button className={collectprocess || selectedFile == undefined ? "p-2 bg-green-600 text-2xl rounded-xl opacity-50 cursor-not-allowed" : "p-2 bg-green-700 hover:bg-green-600 text-2xl rounded-xl"} onClick={convertjson} disabled={collectprocess || selectedFile == undefined}>{collectprocess ? "COLLECTING..." : "COLLECT"}</button>
                                             {
                                                 collecterror ? (
