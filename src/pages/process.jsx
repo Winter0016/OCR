@@ -518,12 +518,14 @@ const handleFileUpload = (e) => {
                                         ref={webcamRef}
                                         screenshotFormat="image/jpeg"
                                     />
-                                    <button className="text-white" onClick={captureImage}>Capture Image</button><br/>
-                                    <button className="text-white" onClick={() => setCameraEnabled(false)}>Close Camera</button>
+                                    <div className="flex gap-2 my-8">
+                                        <button className="text-white border-2 p-2 rounded-xl hover:bg-green-500" onClick={captureImage}>Capture Image</button><br/>
+                                        <button className="text-white border-2 p-2 rounded-xl hover:bg-red-500" onClick={() => setCameraEnabled(false)}>Close Camera</button>
+                                    </div>
                                 </div>
                             ) : (
                                 <div className="mb-3 flex flex-col items-center">
-                                    <button className="text-white text-wrap p-2 rounded-lg border-2" onClick={() => setCameraEnabled(true)}>Access Camera</button>
+                                    <button className="text-white text-wrap p-2 rounded-lg border-2 hover:bg-blue-500" onClick={() => setCameraEnabled(true)}>Access Camera</button>
                                 </div>
                             )}
                             <>
