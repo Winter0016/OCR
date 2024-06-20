@@ -81,7 +81,8 @@ function History() {
 
     const handleDownload = (objectfield) => {
       // Convert object to JSON string with pretty-print (2 spaces for indentation)
-      const jsonString = JSON.stringify(objectfield, null, 2);
+      const temp = JSON.parse(objectfield)
+      const jsonString = JSON.stringify(temp,null,2);
       
       // Create a Blob from the JSON string
       const blob = new Blob([jsonString], { type: 'application/json' });
