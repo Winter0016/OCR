@@ -267,9 +267,9 @@ const handleFileUpload = (e) => {
         const jsonString = JSON.stringify(objectfield);
         const encodedJsonString = encodeURIComponent(jsonString);
         const longUrl = `${window.location.origin}/share?objectfield=${encodedJsonString}`;
-
+    
         try {
-            seturlprocess(true)
+            seturlprocess(true);
             const response = await fetch(`https://api.tinyurl.com/create`, {
                 method: 'POST',
                 headers: {
@@ -281,15 +281,27 @@ const handleFileUpload = (e) => {
                     domain: 'tiny.one'
                 })
             });
-
+    
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-
+    
             const data = await response.json();
             const shortenedUrl = data.data.tiny_url;
             setshareurl(shortenedUrl);
             seturlprocess(false);
+    
+            // Check if the Web Share API is supported
+            if (navigator.share) {
+                await navigator.share({
+                    title: 'Check this out',
+                    text: 'Here is a link I want to share with you:',
+                    url: shortenedUrl
+                });
+            } else {
+                // Fallback: Alert the user that sharing is not supported
+                alert(`Share this link: ${shortenedUrl}`);
+            }
         } catch (error) {
             seturlprocess(false);
             console.error('Error shortening URL: ', error);
@@ -402,14 +414,14 @@ const handleFileUpload = (e) => {
 
     
 
-    const copyToClipboard = async () => {
-        try {
-            await navigator.clipboard.writeText(shareurl);
-            setCopySuccess(true);
-        } catch (err) {
-            console.error('Failed to copy: ', err);
-        }
-    };
+    // const copyToClipboard = async () => {
+    //     try {
+    //         await navigator.clipboard.writeText(shareurl);
+    //         setCopySuccess(true);
+    //     } catch (err) {
+    //         console.error('Failed to copy: ', err);
+    //     }
+    // };
     const [productlist, setProductlist] = useState([]);
     const [error2, setError2] = useState("");    
     const { loading } = useContext(Usercontext);
@@ -573,7 +585,7 @@ const handleFileUpload = (e) => {
                                         <pre className="text-green-500">
                                             {JSON.stringify(objectfield,null,2)}
                                         </pre>
-                                        {
+                                        {/* {
                                             shareurl ? (
                                                 <>
                                                     <div className="flex gap-2">
@@ -595,7 +607,7 @@ const handleFileUpload = (e) => {
                                                     }
                                                 </>
                                             )
-                                        }
+                                        } */}
                                     </>
                                 ) : switchtype === "text" && ocrvalue ? (
                                     <div className="text-gray-300 flex flex-col gap-4">
@@ -680,7 +692,7 @@ const handleFileUpload = (e) => {
                                                     //     <div>convert to text template</div>
                                                     // </>
                                                 }
-                                                {
+                                                {/* {
                                                     shareurl ? (
                                                         <>
                                                             <div className="flex gap-2 mt-[1rem] mb-2">
@@ -702,7 +714,7 @@ const handleFileUpload = (e) => {
                                                             }
                                                         </>
                                                     )
-                                                }
+                                                } */}
                                             </div>
                                             {
                                                 ocrjson && (

@@ -33,51 +33,64 @@ function History() {
 
 
 
-    const copyToClipboard = async () => {
-        try {
-            await navigator.clipboard.writeText(shareurl);
-            setCopySuccess(true);
-        } catch (err) {
-            console.error('Failed to copy: ', err);
-        }
-    };
+    // const copyToClipboard = async () => {
+    //     try {
+    //         await navigator.clipboard.writeText(shareurl);
+    //         setCopySuccess(true);
+    //     } catch (err) {
+    //         console.error('Failed to copy: ', err);
+    //     }
+    // };
 
   const [shareurl,setshareurl] = useState("");
   const [urlprocess,seturlprocess]= useState(false);
-  const [copySuccess, setCopySuccess] = useState(false);
+  // const [copySuccess, setCopySuccess] = useState(false);
 
-    const handleShare = async (objectfield) => {
-        const jsonString = objectfield;
-        const encodedJsonString = encodeURIComponent(jsonString);
-        const longUrl = `${window.location.origin}/share?objectfield=${encodedJsonString}`;
+  const handleShare = async (objectfield) => {
+    const jsonString = objectfield;
+    const encodedJsonString = encodeURIComponent(jsonString);
+    const longUrl = `${window.location.origin}/share?objectfield=${encodedJsonString}`;
 
-        try {
-            seturlprocess(true)
-            const response = await fetch(`https://api.tinyurl.com/create`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer eTjWEHD5vJb56KLAWgpDGBSN8yUVgkqBaegy0zJY6U6Kjiox7hfH4U5e6xr8'
-                },
-                body: JSON.stringify({
-                    url: longUrl,
-                    domain: 'tiny.one'
-                })
-            });
+    try {
+        seturlprocess(true);
+        const response = await fetch(`https://api.tinyurl.com/create`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer eTjWEHD5vJb56KLAWgpDGBSN8yUVgkqBaegy0zJY6U6Kjiox7hfH4U5e6xr8'
+            },
+            body: JSON.stringify({
+                url: longUrl,
+                domain: 'tiny.one'
+            })
+        });
 
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const data = await response.json();
-            const shortenedUrl = data.data.tiny_url;
-            setshareurl(shortenedUrl);
-            seturlprocess(false);
-        } catch (error) {
-            seturlprocess(false);
-            console.error('Error shortening URL: ', error);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
         }
-    };
+
+        const data = await response.json();
+        const shortenedUrl = data.data.tiny_url;
+        setshareurl(shortenedUrl);
+        seturlprocess(false);
+
+        // Check if the Web Share API is supported
+        if (navigator.share) {
+            await navigator.share({
+                title: 'Check this out',
+                text: 'Here is a link I want to share with you:',
+                url: shortenedUrl
+            });
+        } else {
+            // Fallback: Alert the user that sharing is not supported
+            alert(`Share this link: ${shortenedUrl}`);
+        }
+    } catch (error) {
+        seturlprocess(false);
+        console.error('Error shortening URL: ', error);
+    }
+};
+
 
     const handleDownload = (objectfield) => {
       // Convert object to JSON string with pretty-print (2 spaces for indentation)
@@ -215,6 +228,8 @@ function History() {
   const [confirm,setconfirm] = useState(false);
   const [currentkey,setcurrentkey] = useState();
 
+
+
   return (
     <div className="pt-[16rem] p-[4rem] min-h-screen font-mono bg-gray-700">
       {array.length <= 0 ? (
@@ -269,7 +284,7 @@ function History() {
                             <pre className="text-green-500 text-wrap">
                             {JSON.stringify(JSON.parse(array[key].ocr_json), null, 2)}
                             </pre>
-                            {
+                            {/* {
                                 shareurl ? (
                                     <>
                                         <div className="flex gap-2 mt-[1rem] mb-2">
@@ -291,7 +306,7 @@ function History() {
                                         }
                                     </>
                                 )
-                            }
+                            } */}
                             <div className="flex gap-3 w-fit h-fit mt-2">
                               <button onClick={() => handleShare(array[key].ocr_json)} className=" w-fit h-fit cursor-pointer group relative flex gap-1.5 px-8 py-2 bg-black bg-opacity-80 text-[#f1f1f1] rounded-3xl hover:bg-opacity-70 transition font-semibold shadow-md mt-2">
                                 Share
