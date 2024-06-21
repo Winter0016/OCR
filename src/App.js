@@ -15,11 +15,12 @@ import { lazy } from 'react';
 import Integration from './pages/integration.jsx';
 import SharedJson from './pages/share.jsx';
 import Process from "./pages/process.jsx";
+import Login from "./pages/login.jsx";
+import Sign from "./pages/signup.jsx"
 
 
 // const Solution = lazy(() => import("./pages/solution.jsx"));
-const Sign = lazy(()=> import("./pages/signup.jsx"));
-const Login = lazy(()=> import("./pages/login.jsx"));
+
 const History = lazy(()=> import("./pages/history.jsx"));
 const Template = lazy(() =>import("./pages/template.jsx"));
 // const About = lazy(() => import("./pages/about.jsx"));
@@ -76,18 +77,16 @@ function App() {
         <BrowserRouter>
           <Header/>
           <Routes>
-            <Route path='/sign' element={<Suspense fallback={<LoadingIndicator />}><Sign/></Suspense>} />         
-            <Route path='/login' element={<Suspense fallback={<LoadingIndicator />}><Login/></Suspense>} />         
-            <Route path="/integration" element={<Suspense fallback={<LoadingIndicator />}><Integration/></Suspense>} />
-            {/* <Route path="/solution" element={<Suspense fallback={<LoadingIndicator />}><Solution/></Suspense>} /> */}
             <Route path="/history" element={<Suspense fallback={<LoadingIndicator />}><History/></Suspense>} />
             <Route path="/template" element={<Suspense fallback={<LoadingIndicator />}><Template/></Suspense>} />
             <Route path="/privacy-policy" element={<Suspense fallback={<LoadingIndicator />}><Policy/></Suspense>} />
             {/* <Route path="/about" element={<Suspense fallback={<LoadingIndicator />}><About/></Suspense>} /> */}
             <Route path='/' element={ <Mainpage/> } />
-            <Route path='/share' element={ <SharedJson/> } />
             <Route path="/process" element={<Process/>}/>
-
+            <Route path='/sign' element={ <Sign/> } />         
+            <Route path='/login' element={ <Login/> } />         
+            <Route path="/integration" element={ <Integration/>} />
+            <Route path='/share' element={ <SharedJson/> } />
           </Routes>
           <Footer/>
         </BrowserRouter>
