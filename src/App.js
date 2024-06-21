@@ -17,7 +17,7 @@ import SharedJson from './pages/share.jsx';
 import Process from "./pages/process.jsx";
 import Login from "./pages/login.jsx";
 import Sign from "./pages/signup.jsx"
-
+import About from "./pages/about.jsx";
 
 // const Solution = lazy(() => import("./pages/solution.jsx"));
 
@@ -87,6 +87,7 @@ function App() {
             <Route path='/login' element={ <Login/> } />         
             <Route path="/integration" element={ <Integration/>} />
             <Route path='/share' element={ <SharedJson/> } />
+            <Route path='/about' element={ <About/> } />
           </Routes>
           <Footer/>
         </BrowserRouter>

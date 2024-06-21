@@ -11,6 +11,7 @@ import credit from "../assets/credit.png"
 import document from "../assets/document.png"
 import logo from "../assets/logo-Photoroom.png-Photoroom.png"
 import profile from "../assets/profile-circle.png"
+import girl from "../assets/Anh-gai-xinh-Han-Quoc-Ji-Seong.jpg"
 
 export default{
     testimg : testimg,
@@ -26,4 +27,5 @@ export default{
     document: document,
     logo: logo,
     profile:profile,
+    girl : girl,
 }
