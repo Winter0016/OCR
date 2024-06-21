@@ -16,7 +16,7 @@ import Integration from './pages/integration.jsx';
 import SharedJson from './pages/share.jsx';
 
 
-const Process = lazy(() => import("./pages/process.jsx"));
+const Process = import("./pages/process.jsx");
 // const Solution = lazy(() => import("./pages/solution.jsx"));
 const Sign = lazy(()=> import("./pages/signup.jsx"));
 const Login = lazy(()=> import("./pages/login.jsx"));
@@ -78,7 +78,7 @@ function App() {
           <Routes>
             <Route path='/sign' element={<Suspense fallback={<LoadingIndicator />}><Sign/></Suspense>} />         
             <Route path='/login' element={<Suspense fallback={<LoadingIndicator />}><Login/></Suspense>} />         
-            <Route path="/process" element={<Suspense fallback={<LoadingIndicator />}><Process/></Suspense>} />
+            <Route path="/process" element={<Process/>}/>
             <Route path="/integration" element={<Suspense fallback={<LoadingIndicator />}><Integration/></Suspense>} />
             {/* <Route path="/solution" element={<Suspense fallback={<LoadingIndicator />}><Solution/></Suspense>} /> */}
             <Route path="/history" element={<Suspense fallback={<LoadingIndicator />}><History/></Suspense>} />
