@@ -120,6 +120,27 @@ opacity: 0;
     background-size:cover;
     background-position: 10%;
 }
+@keyframes knife_chop {
+    0% {
+        transform: rotate(-140deg) translatey(-35rem);
+    }
+    100% {
+        transform: rotate(-100deg) translateX(0);
+    }
+}
+
+#patrick_knife {
+    position: absolute;
+    top: -5rem;
+    left: -2rem;
+    transform: rotate(-100deg);
+    animation-name: knife_chop;
+    animation-duration: 1000ms;
+    animation-timing-function: ease-in-out;
+}
+
+
+
 
 
 /* for small */

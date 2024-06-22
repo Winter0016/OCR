@@ -3,6 +3,8 @@ import img from "../imgs/img"; // Adjust the path according to your file structu
 
 function About() {
   const [about, setabout] = useState("");
+  const [hovered, setHovered] = useState(false);
+
 
   return (
     <div className="pt-[17rem] bg-gray-800 pb-[17rem] font-mono">
@@ -19,13 +21,31 @@ function About() {
                       </svg>
                     </button>
                     <div className='flex flex-wrap justify-center gap-5'>
-                      <div className='group min-w-[15rem] h-[30rem] flex flex-col justify-center gap-3 items-center opacity-70 hover:bg-gray-600 hover:opacity-100 bg-gray-900'>
+                      <div 
+                        className='group min-w-[15rem] h-[30rem] flex flex-col justify-center gap-3 items-center opacity-70 hover:bg-gradient-to-b from-black via-red-800 to-black hover:opacity-100 bg-gray-900 relative'
+                          onMouseEnter={() => setHovered(true)}
+                          onMouseLeave={() => setHovered(false)}>
                         <div className='rounded-full w-[8rem] h-[8rem] overflow-hidden'>
-                          <img src={img.patrick} alt="member" className='w-fit h-fit object-contain border-none'/>
+                          <img src={hovered ? img.patrick2 : img.patrick} alt="member" className='w-fit h-fit object-contain border-none'/>
                         </div>
-                        <div className='text-xl'>Phuc</div>
-                        <div className='text-xl opacity-0 translate-y-12 group-hover:opacity-100 group-hover:translate-y-0 transform transition-all duration-500 text-center'>(AKA Ryan)</div>
-                        <div className='text-xl opacity-0 translate-y-12 group-hover:opacity-100 group-hover:translate-y-0 transform transition-all duration-500 text-center'>Web Developer</div>
+                        {
+                          hovered && (
+                            <>
+                              <div id='patrick_knife' className=' z-10'>
+                                <img src={img.knife} className='size-[15rem] relative' alt="" />
+                              </div>
+                              <div className=' absolute top-0'>
+                                <img src={img.blood} alt="" />
+                              </div>
+                              <div className=' absolute bottom-0 transform rotate-180'>
+                                <img src={img.blood} alt="" />
+                              </div>
+                            </>
+                          )
+                        }
+                        <div className='text-xl group-hover:font-semibold group-hover:italic'>Phuc</div>
+                        <div className='text-xl opacity-0 -translate-x-14 group-hover:opacity-100 group-hover:translate-x-0 transform transition-all duration-500 text-center'>(AKA Ryan)</div>
+                        <div className='text-xl opacity-0 translate-y-12 group-hover:opacity-100 group-hover:translate-y-0 transform transition-all duration-500 text-center group-hover:text-red-500 group-hover:font-extrabold'>Web Developer</div>
                       </div>
 
                       <div className='group min-w-[15rem] h-[30rem] flex flex-col justify-center gap-3 items-center opacity-70 hover:bg-gray-600 hover:opacity-100 bg-gray-900'>
@@ -52,7 +72,7 @@ function About() {
                       </div>
                       <div className='group min-w-[15rem] h-[30rem] flex flex-col justify-center gap-3 items-center opacity-70 hover:bg-gray-600 hover:opacity-100 bg-gray-900'>
                         <div className='rounded-full w-[8rem] h-[8rem] overflow-hidden'>
-                          <img src={img.anonoymous} alt="member" className='w-fit h-fit object-contain border-none'/>
+                          <img src={img.ngan} alt="member" className='w-fit h-fit object-contain border-none'/>
                         </div>
                         <div className='text-xl'>Ngan</div>
                         <div className='text-xl opacity-0 translate-y-12 group-hover:opacity-100 group-hover:translate-y-0 transform transition-all duration-500 text-center'>Mobile Developer</div><br></br>

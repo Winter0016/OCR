@@ -16,7 +16,11 @@ import tuan_anh from "../assets/tuan_anh_db.jpg"
 import nguyen from "../assets/nguyen.jpg"
 import huy from "../assets/huy.jpg"
 import patrick from "../assets/patrick.jpg"
+import patrick2 from "../assets/patrick2.jpg"
 import anonoymous from "../assets/anonymous.png"
+import ngan from "../assets/ngan.jpg"
+import knife from "../assets/knife-Photoroom.png"
+import blood from "../assets/blood.png"
 
 export default{
     testimg : testimg,
@@ -37,5 +41,9 @@ export default{
     nguyen : nguyen,
     huy: huy,
     patrick: patrick,
+    patrick2:patrick2,
     anonoymous: anonoymous,
+    ngan : ngan,
+    knife:knife,
+    blood:blood,
 }
