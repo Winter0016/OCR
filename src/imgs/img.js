@@ -12,6 +12,11 @@ import document from "../assets/document.png"
 import logo from "../assets/logo-Photoroom.png-Photoroom.png"
 import profile from "../assets/profile-circle.png"
 import girl from "../assets/Anh-gai-xinh-Han-Quoc-Ji-Seong.jpg"
+import tuan_anh from "../assets/tuan_anh_db.jpg"
+import nguyen from "../assets/nguyen.jpg"
+import huy from "../assets/huy.jpg"
+import patrick from "../assets/patrick.jpg"
+import anonoymous from "../assets/anonymous.png"
 
 export default{
     testimg : testimg,
@@ -28,4 +33,9 @@ export default{
     logo: logo,
     profile:profile,
     girl : girl,
+    tuan_anh : tuan_anh,
+    nguyen : nguyen,
+    huy: huy,
+    patrick: patrick,
+    anonoymous: anonoymous,
 }

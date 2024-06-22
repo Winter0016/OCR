@@ -21,40 +21,41 @@ function About() {
                     <div className='flex flex-wrap justify-center gap-5'>
                       <div className='group min-w-[15rem] h-[30rem] flex flex-col justify-center gap-3 items-center opacity-70 hover:bg-gray-600 hover:opacity-100 bg-gray-900'>
                         <div className='rounded-full w-[8rem] h-[8rem] overflow-hidden'>
-                          <img src={img.girl} alt="member" className='w-fit h-fit object-contain border-none'/>
+                          <img src={img.patrick} alt="member" className='w-fit h-fit object-contain border-none'/>
                         </div>
-                        <div className='text-xl'>Ryan</div>
+                        <div className='text-xl'>Phuc</div>
+                        <div className='text-xl opacity-0 translate-y-12 group-hover:opacity-100 group-hover:translate-y-0 transform transition-all duration-500 text-center'>(AKA Ryan)</div>
                         <div className='text-xl opacity-0 translate-y-12 group-hover:opacity-100 group-hover:translate-y-0 transform transition-all duration-500 text-center'>Web Developer</div>
                       </div>
 
                       <div className='group min-w-[15rem] h-[30rem] flex flex-col justify-center gap-3 items-center opacity-70 hover:bg-gray-600 hover:opacity-100 bg-gray-900'>
                         <div className='rounded-full w-[8rem] h-[8rem] overflow-hidden'>
-                          <img src={img.girl} alt="member" className='w-fit h-fit object-contain border-none'/>
+                          <img src={img.tuan_anh} alt="member" className='w-fit h-fit object-contain border-none'/>
                         </div>
-                        <div className='text-xl'>Tuan anh db</div>
-                        <div className='text-xl opacity-0 translate-y-12 group-hover:opacity-100 group-hover:translate-y-0 transform transition-all duration-500 text-center'>software engineer</div>
+                        <div className='text-xl'>Tuan Anh</div>
+                        <div className='text-xl opacity-0 translate-y-12 group-hover:opacity-100 group-hover:translate-y-0 transform transition-all duration-500 text-center'>AI Analyst & Tester</div><br></br>
                       </div>
 
                       <div className='group min-w-[15rem] h-[30rem] flex flex-col justify-center gap-3 items-center opacity-70 hover:bg-gray-600 hover:opacity-100 bg-gray-900'>
                         <div className='rounded-full w-[8rem] h-[8rem] overflow-hidden'>
-                          <img src={img.girl} alt="member" className='w-fit h-fit object-contain border-none'/>
+                          <img src={img.nguyen} alt="member" className='w-fit h-fit object-contain border-none'/>
                         </div>
                         <div className='text-xl'>Nguyen</div>
-                        <div className='text-xl opacity-0 translate-y-12 group-hover:opacity-100 group-hover:translate-y-0 transform transition-all duration-500 text-center'>software engineer</div>
+                        <div className='text-xl opacity-0 translate-y-12 group-hover:opacity-100 group-hover:translate-y-0 transform transition-all duration-500 text-center'>AI Trainer</div><br></br>
                       </div>
                       <div className='group min-w-[15rem] h-[30rem] flex flex-col justify-center gap-3 items-center opacity-70 hover:bg-gray-600 hover:opacity-100 bg-gray-900'>
                         <div className='rounded-full w-[8rem] h-[8rem] overflow-hidden'>
-                          <img src={img.girl} alt="member" className='w-fit h-fit object-contain border-none'/>
+                          <img src={img.huy} alt="member" className='w-fit h-fit object-contain border-none'/>
                         </div>
                         <div className='text-xl'>Huy</div>
-                        <div className='text-xl opacity-0 translate-y-12 group-hover:opacity-100 group-hover:translate-y-0 transform transition-all duration-500 text-center'>software engineer</div>
+                        <div className='text-xl opacity-0 translate-y-12 group-hover:opacity-100 group-hover:translate-y-0 transform transition-all duration-500 text-center'>AI Trainer</div><br></br>
                       </div>
                       <div className='group min-w-[15rem] h-[30rem] flex flex-col justify-center gap-3 items-center opacity-70 hover:bg-gray-600 hover:opacity-100 bg-gray-900'>
                         <div className='rounded-full w-[8rem] h-[8rem] overflow-hidden'>
-                          <img src={img.girl} alt="member" className='w-fit h-fit object-contain border-none'/>
+                          <img src={img.anonoymous} alt="member" className='w-fit h-fit object-contain border-none'/>
                         </div>
                         <div className='text-xl'>Ngan</div>
-                        <div className='text-xl opacity-0 translate-y-12 group-hover:opacity-100 group-hover:translate-y-0 transform transition-all duration-500 text-center'>software engineer</div>
+                        <div className='text-xl opacity-0 translate-y-12 group-hover:opacity-100 group-hover:translate-y-0 transform transition-all duration-500 text-center'>Mobile Developer</div><br></br>
                       </div>
                     </div>
                   </div>
