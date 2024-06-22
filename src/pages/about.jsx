@@ -12,8 +12,8 @@ function About() {
             <>
               {
                 about === "member" ? (
-                  <div className='text-white border-2 border-red-500'>
-                    <button className='mb-10 rounded-2xl border-[1px] py-3 px-7' onClick={()=>setabout("")}>
+                  <div className='text-white'>
+                    <button className='mb-10 rounded-2xl border-[1px] py-3 px-7 ml-14 hover:bg-black' onClick={()=>setabout("")}>
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class=" size-8">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
                       </svg>
@@ -80,7 +80,7 @@ function About() {
                   className='group px-[5rem] py-[13rem] rounded-3xl hover:cursor-pointer bg-blue-900 hover:bg-blue-500 text-4xl opacity-70 hover:opacity-100' 
                   onClick={() => setabout("member")}
                 >
-                  <div className='transform group-hover:scale-150 group-hover:rotate-12 transition-transform duration-300'>
+                  <div className='group-hover:scale-150 group-hover:rotate-12 transition-all duration-300 transform'>
                     OUR MEMBERS
                   </div>
                 </div>
