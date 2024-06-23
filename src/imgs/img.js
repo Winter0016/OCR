@@ -21,6 +21,11 @@ import anonoymous from "../assets/anonymous.png"
 import ngan from "../assets/ngan.jpg"
 import knife from "../assets/knife-Photoroom.png"
 import blood from "../assets/blood.png"
+import devil_ronaldo from "../assets/devil_ronaldo.jpg"
+import left_horn from "../assets/left_horn-Photoroom.png"
+import right_horn from "../assets/right_horn-Photoroom.png"
+import fire from "../assets/fire-Photoroom.png"
+import siu from "../assets/siuuu-goal-celebration-cr7-kirania-finest-Photoroom.png"
 
 export default{
     testimg : testimg,
@@ -46,4 +51,9 @@ export default{
     ngan : ngan,
     knife:knife,
     blood:blood,
+    devil_ronaldo: devil_ronaldo,
+    left_horn:left_horn,
+    right_horn : right_horn,
+    fire: fire,
+    siu: siu,
 }

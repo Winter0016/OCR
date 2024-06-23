@@ -4,6 +4,7 @@ import img from "../imgs/img"; // Adjust the path according to your file structu
 function About() {
   const [about, setabout] = useState("");
   const [hovered, setHovered] = useState(false);
+  const [hovered2, setHovered2] = useState(false);
 
 
   return (
@@ -48,12 +49,36 @@ function About() {
                         <div className='text-xl opacity-0 translate-y-12 group-hover:opacity-100 group-hover:translate-y-0 transform transition-all duration-500 text-center group-hover:text-red-500 group-hover:font-extrabold'>Web Developer</div>
                       </div>
 
-                      <div className='group min-w-[15rem] h-[30rem] flex flex-col justify-center gap-3 items-center opacity-70 hover:bg-gray-600 hover:opacity-100 bg-gray-900'>
+                      <div 
+                        className='group min-w-[15rem] h-[30rem] flex flex-col justify-center gap-3 items-center opacity-70 hover:bg-gradient-to-b from-orange-800 via-black to-orange-800 hover:opacity-100 bg-gray-900 relative'
+                        onMouseEnter={() => setHovered2(true)}
+                        onMouseLeave={() => setHovered2(false)}>
                         <div className='rounded-full w-[8rem] h-[8rem] overflow-hidden'>
-                          <img src={img.tuan_anh} alt="member" className='w-fit h-fit object-contain border-none'/>
+                          <img src={hovered2 ? img.devil_ronaldo : img.tuan_anh} alt="member" className='w-fit h-fit object-contain border-none'/>
                         </div>
-                        <div className='text-xl'>Tuan Anh</div>
-                        <div className='text-xl opacity-0 translate-y-12 group-hover:opacity-100 group-hover:translate-y-0 transform transition-all duration-500 text-center'>AI Analyst & Tester</div><br></br>
+                        {
+                          hovered2 && (
+                            <>
+                              <div className=' absolute top-[4.5rem] left-5 z-10'>
+                                <img src={img.left_horn} className=' size-[5rem]' alt="" />
+                              </div>
+                              <div className=' absolute top-[4.5rem] right-4 z-10'>
+                                <img src={img.right_horn} className=' size-[5rem]' alt="" />
+                              </div>
+                              <div className=' absolute top-0 transform rotate-180'>
+                                <img src={img.fire} className='' alt="" />
+                              </div>
+                              <div className=' absolute bottom-0'>
+                                <img src={img.fire} alt="" />
+                              </div>
+                              <div className=' absolute bottom-4 size-[10rem]' id='siuu'>
+                                <img src={img.siu} alt="" />
+                              </div>
+                            </>
+                          )
+                        }
+                        <div className='text-xlc group-hover:italic group-hover:font-semibold'>Tuan Anh</div>
+                        <div className='text-xl opacity-0 translate-y-12 group-hover:opacity-100 group-hover:translate-y-0 transform transition-all duration-500 text-center group-hover:text-red-500 group-hover:font-semibold'>AI Analyst & Tester</div><br></br>
                       </div>
 
                       <div className='group min-w-[15rem] h-[30rem] flex flex-col justify-center gap-3 items-center opacity-70 hover:bg-gray-600 hover:opacity-100 bg-gray-900'>

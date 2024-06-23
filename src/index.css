@@ -86,6 +86,24 @@ option:checked {
     }
 }
 
+@keyframes celebration{
+    0%{
+        transform: translateX(-10rem) translateY(10rem);
+    }
+    50%{
+        transform:translateX(-8rem) translateY(-10rem);
+    }
+    100%{
+        transform: translateX(0rem) translateY(0rem)
+    }
+}
+
+#siuu{
+    animation-name: celebration;
+    animation-timing-function: ease-out;
+    animation-duration: 1300ms;
+}
+
 .text-animation{
     width: 100%;
     border-right:5px solid;
