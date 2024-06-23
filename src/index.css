@@ -17,14 +17,15 @@ option:checked {
 
 /* loading stuff */
 .product-loading{
-    margin-top: 10rem;
+    /* border:solid; */
+    padding-top: 10rem;
     max-width: 1270px;
     margin:auto;
     height:200px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 .product-loading2{
     width: fit-content;

@@ -17,7 +17,6 @@ import SharedJson from './pages/share.jsx';
 import Process from "./pages/process.jsx";
 import Login from "./pages/login.jsx";
 import Sign from "./pages/signup.jsx"
-import About from "./pages/about.jsx";
 
 // const Solution = lazy(() => import("./pages/solution.jsx"));
 
@@ -26,6 +25,7 @@ const Template = lazy(() =>import("./pages/template.jsx"));
 // const About = lazy(() => import("./pages/about.jsx"));
 
 const Policy = lazy (() => import("./pages/policy.jsx"));
+const About = lazy(() => import("./pages/about.jsx"));
 
 export const Usercontext = createContext("");
 
@@ -80,6 +80,7 @@ function App() {
             <Route path="/history" element={<Suspense fallback={<LoadingIndicator />}><History/></Suspense>} />
             <Route path="/template" element={<Suspense fallback={<LoadingIndicator />}><Template/></Suspense>} />
             <Route path="/privacy-policy" element={<Suspense fallback={<LoadingIndicator />}><Policy/></Suspense>} />
+            <Route path="/about" element={<Suspense fallback={<LoadingIndicator />}><About/></Suspense>} />
             {/* <Route path="/about" element={<Suspense fallback={<LoadingIndicator />}><About/></Suspense>} /> */}
             <Route path='/' element={ <Mainpage/> } />
             <Route path="/process" element={<Process/>}/>
@@ -87,7 +88,6 @@ function App() {
             <Route path='/login' element={ <Login/> } />         
             <Route path="/integration" element={ <Integration/>} />
             <Route path='/share' element={ <SharedJson/> } />
-            <Route path='/about' element={ <About/> } />
           </Routes>
           <Footer/>
         </BrowserRouter>
