@@ -71,14 +71,15 @@ function About() {
                               <div className=' absolute bottom-0'>
                                 <img src={img.fire} alt="" />
                               </div>
-                              <div className=' absolute bottom-4 size-[10rem]' id='siuu'>
+                              <div className=' absolute bottom-3 size-[8rem]' id='siuu'>
                                 <img src={img.siu} alt="" />
                               </div>
                             </>
                           )
                         }
                         <div className='text-xlc group-hover:italic group-hover:font-semibold'>Tuan Anh</div>
-                        <div className='text-xl opacity-0 translate-y-12 group-hover:opacity-100 group-hover:translate-y-0 transform transition-all duration-500 text-center group-hover:text-red-500 group-hover:font-semibold'>AI Analyst & Tester</div><br></br>
+                        <div className='text-xl opacity-0 -translate-x-14 group-hover:opacity-100 group-hover:translate-x-0 transform transition-all duration-500 text-center'>(AKA Ricon)</div>
+                        <div className='text-xl opacity-0 translate-y-12 group-hover:opacity-100 group-hover:translate-y-0 transform transition-all duration-500 text-center group-hover:text-orange-600 group-hover:font-semibold'>AI Analyst & Tester</div>
                       </div>
 
                       <div className='group min-w-[15rem] h-[30rem] flex flex-col justify-center gap-3 items-center opacity-70 hover:bg-gray-600 hover:opacity-100 bg-gray-900'>
