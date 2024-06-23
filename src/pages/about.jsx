@@ -41,12 +41,15 @@ function About() {
                               <div className=' absolute bottom-0 transform rotate-180'>
                                 <img src={img.blood} alt="" />
                               </div>
+                              <div className='absolute top-[12rem] text-gray-800 bg-gray-200 p-1 rounded-xl right-[3.5rem] text-base transform -rotate-[20deg]'>
+                                Hey <span className='line-through text-red-800'>Paul</span>🪓
+                              </div>
                             </>
                           )
                         }
                         <div className='text-xl group-hover:font-semibold group-hover:italic'>Phuc</div>
-                        <div className='text-xl opacity-0 -translate-x-14 group-hover:opacity-100 group-hover:translate-x-0 transform transition-all duration-500 text-center'>(AKA Ryan)</div>
-                        <div className='text-xl opacity-0 translate-y-12 group-hover:opacity-100 group-hover:translate-y-0 transform transition-all duration-500 text-center group-hover:text-red-500 group-hover:font-extrabold'>Web Developer</div>
+                        {/* <div className='text-xl opacity-0 -translate-x-14 group-hover:opacity-100 group-hover:translate-x-0 transform transition-all duration-500 text-center'>(AKA Ryan)</div> */}
+                        <div className='text-xl opacity-0 translate-y-12 group-hover:opacity-100 group-hover:translate-y-0 transform transition-all duration-500 text-center group-hover:text-red-500 group-hover:font-extrabold'>Web Developer</div><br></br>
                       </div>
 
                       <div 
