@@ -101,6 +101,8 @@ const handleFileUpload = (e) => {
         return allowedExtensions.includes(fileExtension);
     };
 
+    const [productlist2,setproductlist2]=useState();
+
     
 
     const sendFiles = async (e) => {
@@ -132,23 +134,46 @@ const handleFileUpload = (e) => {
             if (myFiles.length <= 0) {
                 throw new Error("Please select a file");
             }
-            const response = await fetch(`https://fastapi-r12h.onrender.com/text-extraction?service=${inputservice}`, {
-                method: 'POST',
-                body: formData
-            });
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok at sending file');
+            if(inputservice =="Veryfi"){
+                if(!productlist2.Api_key){
+                    throw new Error("You haven't created KEYS!")
+                }
+                const response = await fetch(`https://fastapi-r12h.onrender.com/text-extraction?service=${inputservice}&client_id=${productlist2.Client_id}&client_secret=${productlist2.Client_secret}&username=${productlist2.Username}&api_key=${productlist2.Api_key}`, {
+                    method: 'POST',
+                    body: formData
+                });
+    
+                if (!response.ok) {
+                    throw new Error("Your KEYS are not valid!");
+                }
+    
+                const json = await response.json();
+                setocrvalue(json);
+                // console.log(`ocrvalue : ${JSON.stringify(json)}`);
+                // console.log(`ocrvalue without stringcify: `,json);
+                localStorage.setItem("ocrvalue", JSON.stringify(json)); // Store json directly
+                setProcessing(false);
+                seterror("");
+                setswitchtype("text");
+            }else{
+                const response = await fetch(`https://fastapi-r12h.onrender.com/text-extraction?service=${inputservice}`, {
+                    method: 'POST',
+                    body: formData
+                });
+    
+                if (!response.ok) {
+                    throw new Error('Network response was not ok at sending file');
+                }
+    
+                const json = await response.json();
+                setocrvalue(json);
+                // console.log(`ocrvalue : ${JSON.stringify(json)}`);
+                // console.log(`ocrvalue without stringcify: `,json);
+                localStorage.setItem("ocrvalue", JSON.stringify(json)); // Store json directly
+                setProcessing(false);
+                seterror("");
+                setswitchtype("text");
             }
-
-            const json = await response.json();
-            setocrvalue(json);
-            // console.log(`ocrvalue : ${JSON.stringify(json)}`);
-            // console.log(`ocrvalue without stringcify: `,json);
-            localStorage.setItem("ocrvalue", JSON.stringify(json)); // Store json directly
-            setProcessing(false);
-            seterror("");
-            setswitchtype("text");
         } catch (err) {
             setProcessing(false);
             seterror(err.message);
@@ -409,19 +434,6 @@ const handleFileUpload = (e) => {
 
     const [modalOpen, setModalOpen] = useState(false);
     
-
-
-
-    
-
-    // const copyToClipboard = async () => {
-    //     try {
-    //         await navigator.clipboard.writeText(shareurl);
-    //         setCopySuccess(true);
-    //     } catch (err) {
-    //         console.error('Failed to copy: ', err);
-    //     }
-    // };
     const [productlist, setProductlist] = useState([]);
     const [error2, setError2] = useState("");    
     const { loading } = useContext(Usercontext);
@@ -439,21 +451,39 @@ const handleFileUpload = (e) => {
                 throw new Error("There is no document");
             }
             } catch (error) {
-            setError2(error.message);
-            console.error("Error fetching document:", error);
+                console.error("Error fetching document:", error);
             }
-        } else {
-            console.error("User is not authenticated");
-            setError2("User is not authenticated");
+        }
+    };
+    const fetchUserData2 = async () => {
+        if (auth.currentUser) {
+          const userEmail = auth.currentUser.email;
+          try {
+            const docRef = doc(db, "KEYS", userEmail);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+              setproductlist2(docSnap.data());
+            }
+          } catch (error) {
+            console.error("Error fetching document:", error);
+          }
         }
     };
 
 
     useEffect(() => {
         if (!loading) {
+            fetchUserData2();
             fetchUserData();
         }
     }, [loading]);
+
+    // useEffect(()=>{
+    //     if(productlist2){
+    //         console.log(productlist2);
+    //     }
+    // },[productlist2])
+
 
     return (
         <div className="bg-gray-900 font-mono w-full h-full">
@@ -560,8 +590,8 @@ const handleFileUpload = (e) => {
                         </div>
                         <select className="mt-2 p-2 text-md border-none rounded-md hover:cursor-pointer" onChange={(e) => setinputservice(e.target.value)}>
                             <option value="">Select OCR services</option>
-                            <option value="GG_vision">Google vision (recommend)</option>
-                            <option value="Veryfi">Veryfi (Limit) </option>
+                            <option value="GG_vision">Google vision (Free)</option>
+                            <option value="Veryfi">Veryfi (Required KEYS) </option>
                         </select>
                         <button className={!processing ? "text-white mt-4 text-md p-2 rounded-md w-52 bg-yellow-400 hover:bg-yellow-200" : "text-white mt-6 text-md p-2 rounded-md w-52 bg-yellow-500 opacity-50 cursor-not-allowed"} disabled={processing} onClick={sendFiles}> {processing ? "PROCESSING....." : "START OCR"}</button>
                         {

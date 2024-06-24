@@ -88,7 +88,7 @@ function Template() {
         throw new Error("No template found");
       } 
       else if(newData[customname]){
-        throw new Error(`"${customname}" already exists idiot.`)
+        throw new Error(`"${customname}" already exists`)
       }
       else if(!customname){
         throw new Error("Give a name idiot.");

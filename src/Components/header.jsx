@@ -35,7 +35,13 @@ export const Header = () => {
                         <div className='hover:border-yellow-300 hover:cursor-pointer border-b-4 border-gray-700' onClick={()=> navigate("/")}>HOME</div>
                         <div className='hover:border-yellow-300 hover:cursor-pointer border-b-4 border-gray-700' onClick={() => navigate("/integration")}>INTEGRATION</div>
                         <div className='hover:border-yellow-300 hover:cursor-pointer border-b-4 border-gray-700' onClick={()=> navigate("/about")}>ABOUT US</div>
-                        <div className='hover:border-yellow-300 hover:cursor-pointer border-b-4 border-gray-700' onClick={() => navigate("/process")}>SERVICE</div>
+                        <div class="relative group">
+                            <div class="hover:border-yellow-300 border-b-4 border-gray-700">SERVICE</div>
+                            <div class="absolute left-0 mt-2 w-full rounded shadow-lg opacity-0 group-hover:opacity-100 transform scale-95 group-hover:scale-100 transition-all duration-300">
+                                <div class="p-2 hover:bg-yellow-500 bg-gray-400 rounded mb-2 cursor-pointer" onClick={()=>navigate("/process")}>OCR</div>
+                                <div class="p-2 hover:bg-yellow-500 bg-gray-400 rounded cursor-pointer" onClick={()=>navigate("/storedkey")}>KEYS</div>
+                            </div>
+                        </div>
                         {
                             auth?.currentUser?.email && auth?.currentUser?.emailVerified ? (
                                 <>

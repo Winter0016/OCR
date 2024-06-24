@@ -79,7 +79,7 @@ function About() {
                 <img src={img.nguyen} alt="member" className='w-fit h-fit object-contain border-none'/>
               </div>
               <div className='text-xl'>Nguyen</div>
-              <div className='text-xl opacity-0 translate-y-12 group-hover:opacity-100 group-hover:translate-y-0 transform transition-all duration-500 text-center'>AI Trainer</div>
+              <div className='text-xl opacity-0 translate-y-12 group-hover:opacity-100 group-hover:translate-y-0 transform transition-all duration-500 text-center'>Backend & API searcher</div>
             </div>
             <div className='group min-w-[15rem] h-[30rem] flex flex-col justify-center gap-3 items-center opacity-70 hover:bg-gray-600 hover:opacity-100 bg-gray-900'>
               <div className='rounded-full w-[8rem] h-[8rem] overflow-hidden'>
