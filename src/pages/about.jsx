@@ -31,7 +31,7 @@ function About() {
                     <div className=' absolute bottom-0 transform rotate-180'>
                       <img src={img.blood} alt="" />
                     </div>
-                    <div className='absolute top-[12rem] text-gray-800 bg-gray-200 p-1 rounded-xl right-[3.5rem] text-base transform -rotate-[20deg]'>
+                    <div className='absolute top-[13rem] text-gray-800 bg-gray-200 p-1 rounded-xl right-[3.5rem] text-base transform -rotate-[20deg]'>
                       Hey <span className='line-through text-red-800'>Paul</span>🪓
                     </div>
                   </>
@@ -39,7 +39,7 @@ function About() {
               }
               <div className='text-xl group-hover:font-semibold group-hover:italic'>Phuc</div>
               {/* <div className='text-xl opacity-0 -translate-x-14 group-hover:opacity-100 group-hover:translate-x-0 transform transition-all duration-500 text-center'>(AKA Ryan)</div> */}
-              <div className='text-xl opacity-0 translate-y-12 group-hover:opacity-100 group-hover:translate-y-0 transform transition-all duration-500 text-center group-hover:text-red-500 group-hover:font-extrabold'>Web Developer</div><br></br>
+              <div className='text-xl opacity-0 translate-y-12 group-hover:opacity-100 group-hover:translate-y-0 transform transition-all duration-500 text-center group-hover:text-red-500 group-hover:font-extrabold'>Web Developer</div>
             </div>
 
             <div 
@@ -64,14 +64,14 @@ function About() {
                     <div className=' absolute bottom-0'>
                       <img src={img.fire} alt="" />
                     </div>
-                    <div className=' absolute bottom-4 size-[10rem]' id='siuu'>
+                    <div className=' absolute bottom-4 size-[9rem]' id='siuu'>
                       <img src={img.siu} alt="" />
                     </div>
                   </>
                 )
               }
               <div className='text-xlc group-hover:italic group-hover:font-semibold'>Tuan Anh</div>
-              <div className='text-xl opacity-0 translate-y-12 group-hover:opacity-100 group-hover:translate-y-0 transform transition-all duration-500 text-center group-hover:text-orange-600 group-hover:font-semibold'>AI Analyst & Tester</div><br></br>
+              <div className='text-xl opacity-0 translate-y-12 group-hover:opacity-100 group-hover:translate-y-0 transform transition-all duration-500 text-center group-hover:text-orange-600 group-hover:font-semibold'>AI Analyst & Tester</div>
             </div>
 
             <div className='group min-w-[15rem] h-[30rem] flex flex-col justify-center gap-3 items-center opacity-70 hover:bg-gray-600 hover:opacity-100 bg-gray-900'>
@@ -79,21 +79,21 @@ function About() {
                 <img src={img.nguyen} alt="member" className='w-fit h-fit object-contain border-none'/>
               </div>
               <div className='text-xl'>Nguyen</div>
-              <div className='text-xl opacity-0 translate-y-12 group-hover:opacity-100 group-hover:translate-y-0 transform transition-all duration-500 text-center'>AI Trainer</div><br></br>
+              <div className='text-xl opacity-0 translate-y-12 group-hover:opacity-100 group-hover:translate-y-0 transform transition-all duration-500 text-center'>AI Trainer</div>
             </div>
             <div className='group min-w-[15rem] h-[30rem] flex flex-col justify-center gap-3 items-center opacity-70 hover:bg-gray-600 hover:opacity-100 bg-gray-900'>
               <div className='rounded-full w-[8rem] h-[8rem] overflow-hidden'>
                 <img src={img.huy} alt="member" className='w-fit h-fit object-contain border-none'/>
               </div>
               <div className='text-xl'>Huy</div>
-              <div className='text-xl opacity-0 translate-y-12 group-hover:opacity-100 group-hover:translate-y-0 transform transition-all duration-500 text-center'>AI Trainer</div><br></br>
+              <div className='text-xl opacity-0 translate-y-12 group-hover:opacity-100 group-hover:translate-y-0 transform transition-all duration-500 text-center'>AI Trainer</div>
             </div>
             <div className='group min-w-[15rem] h-[30rem] flex flex-col justify-center gap-3 items-center opacity-70 hover:bg-gray-600 hover:opacity-100 bg-gray-900'>
               <div className='rounded-full w-[8rem] h-[8rem] overflow-hidden'>
                 <img src={img.ngan} alt="member" className='w-fit h-fit object-contain border-none'/>
               </div>
               <div className='text-xl'>Ngan</div>
-              <div className='text-xl opacity-0 translate-y-12 group-hover:opacity-100 group-hover:translate-y-0 transform transition-all duration-500 text-center'>Mobile Developer</div><br></br>
+              <div className='text-xl opacity-0 translate-y-12 group-hover:opacity-100 group-hover:translate-y-0 transform transition-all duration-500 text-center'>Mobile Developer</div>
             </div>
           </div>
         </div>
