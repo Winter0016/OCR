@@ -135,7 +135,7 @@ const handleFileUpload = (e) => {
                 throw new Error("Please select a file");
             }
             if(inputservice =="Veryfi"){
-                if(!productlist2.Api_key){
+                if(!productlist2){
                     throw new Error("You haven't created KEYS!")
                 }
                 const response = await fetch(`https://fastapi-r12h.onrender.com/text-extraction?service=${inputservice}&client_id=${productlist2.Client_id}&client_secret=${productlist2.Client_secret}&username=${productlist2.Username}&api_key=${productlist2.Api_key}`, {
