@@ -28,7 +28,7 @@ function StoredKeys() {
             console.error("Error fetching document:", error);
           }
         } else {
-          console.error("User is not authenticated");
+        //   console.error("User is not authenticated");
           setError("User is not authenticated");
         }
     };
@@ -130,7 +130,7 @@ function StoredKeys() {
                     </div>
                     {saved && <div className="text-blue-500 text-center text-2xl">SAVED!</div>}
                     <button
-                        className={`rounded-xl p-3 text-2xl ${saveProcess ? 'bg-green-700 opacity-65' : 'hover:bg-green-700 bg-green-600'}`}
+                        className={`rounded-xl p-3 text-2xl ${saveProcess ? 'bg-green-700 opacity-65': error=="User is not authenticated" ? 'cursor-not-allowed bg-green-600 opacity-55' : 'hover:bg-green-700 bg-green-600'}`}
                         type="submit"
                         disabled={saveProcess || error=="User is not authenticated"}
                     >
