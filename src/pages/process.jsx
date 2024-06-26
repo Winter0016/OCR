@@ -134,46 +134,26 @@ const handleFileUpload = (e) => {
             if (myFiles.length <= 0) {
                 throw new Error("Please select a file");
             }
-            if(inputservice =="Veryfi"){
-                if(!productlist2){
-                    throw new Error("You haven't created KEYS!")
-                }
-                const response = await fetch(`https://fastapi-r12h.onrender.com/text-extraction?service=${inputservice}&client_id=${productlist2.Client_id}&client_secret=${productlist2.Client_secret}&username=${productlist2.Username}&api_key=${productlist2.Api_key}`, {
-                    method: 'POST',
-                    body: formData
-                });
-    
-                if (!response.ok) {
-                    throw new Error("Your KEYS are not valid!");
-                }
-    
-                const json = await response.json();
-                setocrvalue(json);
-                // console.log(`ocrvalue : ${JSON.stringify(json)}`);
-                // console.log(`ocrvalue without stringcify: `,json);
-                localStorage.setItem("ocrvalue", JSON.stringify(json)); // Store json directly
-                setProcessing(false);
-                seterror("");
-                setswitchtype("text");
-            }else{
-                const response = await fetch(`https://fastapi-r12h.onrender.com/text-extraction?service=${inputservice}`, {
-                    method: 'POST',
-                    body: formData
-                });
-    
-                if (!response.ok) {
-                    throw new Error('Network response was not ok at sending file');
-                }
-    
-                const json = await response.json();
-                setocrvalue(json);
-                // console.log(`ocrvalue : ${JSON.stringify(json)}`);
-                // console.log(`ocrvalue without stringcify: `,json);
-                localStorage.setItem("ocrvalue", JSON.stringify(json)); // Store json directly
-                setProcessing(false);
-                seterror("");
-                setswitchtype("text");
+            if(!productlist2){
+                throw new Error("You haven't generated key yet!");
             }
+            const response = await fetch(`https://fastapi-r12h.onrender.com/text-extraction?service=${inputservice}&PAN_api_key=${productlist2.Api_key}`, {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok at sending file');
+            }
+
+            const json = await response.json();
+            setocrvalue(json);
+            // console.log(`ocrvalue : ${JSON.stringify(json)}`);
+            // console.log(`ocrvalue without stringcify: `,json);
+            localStorage.setItem("ocrvalue", JSON.stringify(json)); // Store json directly
+            setProcessing(false);
+            seterror("");
+            setswitchtype("text");
         } catch (err) {
             setProcessing(false);
             seterror(err.message);

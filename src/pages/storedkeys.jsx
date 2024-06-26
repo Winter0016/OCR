@@ -5,11 +5,9 @@ import { Usercontext } from "../App";
 
 
 function StoredKeys() {
-    const [id, setId] = useState("");
-    const [secret, setSecret] = useState("");
-    const [username, setUsername] = useState("");
     const [key, setKey] = useState("");
     const { loading } = useContext(Usercontext);
+    const [loadingkey,setloadingkey] = useState(false);
     const [saveProcess, setSaveProcess] = useState(false);
     const [error, setError] = useState(null);
     const [productlist,setProductlist] = useState();
@@ -19,17 +17,20 @@ function StoredKeys() {
         if (auth.currentUser) {
           const userEmail = auth.currentUser.email;
           try {
+            setloadingkey(true);
             const docRef = doc(db, "KEYS", userEmail);
             const docSnap = await getDoc(docRef);
             if (docSnap.exists()) {
               setProductlist(docSnap.data());
             }
+            setloadingkey(false);
           } catch (error) {
+            setloadingkey(false);
             console.error("Error fetching document:", error);
           }
         } else {
-        //   console.error("User is not authenticated");
-          setError("User is not authenticated");
+            setloadingkey(false);
+            setError("User is not authenticated");
         }
     };
 
@@ -41,24 +42,40 @@ function StoredKeys() {
 
     useEffect(()=>{
         if(productlist){
-            setId(productlist.Client_id);
-            setSecret(productlist.Client_secret);
-            setUsername(productlist.Username);
             setKey(productlist.Api_key);
         }
     },[productlist])
 
+    const generateapikey = async()=>{
+        try{
+            setSaveProcess(true);
+            setError(null);
+            const response = await fetch("https://fastapi-r12h.onrender.com/generate-api-key",{
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json'
+                },
+            });
+            const json = await response.json();
+            setKey(json.api_key)
+        }catch(err){
+            setError(err.message);
+            setSaveProcess(false);
+        }finally{
+            saveFunction()
+        }
+    }
+
+
+
     const saveFunction = async () => {
         try {
-            setSaveProcess(true);
+            // setSaveProcess(true);
             setError(null); // Clear previous errors
 
             const documentPath = `${auth?.currentUser?.email}`;
             const productDoc = doc(db, "KEYS", documentPath);
             const data = {
-                Client_id: id,
-                Client_secret: secret,
-                Username: username,
                 Api_key: key
             };
 
@@ -85,47 +102,17 @@ function StoredKeys() {
                     className="rounded-xl flex flex-col gap-11 text-white lg:min-w-[1000px] w-fit"
                     onSubmit={(e) => {
                         e.preventDefault();
-                        saveFunction();
+                        generateapikey();
                     }}
                 >
                     <div>
-                        <div className="text-xl">Client id</div>
+                        <div className="text-xl font-bold">Api Key</div>
                         <input
-                            className="rounded-xl mt-1 text-xl text-black p-2 w-full"
+                            className="rounded-xl mt-1 text-xl text-green-400 p-2 w-full"
                             type="text"
                             required
-                            value={id}
-                            onChange={(e) => setId(e.target.value)}
-                        />
-                    </div>
-                    <div>
-                        <div className="text-xl">Client secret</div>
-                        <input
-                            className="rounded-xl mt-1 text-xl text-black p-2 w-full"
-                            type="text"
-                            required
-                            value={secret}
-                            onChange={(e) => setSecret(e.target.value)}
-                        />
-                    </div>
-                    <div>
-                        <div className="text-xl">Username</div>
-                        <input
-                            className="rounded-xl mt-1 text-xl text-black p-2 w-full"
-                            type="text"
-                            required
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                        />
-                    </div>
-                    <div>
-                        <div className="text-xl">Api key</div>
-                        <input
-                            className="rounded-xl mt-1 text-xl text-black p-2 w-full"
-                            type="text"
-                            required
-                            value={key}
-                            onChange={(e) => setKey(e.target.value)}
+                            value={loadingkey ? "Getting key..." : key ? key : "You have no key!" }
+                            disabled={true}
                         />
                     </div>
                     {saved && <div className="text-blue-500 text-center text-2xl">SAVED!</div>}
@@ -134,7 +121,7 @@ function StoredKeys() {
                         type="submit"
                         disabled={saveProcess || error=="User is not authenticated"}
                     >
-                        {saveProcess ? "Saving" : "Save"}
+                        {saveProcess ? "Generating" : "Generate new key"}
                     </button>
                     {error && <div className="text-red-500 text-center text-xl">{error}</div>}
                 </form>
