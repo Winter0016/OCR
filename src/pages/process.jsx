@@ -5,9 +5,11 @@ import { Usercontext } from "../App";
 import Modal from "./Modal";
 import "react-image-crop/dist/ReactCrop.css";
 import { auth,db,storage } from "../Firebase/firebase-config";
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { ref, uploadBytes, getDownloadURL,getBlob  } from 'firebase/storage';
 
 import {setDoc,doc,getDoc } from "firebase/firestore";
+
+// 
 
 function Process() {
 
@@ -110,55 +112,99 @@ const handleFileUpload = (e) => {
         setocrvalue("");
         try {
             setProcessing(true);
-
+    
+            // Check for necessary conditions
             if (!inputservice) {
                 throw new Error("Please select a service");
             }
-            if(!auth?.currentUser?.email){
+            if (!auth?.currentUser?.email) {
                 throw new Error("Please login to use our services");
             }
-            if(auth?.currentUser?.email && !auth?.currentUser?.emailVerified){
+            if (auth?.currentUser?.email && !auth?.currentUser?.emailVerified) {
                 throw new Error("Please verify your email");
             }
+    
             const formData = new FormData();
             const myFiles = document.getElementById('myFiles').files;
-
+    
             for (let i = 0; i < myFiles.length; i++) {
                 const file = myFiles[i];
                 const isAllowed = isFileExtensionAllowed(file.name);
                 if (!isAllowed) {
-                    throw new Error("We only allow file PDF,TIFF,JPEG and PNG.");
+                    throw new Error("We only allow file PDF, TIFF, JPEG, and PNG.");
                 }
                 formData.append('file', file);
             }
+    
             if (myFiles.length <= 0) {
                 throw new Error("Please select a file");
             }
-            if(!productlist2){
-                throw new Error("You haven't generated key yet!");
+            if (!productlist2) {
+                throw new Error("You haven't generated any key yet!");
             }
-            const response = await fetch(`https://fastapi-r12h.onrender.com/text-extraction?service=${inputservice}&PAN_api_key=${productlist2.Api_key}`, {
-                method: 'POST',
-                body: formData
-            });
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok at sending file');
+            if(!productlist2.PAN_key){
+                throw new Error("You haven't generated PAN API key yet!");
             }
-
-            const json = await response.json();
-            setocrvalue(json);
-            // console.log(`ocrvalue : ${JSON.stringify(json)}`);
-            // console.log(`ocrvalue without stringcify: `,json);
-            localStorage.setItem("ocrvalue", JSON.stringify(json)); // Store json directly
-            setProcessing(false);
-            seterror("");
-            setswitchtype("text");
+    
+            if (inputservice === "Veryfi") {
+                if (!productlist2.Client_id || !productlist2.Client_secret || !productlist2.Username || !productlist2.Veryfikey) {
+                    throw new Error("Please fill all property for Veryfi at KEYS");
+                }
+                const response = await fetch(`https://fastapi-r12h.onrender.com/text-extraction?service=${inputservice}&client_id=${productlist2.Client_id}&client_secret=${productlist2.Client_secret}&username=${productlist2.Username}&api_key=${productlist2.Veryfikey}&PAN_api_key=${productlist2.PAN_key}`, {
+                    method: 'POST',
+                    body: formData
+                });
+    
+                if (!response.ok) {
+                    throw new Error('Your Veryfi KEYS are invalid!');
+                }
+    
+                const json = await response.json();
+                setocrvalue(json);
+                localStorage.setItem("ocrvalue", JSON.stringify(json)); // Store json directly
+                setProcessing(false);
+                seterror("");
+                setswitchtype("text");
+            }
+    
+            if (inputservice === "GG_vision") {
+                const myFiles2 = document.getElementById('myFiles2').files;
+                if (myFiles2.length <= 0) {
+                    throw new Error("Please input JSON file key");
+                }
+    
+                for (let i = 0; i < myFiles2.length; i++) {
+                    const file = myFiles2[i];
+                    // Rename and append the file as 'service_key.json'
+                    formData.append('gg_vision_key', file, 'service_key.json');
+                }
+    
+                const response2 = await fetch(`https://fastapi-r12h.onrender.com/text-extraction?service=${inputservice}&PAN_api_key=${productlist2.PAN_key}`, {
+                    method: 'POST',
+                    body: formData
+                });
+    
+                if (!response2.ok) {
+                    throw new Error('Your GG_vision KEYS are invalid');
+                }
+    
+                const json = await response2.json();
+                setocrvalue(json);
+                localStorage.setItem("ocrvalue", JSON.stringify(json)); // Store json directly
+                setProcessing(false);
+                seterror("");
+                setswitchtype("text");
+            }
         } catch (err) {
             setProcessing(false);
             seterror(err.message);
         }
     };
+    
+    
+    
+    
+    
     useEffect(() => {
         const localocrvalue = localStorage.getItem("ocrvalue");
         const localocrjson = JSON.parse(localStorage.getItem("ocrjson"));
@@ -570,9 +616,22 @@ const handleFileUpload = (e) => {
                         </div>
                         <select className="mt-2 p-2 text-md border-none rounded-md hover:cursor-pointer" onChange={(e) => setinputservice(e.target.value)}>
                             <option value="">Select OCR services</option>
-                            <option value="GG_vision">Google vision (Required Keys)</option>
-                            <option value="Veryfi">Veryfi (Required KEYS & Limited) </option>
+                            <option value="GG_vision">Google vision (Required JSON file key)</option>
+                            <option value="Veryfi">Veryfi (Required KEYS) </option>
                         </select>
+                        {
+                            inputservice==="GG_vision" && (
+                                <>
+                                    <div className="text-blue-500 mt-2 border-[1px]">
+                                        <input
+                                            type="file"
+                                            id="myFiles2"
+                                            accept="application/json"
+                                        />
+                                    </div>
+                                </>
+                            )
+                        }
                         <button className={!processing ? "text-white mt-4 text-md p-2 rounded-md w-52 bg-yellow-400 hover:bg-yellow-200" : "text-white mt-6 text-md p-2 rounded-md w-52 bg-yellow-500 opacity-50 cursor-not-allowed"} disabled={processing} onClick={sendFiles}> {processing ? "PROCESSING....." : "START OCR"}</button>
                         {
                             error ? (
