@@ -47,7 +47,7 @@ function About() {
               onMouseEnter={() => setHovered2(true)}
               onMouseLeave={() => setHovered2(false)}>
               <div className='rounded-full w-[8rem] h-[8rem] overflow-hidden'>
-                <img src={hovered2 ? img.devil_ronaldo : img.tuan_anh} alt="member" className='w-fit h-fit object-contain border-none'/>
+                <img src={hovered2 ? img.devil_ronaldo : img.tuan_anh} alt="member" className='w-fit h-fit object-fill border-none'/>
               </div>
               {
                 hovered2 && (
