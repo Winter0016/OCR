@@ -103,9 +103,7 @@ const handleFileUpload = (e) => {
         return allowedExtensions.includes(fileExtension);
     };
 
-    const [productlist2,setproductlist2]=useState();
-
-    
+    const [productlist2,setproductlist2]=useState();   
 
     const sendFiles = async (e) => {
         e.preventDefault();
@@ -168,17 +166,33 @@ const handleFileUpload = (e) => {
             }
     
             if (inputservice === "GG_vision") {
-                const myFiles2 = document.getElementById('myFiles2').files;
-                if (myFiles2.length <= 0) {
-                    throw new Error("Please input JSON file key");
+                if(!productlist2.filename){
+                    throw new Error("You haven't input file for GG_vision keys at KEYS");
                 }
-    
-                for (let i = 0; i < myFiles2.length; i++) {
-                    const file = myFiles2[i];
-                    // Rename and append the file as 'service_key.json'
-                    formData.append('gg_vision_key', file, 'service_key.json');
+                if(!productlist2.client_id || !productlist2.client_email || !productlist2.auth_provider_x509_cert_url){
+                    throw new Error("Please input file from GG_vision services")
                 }
-    
+                // Create JSON object
+                const jsonObject = {
+                    type: productlist2.type,
+                    project_id: productlist2.project_id,
+                    private_key_id: productlist2.private_key_id,
+                    private_key: productlist2.private_key,
+                    client_email: productlist2.client_email,
+                    client_id: productlist2.client_id,
+                    auth_uri: productlist2.auth_uri,
+                    token_uri: productlist2.token_uri,
+                    auth_provider_x509_cert_url:productlist2.auth_provider_x509_cert_url,
+                    client_x509_cert_url: productlist2.client_x509_cert_url,
+                    universe_domain: productlist2.universe_domain,
+                };
+            
+                // Convert JSON object to Blob
+                const jsonBlob = new Blob([JSON.stringify(jsonObject)], { type: 'application/json' });
+            
+                // Create FormData and append the Blob as a file
+                formData.append('gg_vision_key', jsonBlob, 'service_key.json');
+
                 const response2 = await fetch(`https://fastapi-r12h.onrender.com/text-extraction?service=${inputservice}&PAN_api_key=${productlist2.PAN_key}`, {
                     method: 'POST',
                     body: formData
@@ -619,19 +633,6 @@ const handleFileUpload = (e) => {
                             <option value="GG_vision">Google vision (Required JSON file key)</option>
                             <option value="Veryfi">Veryfi (Required KEYS) </option>
                         </select>
-                        {
-                            inputservice==="GG_vision" && (
-                                <>
-                                    <div className="text-blue-500 mt-2 border-[1px]">
-                                        <input
-                                            type="file"
-                                            id="myFiles2"
-                                            accept="application/json"
-                                        />
-                                    </div>
-                                </>
-                            )
-                        }
                         <button className={!processing ? "text-white mt-4 text-md p-2 rounded-md w-52 bg-yellow-400 hover:bg-yellow-200" : "text-white mt-6 text-md p-2 rounded-md w-52 bg-yellow-500 opacity-50 cursor-not-allowed"} disabled={processing} onClick={sendFiles}> {processing ? "PROCESSING....." : "START OCR"}</button>
                         {
                             error ? (

@@ -13,7 +13,9 @@ function StoredKeys() {
     const [saveProcess, setSaveProcess] = useState(false);
     const [error, setError] = useState(null);
     const [productlist, setProductlist] = useState();
+    const [Filename,setFilename] = useState("");
     const [saved, setsaved] = useState(false);
+    const[clientid,setclientid] = useState("");
 
     const fetchUserData = async () => {
         if (auth.currentUser) {
@@ -49,7 +51,8 @@ function StoredKeys() {
             setsecret(productlist.Client_secret);
             setusername(productlist.Username);
             setveryfikey(productlist.Veryfikey);
-            setjsonfile(productlist.service_key_url);
+            setclientid(productlist.client_id);
+            setFilename(productlist.filename)
         }
     }, [productlist]);
 
@@ -78,17 +81,21 @@ function StoredKeys() {
     const [saveprocess2, setsaveprocess2] = useState(false);
     const [jsonfile, setjsonfile] = useState("");
 
-    const uploadFile = async (file) => {
-        if (!file) {
-            throw new Error("No file selected");
-        }
-        const userEmail = auth.currentUser.email;
-        const storageRef = ref(storage, `keys/${userEmail}/service_key.json`);
-        await uploadBytes(storageRef, file);
-        return await getDownloadURL(storageRef);
-    };
+    // const uploadFile = async (file) => {
+    //     if (!file) {
+    //         throw new Error("No file selected");
+    //     }
+    //     const userEmail = auth.currentUser.email;
+    //     const storageRef = ref(storage, `keys/${userEmail}/service_key.json`);
+    //     await uploadBytes(storageRef, file);
+    //     return await getDownloadURL(storageRef);
+    // };
 
     const saveFunction = async () => {
+        if (!jsonfile) {
+            setError("No valid JSON content to save.");
+            return;
+        } 
         try {
             setsaveprocess2(true);
             setError(null); // Clear previous errors
@@ -101,6 +108,18 @@ function StoredKeys() {
                 Client_secret: secret,
                 Username: username,
                 Veryfikey: veryfikey,
+                type: jsonfile.type,
+                project_id: jsonfile.project_id,
+                private_key_id: jsonfile.private_key_id,
+                private_key: jsonfile.private_key,
+                client_email: jsonfile.client_email,
+                client_id: jsonfile.client_id,
+                auth_uri: jsonfile.auth_uri,
+                token_uri: jsonfile.token_uri,
+                auth_provider_x509_cert_url:jsonfile.auth_provider_x509_cert_url,
+                client_x509_cert_url: jsonfile.client_x509_cert_url,
+                universe_domain: jsonfile.universe_domain,
+                filename: jsonfile.filename,
             };
 
             await setDoc(productDoc, data, { merge: true });
@@ -122,6 +141,26 @@ function StoredKeys() {
             return () => clearTimeout(timeout);
         }
     }, [saved]);
+
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const content = e.target.result;
+            try {
+                const parsedJson = JSON.parse(content);
+                parsedJson.filename = file.name;
+                setjsonfile(parsedJson);
+                setError(null); // Clear previous errors
+            } catch (error) {
+                setError("Invalid JSON format. Please provide a valid JSON file.");
+                setjsonfile(null);
+            }
+        };
+        reader.readAsText(file);
+    };
 
     return (
         <div className="pt-[14rem] bg-gray-800 pb-[14rem] font-mono">
@@ -203,30 +242,22 @@ function StoredKeys() {
                             </div>
                         </div>
                     </div>
-                    {/* <div className="flex flex-col gap-4 rounded-xl p-3 py-9 bg-gray-900">
+                    <div className="flex flex-col gap-4 rounded-xl p-3 py-9 bg-gray-900">
                         <div className="text-center text-xl">Google Vision KEYS</div>
                         <div className="text-red-500">*ONLY ACCEPT JSON FILE*</div>
                         <input
                             type="file"
-                            id="myFiles"
                             accept="application/json"
+                            onChange={handleFileChange}
                         />
-                        {jsonfile && (
-                            <div className="text-green-500">
-                                We have received your JSON file.
-                                <br />
-                                <a 
-                                    href={jsonfile} 
-                                    target="_blank" 
-                                    rel="noopener noreferrer"
-                                    download="service_key.json" // Add the download attribute
-                                    className="text-blue-400 underline"
-                                >
-                                    Check your JSON file
-                                </a>
-                            </div>
-                        )}
-                    </div> */}
+                        {
+                            clientid && (
+                                <>
+                                    <div className="text-blue-500 text-lg">WE HAVE RECEIVED YOUR FILE : {Filename}</div>
+                                </>
+                            )
+                        }
+                    </div>
                     <button
                         className={`rounded-xl p-2 whitespace-nowrap text-lg ${saveprocess2 ? 'bg-green-700 opacity-65' : error === "User is not authenticated" ? 'cursor-not-allowed bg-green-600 opacity-55' : 'hover:bg-green-700 bg-green-600'}`}
                         type="submit"
