@@ -8,7 +8,7 @@ export const Footer = () => {
     <div className='bg-gray-600'>
         <div className='max-w-[1450px] flex flex-col flex-wrap gap-2 m-auto text-white font-mono'>
             <div className='flex flex-wrap w-full justify-evenly pt-10 pb-10'>
-                <img className='w-[7rem]' src={img.logo} alt="" />
+                <img className='w-[7rem] rounded-full' src={img.logo} alt="" />
                 <div className='flex flex-col gap-1'>
                     <div className='text-3xl'>Contact us</div>
                     <div className='flex gap-2'>

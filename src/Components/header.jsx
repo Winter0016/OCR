@@ -30,7 +30,7 @@ export const Header = () => {
         <div className={`bg-gray-700 fixed w-full header z-[100] ${isHidden ? 'hidden' : ''}`}>
             <div className='md:m-auto flex flex-col flex-wrap text-wrap w-auto h-auto' style={{maxWidth:"1450px"}} >
                 <div className="flex gap-16 justify-center items-center pt-4 font-mono flex-wrap text-white pb-4">
-                    <img className=" w-[6rem] fill-yellow-300" src={img.logo} alt="" />
+                    <img className=" w-[6rem] fill-yellow-300 rounded-full" src={img.logo} alt="" />
                     <div className='flex md:flex-row flex-col md:gap-12 gap-2 lg:p-0 md:text-lg text-sm'>
                         <div className='hover:border-yellow-300 hover:cursor-pointer border-b-4 border-gray-700' onClick={()=> navigate("/")}>HOME</div>
                         <div className='hover:border-yellow-300 hover:cursor-pointer border-b-4 border-gray-700' onClick={() => navigate("/integration")}>INTEGRATION</div>
