@@ -23,7 +23,7 @@ function About() {
                 hovered && (
                   <>
                     <div id='patrick_knife' className=' z-10'>
-                      <img src={img.knife} className='size-[15rem] relative' alt="" />
+                      <img src={img.knife} className='size-[8rem] relative' alt="" />
                     </div>
                     <div className=' absolute top-0'>
                       <img src={img.blood} alt="" />
@@ -31,15 +31,24 @@ function About() {
                     <div className=' absolute bottom-0 transform rotate-180'>
                       <img src={img.blood} alt="" />
                     </div>
+                    <div className='absolute bottom-[2rem]'>
+                      <img src={img.card} className='w-auto h-[7rem] transform skew-x-6 -rotate-2' alt="" />
+                    </div>
                     <div className='absolute top-[13rem] text-gray-800 bg-gray-200 p-1 rounded-xl right-[3.5rem] text-base transform -rotate-[20deg]'>
                       Hey <span className='line-through text-red-800'>Paul</span>🪓
                     </div>
                   </>
                 )
               }
-              <div className='text-xl group-hover:font-semibold group-hover:italic'>Phuc</div>
+              <div className='text-xl group-hover:hidden'>Phuc</div>
               {/* <div className='text-xl opacity-0 -translate-x-14 group-hover:opacity-100 group-hover:translate-x-0 transform transition-all duration-500 text-center'>(AKA Ryan)</div> */}
               <div className='text-xl opacity-0 translate-y-12 group-hover:opacity-100 group-hover:translate-y-0 transform transition-all duration-500 text-center group-hover:text-red-500 group-hover:font-extrabold'>Web Developer</div>
+              {
+                hovered && (
+                  <br></br>
+                )
+              }
+              
             </div>
 
             <div 
@@ -52,12 +61,15 @@ function About() {
               {
                 hovered2 && (
                   <>
-                    {/* <div className=' absolute top-[4.5rem] left-5 z-10'>
+                    <div className=' absolute top-[4.5rem] left-5 z-10'>
                       <img src={img.left_horn} className=' size-[5rem]' alt="" />
                     </div>
                     <div className=' absolute top-[4.5rem] right-4 z-10'>
                       <img src={img.right_horn} className=' size-[5rem]' alt="" />
-                    </div> */}
+                    </div>
+                    <div className='absolute bottom-[9.8rem]'>
+                      <img className='size-[4rem]' src={img.goatee} alt="" />
+                    </div>
                     <div className=' absolute top-0 transform rotate-180'>
                       <img src={img.fire} className='' alt="" />
                     </div>
@@ -70,7 +82,7 @@ function About() {
                   </>
                 )
               }
-              <div className='text-xlc group-hover:italic group-hover:font-semibold'>Tuan Anh</div>
+              <div className='text-xlc group-hover:italic group-hover:font-semibold z-10 group-hover:invisible'>Tuan Anh</div>
               <div className='text-xl opacity-0 translate-y-12 group-hover:opacity-100 group-hover:translate-y-0 transform transition-all duration-500 text-center group-hover:text-orange-600 group-hover:font-semibold'>AI Analyst & Tester</div>
             </div>
 

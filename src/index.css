@@ -151,8 +151,8 @@ opacity: 0;
 
 #patrick_knife {
     position: absolute;
-    top: -5rem;
-    left: -2rem;
+    bottom: 6rem;
+    left: -5rem;
     transform: rotate(-100deg);
     animation-name: knife_chop;
     animation-duration: 1000ms;

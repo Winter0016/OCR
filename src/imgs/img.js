@@ -24,8 +24,10 @@ import blood from "../assets/blood.png"
 import devil_ronaldo from "../assets/devil_ronaldo.jpg"
 import left_horn from "../assets/left_horn-Photoroom.png"
 import right_horn from "../assets/right_horn-Photoroom.png"
+import goatee from "../assets/goatee beard.png"
 import fire from "../assets/fire-Photoroom.png"
 import siu from "../assets/siuuu-goal-celebration-cr7-kirania-finest-Photoroom.png"
+import card from "../assets/card.jpg"
 
 export default{
     testimg : testimg,
@@ -56,4 +58,6 @@ export default{
     right_horn : right_horn,
     fire: fire,
     siu: siu,
+    goatee:goatee,
+    card:card,
 }
