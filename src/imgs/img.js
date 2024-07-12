@@ -28,6 +28,7 @@ import goatee from "../assets/goatee beard.png"
 import fire from "../assets/fire-Photoroom.png"
 import siu from "../assets/siuuu-goal-celebration-cr7-kirania-finest-Photoroom.png"
 import card from "../assets/card.jpg"
+import ronaldobackground  from "../assets/ronaldobackground.jpg"
 
 export default{
     testimg : testimg,
@@ -60,4 +61,5 @@ export default{
     siu: siu,
     goatee:goatee,
     card:card,
+    ronaldobackground:ronaldobackground,
 }

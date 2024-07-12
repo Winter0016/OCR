@@ -86,8 +86,7 @@ option:checked {
         left:0;
     }
 }
-
-@keyframes celebration{
+/* @keyframes celebration{
     0%{
         transform: translateX(-10rem) translateY(10rem);
     }
@@ -103,7 +102,8 @@ option:checked {
     animation-name: celebration;
     animation-timing-function: ease-out;
     animation-duration: 1300ms;
-}
+} */
+
 
 
 .text-animation{
@@ -157,6 +157,13 @@ opacity: 0;
     animation-name: knife_chop;
     animation-duration: 1000ms;
     animation-timing-function: ease-in-out;
+}
+
+#ronaldo-bg:hover{
+    background-image: url("./assets/ronaldobackground.jpg");
+    background-size: auto;
+    background-position: center;
+    filter: blur(0.5px); /* Apply blur effect */
 }
 
 
