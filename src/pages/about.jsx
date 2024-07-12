@@ -55,8 +55,8 @@ function About() {
               className='group min-w-[15rem] h-[30rem] flex flex-col justify-center gap-3 items-center opacity-70 hover:bg-gradient-to-b from-orange-800 via-black to-orange-800 hover:opacity-100 bg-gray-900 relative'
               onMouseEnter={() => setHovered2(true)}
               onMouseLeave={() => setHovered2(false)}>
-              <div className='rounded-full w-[8rem] h-[8rem] overflow-hidden'>
-                <img src={hovered2 ? img.devil_ronaldo : img.tuan_anh} alt="member" className='w-fit h-fit object-fill border-none'/>
+              <div className={ hovered2 ? "" : 'rounded-full w-[8rem] h-[8rem] overflow-hidden'}>
+                <img src={hovered2 ? img.devil_ronaldo : img.tuan_anh} alt="member" className={ hovered2 ? 'rounded-full w-[8rem] h-[8rem] overflow-hidden object-fill' : "object-cover"}/>
               </div>
               {
                 hovered2 && (
@@ -70,12 +70,12 @@ function About() {
                     <div className='absolute bottom-[9.8rem]'>
                       <img className='size-[4rem]' src={img.goatee} alt="" />
                     </div>
-                    <div className=' absolute top-0 transform rotate-180'>
+                    {/* <div className=' absolute top-0 transform rotate-180'>
                       <img src={img.fire} className='' alt="" />
                     </div>
                     <div className=' absolute bottom-0'>
                       <img src={img.fire} alt="" />
-                    </div>
+                    </div> */}
                     <div className=' absolute bottom-4 size-[9rem]' id='siuu'>
                       <img src={img.siu} alt="" />
                     </div>
