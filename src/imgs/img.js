@@ -29,6 +29,7 @@ import fire from "../assets/fire-Photoroom.png"
 import siu from "../assets/siuuu-goal-celebration-cr7-kirania-finest-Photoroom.png"
 import card from "../assets/card.jpg"
 import ronaldobackground  from "../assets/ronaldobackground.jpg"
+import american from "../assets/american_poster.jpg"
 
 export default{
     testimg : testimg,
@@ -62,4 +63,5 @@ export default{
     goatee:goatee,
     card:card,
     ronaldobackground:ronaldobackground,
+    american:american,
 }
