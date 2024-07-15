@@ -495,20 +495,20 @@ const handleFileUpload = (e) => {
             }
         }
     };
-    const fetchUserData2 = async () => {
-        if (auth.currentUser) {
-          const userEmail = auth.currentUser.email;
-          try {
-            const docRef = doc(db, "KEYS", userEmail);
-            const docSnap = await getDoc(docRef);
-            if (docSnap.exists()) {
-              setproductlist2(docSnap.data());
+        const fetchUserData2 = async () => {
+            if (auth.currentUser) {
+            const userEmail = auth.currentUser.email;
+            try {
+                const docRef = doc(db, "KEYS", userEmail);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                setproductlist2(docSnap.data());
+                }
+            } catch (error) {
+                console.error("Error fetching document:", error);
             }
-          } catch (error) {
-            console.error("Error fetching document:", error);
-          }
-        }
-    };
+            }
+        };
 
 
     useEffect(() => {
@@ -629,9 +629,10 @@ const handleFileUpload = (e) => {
                             {/* {capturedImage && <img src={capturedImage} alt="Captured" />} */}
                         </div>
                         <select className="mt-2 p-2 text-md border-none rounded-md hover:cursor-pointer" onChange={(e) => setinputservice(e.target.value)}>
-                            <option value="">Select OCR services</option>
-                            <option value="GG_vision">Google vision (Required JSON file key)</option>
-                            <option value="Veryfi">Veryfi (Required KEYS) </option>
+                            <option value="">Select OCR services(Required PAN KEYS)</option>
+                            <option value="GG_vision">Google vision (Required JSON file KEYS)</option>
+                            <option value="Veryfi">Veryfi (Required Veryfi KEYS) </option>
+                            <option value="Viet_OCR">Viet_OCR</option>
                         </select>
                         <button className={!processing ? "text-white mt-4 text-md p-2 rounded-md w-52 bg-yellow-400 hover:bg-yellow-200" : "text-white mt-6 text-md p-2 rounded-md w-52 bg-yellow-500 opacity-50 cursor-not-allowed"} disabled={processing} onClick={sendFiles}> {processing ? "PROCESSING....." : "START OCR"}</button>
                         {

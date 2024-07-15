@@ -40,6 +40,7 @@ function StoredKeys() {
 
     useEffect(() => {
         if (!loading) {
+            fetchUserData2();
             fetchUserData();
         }
     }, [loading]);
@@ -80,6 +81,22 @@ function StoredKeys() {
     const [veryfikey, setveryfikey] = useState("");
     const [saveprocess2, setsaveprocess2] = useState(false);
     const [jsonfile, setjsonfile] = useState("");
+    const [productlist2,setproductlist2]=useState(); 
+
+    const fetchUserData2 = async () => {
+        if (auth.currentUser) {
+          const userEmail = auth.currentUser.email;
+          try {
+            const docRef = doc(db, "KEYS", userEmail);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+              setproductlist2(docSnap.data());
+            }
+          } catch (error) {
+            console.error("Error fetching document:", error);
+          }
+        }
+    };
 
     // const uploadFile = async (file) => {
     //     if (!file) {
@@ -92,10 +109,6 @@ function StoredKeys() {
     // };
 
     const saveFunction = async () => {
-        if (!jsonfile) {
-            setError("No valid JSON content to save.");
-            return;
-        } 
         try {
             setsaveprocess2(true);
             setError(null); // Clear previous errors
@@ -103,23 +116,38 @@ function StoredKeys() {
             const documentPath = `${auth?.currentUser?.email}`;
             const productDoc = doc(db, "KEYS", documentPath);
             const data = {
-                PAN_key: key,
-                Client_id: id,
-                Client_secret: secret,
-                Username: username,
-                Veryfikey: veryfikey,
-                type: jsonfile.type,
-                project_id: jsonfile.project_id,
-                private_key_id: jsonfile.private_key_id,
-                private_key: jsonfile.private_key,
-                client_email: jsonfile.client_email,
-                client_id: jsonfile.client_id,
-                auth_uri: jsonfile.auth_uri,
-                token_uri: jsonfile.token_uri,
-                auth_provider_x509_cert_url:jsonfile.auth_provider_x509_cert_url,
-                client_x509_cert_url: jsonfile.client_x509_cert_url,
-                universe_domain: jsonfile.universe_domain,
-                filename: jsonfile.filename,
+                PAN_key: key ? key : productlist2.PAN_key? productlist2.PAN_key : "",
+                Client_id: id ? id: productlist2.Client_id? productlist2.client_id : "",
+                Client_secret: secret ? secret : productlist2.secret? productlist2.secret : "",
+
+                Username: username ? username : productlist2.Username? productlist2.Username : "",
+
+                Veryfikey: veryfikey ? veryfikey : productlist2.Veryfikey? productlist2.Veryfikey : "",
+
+                type: jsonfile.type ? jsonfile.type :  productlist2.type? productlist2.type : "",
+
+                project_id: jsonfile.project_id? jsonfile.project_id : productlist2.project_id? productlist2.project_id : "",
+
+                private_key_id: jsonfile.private_key_id ? jsonfile.private_key_id : productlist2.private_key_id? productlist2.private_key_id : "",
+
+                private_key: jsonfile.private_key ? jsonfile.private_key : productlist2.private_key? productlist2.private_key : "",
+
+                client_email: jsonfile.client_email ? jsonfile.client_email : productlist2.client_email? productlist2.client_email : "",
+
+                client_id: jsonfile.client_id ? jsonfile.client_id : productlist2.client_id? productlist2.client_id : "",
+
+                auth_uri: jsonfile.auth_uri ? jsonfile.auth_uri : productlist2.auth_uri? productlist2.auth_uri : "",
+
+                token_uri: jsonfile.token_uri ? jsonfile.token_uri : productlist2.token_uri? productlist2.token_uri : "",
+
+                auth_provider_x509_cert_url:jsonfile.auth_provider_x509_cert_url ? jsonfile.auth_provider_x509_cert_url : productlist2.auth_provider_x509_cert_url? productlist2.auth_provider_x509_cert_url : "",
+
+                client_x509_cert_url: jsonfile.client_x509_cert_url ? jsonfile.client_x509_cert_url : productlist2.client_x509_cert_url? productlist2.client_x509_cert_url : "",
+
+                universe_domain: jsonfile.universe_domain ? jsonfile.universe_domain : productlist2.universe_domain?  productlist2.universe_domain : "",
+
+                filename: jsonfile.filename ? jsonfile.filename : productlist2.filename? productlist2.filename : "",
+
             };
 
             await setDoc(productDoc, data, { merge: true });
