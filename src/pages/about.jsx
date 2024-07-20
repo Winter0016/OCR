@@ -52,7 +52,7 @@ function About() {
                 <img src={img.tuan_anh} alt="member" className={"object-cover"}/>
               </div>
               <div className='text-xl group-hover:italic group-hover:font-semibold z-10 '>Tuan Anh</div>
-              <div className='text-xl opacity-0 translate-y-12 group-hover:opacity-100 group-hover:translate-y-0 transform transition-all duration-500 text-center font-semibold text-yellow-200 z-10'>AI Analyst & Tester</div>
+              <div className='text-xl opacity-0 translate-y-12 group-hover:opacity-100 group-hover:translate-y-0 transform transition-all duration-500 text-center font-semibold text-yellow-200 z-10'>Web Developer</div>
               <img src={img.ronaldobackground} alt="" className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-50" />
             </div>
 
