@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from "react";
 import { setDoc, doc, getDoc } from "firebase/firestore";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { getStorage } from "firebase/storage";
 import { auth, db } from "../Firebase/firebase-config";
 import { Usercontext } from "../App";
 
@@ -12,10 +12,9 @@ function StoredKeys() {
     const [loadingkey, setloadingkey] = useState(false);
     const [saveProcess, setSaveProcess] = useState(false);
     const [error, setError] = useState(null);
-    const [productlist2,setproductlist2]=useState(); 
-    const [Filename,setFilename] = useState("");
+    const [productlist2, setproductlist2] = useState();
+    const [Filename, setFilename] = useState("");
     const [saved, setsaved] = useState(false);
-    const[clientid,setclientid] = useState("");
 
     const [id, setid] = useState("");
     const [secret, setsecret] = useState("");
@@ -24,6 +23,11 @@ function StoredKeys() {
     const [saveprocess2, setsaveprocess2] = useState(false);
     const [jsonfile, setjsonfile] = useState("");
 
+    const [showKey, setShowKey] = useState(false);
+    const [showId, setShowId] = useState(false);
+    const [showSecret, setShowSecret] = useState(false);
+    const [showUsername, setShowUsername] = useState(false);
+    const [showVeryfiKey, setShowVeryfiKey] = useState(false);
 
     useEffect(() => {
         if (!loading) {
@@ -38,7 +42,6 @@ function StoredKeys() {
             setsecret(productlist2.Client_secret);
             setusername(productlist2.Username);
             setveryfikey(productlist2.Veryfikey);
-            setclientid(productlist2.client_id);
             setFilename(productlist2.filename)
         }
     }, [productlist2]);
@@ -61,33 +64,24 @@ function StoredKeys() {
             setSaveProcess(false);
         }
     };
+
     const fetchUserData2 = async () => {
         if (auth.currentUser) {
-          const userEmail = auth.currentUser.email;
-          try {
-            setloadingkey(true);
-            const docRef = doc(db, "KEYS", userEmail);
-            const docSnap = await getDoc(docRef);
-            if (docSnap.exists()) {
-              setproductlist2(docSnap.data());
+            const userEmail = auth.currentUser.email;
+            try {
+                setloadingkey(true);
+                const docRef = doc(db, "KEYS", userEmail);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    setproductlist2(docSnap.data());
+                }
+                setloadingkey(false);
+            } catch (error) {
+                setloadingkey(false);
+                console.error("Error fetching document:", error);
             }
-            setloadingkey(false);
-          } catch (error) {
-            setloadingkey(false);
-            console.error("Error fetching document:", error);
-          }
         }
     };
-
-    // const uploadFile = async (file) => {
-    //     if (!file) {
-    //         throw new Error("No file selected");
-    //     }
-    //     const userEmail = auth.currentUser.email;
-    //     const storageRef = ref(storage, `keys/${userEmail}/service_key.json`);
-    //     await uploadBytes(storageRef, file);
-    //     return await getDownloadURL(storageRef);
-    // };
 
     const saveFunction = async () => {
         try {
@@ -97,37 +91,37 @@ function StoredKeys() {
             const documentPath = `${auth?.currentUser?.email}`;
             const productDoc = doc(db, "KEYS", documentPath);
             const data = {
-                PAN_key: key ? key : productlist2? productlist2.PAN_key : "",
-                Client_id: id ? id: productlist2? productlist2.Client_id : "",
-                Client_secret: secret ? secret : productlist2? productlist2.Client_secret : "",
+                PAN_key: key ? key : productlist2 ? productlist2.PAN_key : "",
+                Client_id: id ? id : productlist2 ? productlist2.Client_id : "",
+                Client_secret: secret ? secret : productlist2 ? productlist2.Client_secret : "",
 
-                Username: username ? username : productlist2? productlist2.Username : "",
+                Username: username ? username : productlist2 ? productlist2.Username : "",
 
-                Veryfikey: veryfikey ? veryfikey : productlist2? productlist2.Veryfikey : "",
+                Veryfikey: veryfikey ? veryfikey : productlist2 ? productlist2.Veryfikey : "",
 
-                type: jsonfile.type ? jsonfile.type :  productlist2? productlist2.type : "",
+                type: jsonfile.type ? jsonfile.type : productlist2 ? productlist2.type : "",
 
-                project_id: jsonfile.project_id? jsonfile.project_id : productlist2? productlist2.project_id : "",
+                project_id: jsonfile.project_id ? jsonfile.project_id : productlist2 ? productlist2.project_id : "",
 
-                private_key_id: jsonfile.private_key_id ? jsonfile.private_key_id : productlist2? productlist2.private_key_id : "",
+                private_key_id: jsonfile.private_key_id ? jsonfile.private_key_id : productlist2 ? productlist2.private_key_id : "",
 
-                private_key: jsonfile.private_key ? jsonfile.private_key : productlist2? productlist2.private_key : "",
+                private_key: jsonfile.private_key ? jsonfile.private_key : productlist2 ? productlist2.private_key : "",
 
-                client_email: jsonfile.client_email ? jsonfile.client_email : productlist2? productlist2.client_email : "",
+                client_email: jsonfile.client_email ? jsonfile.client_email : productlist2 ? productlist2.client_email : "",
 
-                client_id: jsonfile.client_id ? jsonfile.client_id : productlist2? productlist2.client_id : "",
+                client_id: jsonfile.client_id ? jsonfile.client_id : productlist2 ? productlist2.client_id : "",
 
-                auth_uri: jsonfile.auth_uri ? jsonfile.auth_uri : productlist2? productlist2.auth_uri : "",
+                auth_uri: jsonfile.auth_uri ? jsonfile.auth_uri : productlist2 ? productlist2.auth_uri : "",
 
-                token_uri: jsonfile.token_uri ? jsonfile.token_uri : productlist2? productlist2.token_uri : "",
+                token_uri: jsonfile.token_uri ? jsonfile.token_uri : productlist2 ? productlist2.token_uri : "",
 
-                auth_provider_x509_cert_url:jsonfile.auth_provider_x509_cert_url ? jsonfile.auth_provider_x509_cert_url : productlist2? productlist2.auth_provider_x509_cert_url : "",
+                auth_provider_x509_cert_url: jsonfile.auth_provider_x509_cert_url ? jsonfile.auth_provider_x509_cert_url : productlist2 ? productlist2.auth_provider_x509_cert_url : "",
 
-                client_x509_cert_url: jsonfile.client_x509_cert_url ? jsonfile.client_x509_cert_url : productlist2? productlist2.client_x509_cert_url : "",
+                client_x509_cert_url: jsonfile.client_x509_cert_url ? jsonfile.client_x509_cert_url : productlist2 ? productlist2.client_x509_cert_url : "",
 
-                universe_domain: jsonfile.universe_domain ? jsonfile.universe_domain : productlist2?  productlist2.universe_domain : "",
+                universe_domain: jsonfile.universe_domain ? jsonfile.universe_domain : productlist2 ? productlist2.universe_domain : "",
 
-                filename: jsonfile.filename ? jsonfile.filename : productlist2? productlist2.filename : "",
+                filename: jsonfile.filename ? jsonfile.filename : productlist2 ? productlist2.filename : "",
 
             };
 
@@ -183,17 +177,26 @@ function StoredKeys() {
                 >
                     <div>
                         <div className="text-xl font-bold">PAN api key</div>
-                        <div className="flex gap-3">
-                            <input
-                                className="rounded-xl mt-1 text-xl text-green-400 p-2 w-full"
-                                type="text"
-                                required
-                                value={loadingkey ? "Getting key..." : key ? key : "You have no key!"}
-                                disabled={true}
-                            />
+                        <div className="flex flex-col gap-3">
+                            <div className="flex gap-3">
+                                <input
+                                    className="rounded-xl mt-1 text-xl text-green-400 p-2 w-full"
+                                    type={showKey ? "text" : "password"}
+                                    required
+                                    value={loadingkey ? "Getting key..." : key ? key : "You have no key!"}
+                                    disabled={true}
+                                />
+                                <button
+                                    type="button"
+                                    className="bg-gray-600 text-white p-2 rounded"
+                                    onClick={() => setShowKey(!showKey)}
+                                >
+                                    {showKey ? "Hide" : "Show"}
+                                </button>
+                            </div>
                             <button
-                                className={`rounded-xl p-2 whitespace-nowrap text-lg ${saveProcess ? 'bg-green-700 opacity-65' : error === "User is not authenticated" ? 'cursor-not-allowed bg-green-600 opacity-55' : 'hover:bg-green-700 bg-green-600'}`}
-                                disabled={saveProcess || error === "User is not authenticated" || saveprocess2 || loadingkey }
+                                className={`rounded-xl p-2 whitespace-nowrap text-lg w-fit self-center ${saveProcess ? 'bg-green-700 opacity-65' : error === "User is not authenticated" ? 'cursor-not-allowed bg-green-600 opacity-55' : 'hover:bg-green-700 bg-green-600'}`}
+                                disabled={saveProcess || error === "User is not authenticated" || saveprocess2 || loadingkey}
                                 onClick={() => generateapikey()}
                             >
                                 {saveProcess ? "Generating" : "Generate new key"}
@@ -207,11 +210,18 @@ function StoredKeys() {
                             <div className="flex gap-3">
                                 <input
                                     className="rounded-xl mt-1 text-xl text-green-400 p-2 w-full bg-gray-600"
-                                    type="text"
+                                    type={showId ? "text" : "password"}
                                     value={loadingkey ? "Getting key..." : id}
                                     onChange={(e) => setid(e.target.value)}
                                     disabled={loadingkey}
                                 />
+                                <button
+                                    type="button"
+                                    className="bg-gray-600 text-white p-2 rounded"
+                                    onClick={() => setShowId(!showId)}
+                                >
+                                    {showId ? "Hide" : "Show"}
+                                </button>
                             </div>
                         </div>
                         <div>
@@ -219,11 +229,18 @@ function StoredKeys() {
                             <div className="flex gap-3">
                                 <input
                                     className="rounded-xl mt-1 text-xl text-green-400 p-2 w-full bg-gray-600"
-                                    type="text"
+                                    type={showSecret ? "text" : "password"}
                                     value={loadingkey ? "Getting key..." : secret}
                                     onChange={(e) => setsecret(e.target.value)}
                                     disabled={loadingkey}
                                 />
+                                <button
+                                    type="button"
+                                    className="bg-gray-600 text-white p-2 rounded"
+                                    onClick={() => setShowSecret(!showSecret)}
+                                >
+                                    {showSecret ? "Hide" : "Show"}
+                                </button>
                             </div>
                         </div>
                         <div>
@@ -231,11 +248,18 @@ function StoredKeys() {
                             <div className="flex gap-3">
                                 <input
                                     className="rounded-xl mt-1 text-xl text-green-400 p-2 w-full bg-gray-600"
-                                    type="text"
+                                    type={showUsername ? "text" : "password"}
                                     value={loadingkey ? "Getting key..." : username}
                                     onChange={(e) => setusername(e.target.value)}
                                     disabled={loadingkey}
                                 />
+                                <button
+                                    type="button"
+                                    className="bg-gray-600 text-white p-2 rounded"
+                                    onClick={() => setShowUsername(!showUsername)}
+                                >
+                                    {showUsername ? "Hide" : "Show"}
+                                </button>
                             </div>
                         </div>
                         <div>
@@ -243,11 +267,18 @@ function StoredKeys() {
                             <div className="flex gap-3">
                                 <input
                                     className="rounded-xl mt-1 text-xl text-green-400 p-2 w-full bg-gray-600"
-                                    type="text"
+                                    type={showVeryfiKey ? "text" : "password"}
                                     value={loadingkey ? "Getting key..." : veryfikey}
                                     onChange={(e) => setveryfikey(e.target.value)}
                                     disabled={loadingkey}
                                 />
+                                <button
+                                    type="button"
+                                    className="bg-gray-600 text-white p-2 rounded"
+                                    onClick={() => setShowVeryfiKey(!showVeryfiKey)}
+                                >
+                                    {showVeryfiKey ? "Hide" : "Show"}
+                                </button>
                             </div>
                         </div>
                     </div>
