@@ -69,7 +69,7 @@ function App() {
   // Call this function when your app starts
   useEffect(() => {
     keepFunctionWarm();
-  },[])
+  },[5000])
 
 
   return (
