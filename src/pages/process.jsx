@@ -154,7 +154,7 @@ const handleFileUpload = (e) => {
                 });
     
                 if (!response.ok) {
-                    throw new Error('Your Veryfi KEYS are invalid!');
+                    throw new Error('Your Veryfi KEYS are invalid or Expired!');
                 }
     
                 const json = await response.json();
@@ -199,7 +199,7 @@ const handleFileUpload = (e) => {
                 });
     
                 if (!response2.ok) {
-                    throw new Error('Your GG_vision KEYS are invalid');
+                    throw new Error('Your GG_vision KEYS are invalid or Expired');
                 }
     
                 const json = await response2.json();
