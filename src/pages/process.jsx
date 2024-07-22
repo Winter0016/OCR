@@ -170,7 +170,7 @@ const handleFileUpload = (e) => {
                     throw new Error("You haven't input file for GG_vision keys at KEYS");
                 }
                 if(!productlist2.client_id || !productlist2.client_email || !productlist2.auth_provider_x509_cert_url){
-                    throw new Error("Please input file from GG_vision services")
+                    throw new Error("Missing some properties,Please input file from GG_vision services")
                 }
                 // Create JSON object
                 const jsonObject = {
