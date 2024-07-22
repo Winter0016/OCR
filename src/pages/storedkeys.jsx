@@ -26,7 +26,6 @@ function StoredKeys() {
     const [showKey, setShowKey] = useState(false);
     const [showId, setShowId] = useState(false);
     const [showSecret, setShowSecret] = useState(false);
-    const [showUsername, setShowUsername] = useState(false);
     const [showVeryfiKey, setShowVeryfiKey] = useState(false);
 
     useEffect(() => {
@@ -248,18 +247,11 @@ function StoredKeys() {
                             <div className="flex gap-3">
                                 <input
                                     className="rounded-xl mt-1 text-xl text-green-400 p-2 w-full bg-gray-600"
-                                    type={showUsername ? "text" : "password"}
+                                    type={"text"}
                                     value={loadingkey ? "Getting key..." : username}
                                     onChange={(e) => setusername(e.target.value)}
                                     disabled={loadingkey}
                                 />
-                                <button
-                                    type="button"
-                                    className="bg-gray-600 text-white p-2 rounded"
-                                    onClick={() => setShowUsername(!showUsername)}
-                                >
-                                    {showUsername ? "Hide" : "Show"}
-                                </button>
                             </div>
                         </div>
                         <div>
