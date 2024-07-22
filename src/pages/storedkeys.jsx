@@ -12,50 +12,36 @@ function StoredKeys() {
     const [loadingkey, setloadingkey] = useState(false);
     const [saveProcess, setSaveProcess] = useState(false);
     const [error, setError] = useState(null);
-    const [productlist, setProductlist] = useState();
+    const [productlist2,setproductlist2]=useState(); 
     const [Filename,setFilename] = useState("");
     const [saved, setsaved] = useState(false);
     const[clientid,setclientid] = useState("");
 
-    const fetchUserData = async () => {
-        if (auth.currentUser) {
-            const userEmail = auth.currentUser.email;
-            try {
-                setloadingkey(true);
-                const docRef = doc(db, "KEYS", userEmail);
-                const docSnap = await getDoc(docRef);
-                if (docSnap.exists()) {
-                    setProductlist(docSnap.data());
-                }
-                setloadingkey(false);
-            } catch (error) {
-                setloadingkey(false);
-                console.error("Error fetching document:", error);
-            }
-        } else {
-            setloadingkey(false);
-            setError("User is not authenticated");
-        }
-    };
+    const [id, setid] = useState("");
+    const [secret, setsecret] = useState("");
+    const [username, setusername] = useState("");
+    const [veryfikey, setveryfikey] = useState("");
+    const [saveprocess2, setsaveprocess2] = useState(false);
+    const [jsonfile, setjsonfile] = useState("");
+
 
     useEffect(() => {
         if (!loading) {
             fetchUserData2();
-            fetchUserData();
         }
     }, [loading]);
 
     useEffect(() => {
-        if (productlist) {
-            setKey(productlist.PAN_key);
-            setid(productlist.Client_id);
-            setsecret(productlist.Client_secret);
-            setusername(productlist.Username);
-            setveryfikey(productlist.Veryfikey);
-            setclientid(productlist.client_id);
-            setFilename(productlist.filename)
+        if (productlist2) {
+            setKey(productlist2.PAN_key);
+            setid(productlist2.Client_id);
+            setsecret(productlist2.Client_secret);
+            setusername(productlist2.Username);
+            setveryfikey(productlist2.Veryfikey);
+            setclientid(productlist2.client_id);
+            setFilename(productlist2.filename)
         }
-    }, [productlist]);
+    }, [productlist2]);
 
     const generateapikey = async () => {
         try {
@@ -75,24 +61,19 @@ function StoredKeys() {
             setSaveProcess(false);
         }
     };
-    const [id, setid] = useState("");
-    const [secret, setsecret] = useState("");
-    const [username, setusername] = useState("");
-    const [veryfikey, setveryfikey] = useState("");
-    const [saveprocess2, setsaveprocess2] = useState(false);
-    const [jsonfile, setjsonfile] = useState("");
-    const [productlist2,setproductlist2]=useState(); 
-
     const fetchUserData2 = async () => {
         if (auth.currentUser) {
           const userEmail = auth.currentUser.email;
           try {
+            setloadingkey(true);
             const docRef = doc(db, "KEYS", userEmail);
             const docSnap = await getDoc(docRef);
             if (docSnap.exists()) {
               setproductlist2(docSnap.data());
             }
+            setloadingkey(false);
           } catch (error) {
+            setloadingkey(false);
             console.error("Error fetching document:", error);
           }
         }
@@ -116,37 +97,37 @@ function StoredKeys() {
             const documentPath = `${auth?.currentUser?.email}`;
             const productDoc = doc(db, "KEYS", documentPath);
             const data = {
-                PAN_key: key ? key : productlist2.PAN_key? productlist2.PAN_key : "",
-                Client_id: id ? id: productlist2.Client_id? productlist2.client_id : "",
-                Client_secret: secret ? secret : productlist2.secret? productlist2.secret : "",
+                PAN_key: key ? key : productlist2? productlist2.PAN_key : "",
+                Client_id: id ? id: productlist2? productlist2.Client_id : "",
+                Client_secret: secret ? secret : productlist2? productlist2.Client_secret : "",
 
-                Username: username ? username : productlist2.Username? productlist2.Username : "",
+                Username: username ? username : productlist2? productlist2.Username : "",
 
-                Veryfikey: veryfikey ? veryfikey : productlist2.Veryfikey? productlist2.Veryfikey : "",
+                Veryfikey: veryfikey ? veryfikey : productlist2? productlist2.Veryfikey : "",
 
-                type: jsonfile.type ? jsonfile.type :  productlist2.type? productlist2.type : "",
+                type: jsonfile.type ? jsonfile.type :  productlist2? productlist2.type : "",
 
-                project_id: jsonfile.project_id? jsonfile.project_id : productlist2.project_id? productlist2.project_id : "",
+                project_id: jsonfile.project_id? jsonfile.project_id : productlist2? productlist2.project_id : "",
 
-                private_key_id: jsonfile.private_key_id ? jsonfile.private_key_id : productlist2.private_key_id? productlist2.private_key_id : "",
+                private_key_id: jsonfile.private_key_id ? jsonfile.private_key_id : productlist2? productlist2.private_key_id : "",
 
-                private_key: jsonfile.private_key ? jsonfile.private_key : productlist2.private_key? productlist2.private_key : "",
+                private_key: jsonfile.private_key ? jsonfile.private_key : productlist2? productlist2.private_key : "",
 
-                client_email: jsonfile.client_email ? jsonfile.client_email : productlist2.client_email? productlist2.client_email : "",
+                client_email: jsonfile.client_email ? jsonfile.client_email : productlist2? productlist2.client_email : "",
 
-                client_id: jsonfile.client_id ? jsonfile.client_id : productlist2.client_id? productlist2.client_id : "",
+                client_id: jsonfile.client_id ? jsonfile.client_id : productlist2? productlist2.client_id : "",
 
-                auth_uri: jsonfile.auth_uri ? jsonfile.auth_uri : productlist2.auth_uri? productlist2.auth_uri : "",
+                auth_uri: jsonfile.auth_uri ? jsonfile.auth_uri : productlist2? productlist2.auth_uri : "",
 
-                token_uri: jsonfile.token_uri ? jsonfile.token_uri : productlist2.token_uri? productlist2.token_uri : "",
+                token_uri: jsonfile.token_uri ? jsonfile.token_uri : productlist2? productlist2.token_uri : "",
 
-                auth_provider_x509_cert_url:jsonfile.auth_provider_x509_cert_url ? jsonfile.auth_provider_x509_cert_url : productlist2.auth_provider_x509_cert_url? productlist2.auth_provider_x509_cert_url : "",
+                auth_provider_x509_cert_url:jsonfile.auth_provider_x509_cert_url ? jsonfile.auth_provider_x509_cert_url : productlist2? productlist2.auth_provider_x509_cert_url : "",
 
-                client_x509_cert_url: jsonfile.client_x509_cert_url ? jsonfile.client_x509_cert_url : productlist2.client_x509_cert_url? productlist2.client_x509_cert_url : "",
+                client_x509_cert_url: jsonfile.client_x509_cert_url ? jsonfile.client_x509_cert_url : productlist2? productlist2.client_x509_cert_url : "",
 
-                universe_domain: jsonfile.universe_domain ? jsonfile.universe_domain : productlist2.universe_domain?  productlist2.universe_domain : "",
+                universe_domain: jsonfile.universe_domain ? jsonfile.universe_domain : productlist2?  productlist2.universe_domain : "",
 
-                filename: jsonfile.filename ? jsonfile.filename : productlist2.filename? productlist2.filename : "",
+                filename: jsonfile.filename ? jsonfile.filename : productlist2? productlist2.filename : "",
 
             };
 
