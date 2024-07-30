@@ -97,6 +97,57 @@ const handleFileUpload = (e) => {
             console.error(err);
         }
     };
+    let arrayraw_text = [
+        [
+            "1000",
+            "201548323",
+            "590",
+            "1590",
+            "1",
+            "đề nghị thanh toán đúng hạn",
+            "phạm hợp đống và lãi suất phạt chậm trả,",
+            "điện tiều thụ(kwh)",
+            "hệ số nhân",
+            "chỉ số mới",
+            "công tơ đo đếm",
+            "chỉ số cũ",
+            "để tránh phát sinh các chi phí phạt vi",
+            "21/05/2019",
+            "kỳ hoá đơn:tháng 5/2019(30 ngày từ 15/04/2019 đến 14/05/2019)",
+            "hạn thanh toán",
+            "tỉnh hình sử dụng điện của khách hàng",
+            "1.611.643 đồng",
+            "số hộ sử dụng điện",
+            "1",
+            "tiền thanh toán",
+            "sinh hoạt",
+            "mục đích sử dụng điện",
+            "hàng khoai,hoàn kiếm,hà nội",
+            "địa chỉ",
+            "pd010000010383",
+            "mã khách hàng",
+            "khách hàng",
+            "nguyễn quốc a",
+            "(bản thể hiện của hoá đơn điện tử)",
+            "hỏa đơn giá trị gia tăng(tiền điện)",
+            "số:0233044",
+            "mst:010010114-001",
+            "evn",
+            "ký hiệu:aa/19e",
+            "quận hoàn kiểm,hà nội",
+            "69c đinh tiền hàng,phường lý thái tổ,",
+            "mẫu số:01gtkto/001",
+            "công ty điện lực hoàn kiếm",
+            "1900 1288",
+            "tổng công ty điện lực tp hà nội"
+        ]
+    ];
+    let flattenedArray = arrayraw_text.flat(); // Flatten the array
+    let formattedText = flattenedArray.join("\n"); // Join with newline characters
+
+    // if(objectfield){
+    //     console.log(objectfield);
+    // }
 
     const isFileExtensionAllowed = (filename) => {
         const fileExtension = filename.split('.').pop().toLowerCase();
@@ -455,7 +506,7 @@ const handleFileUpload = (e) => {
         }
         const byteArray = new Uint8Array(byteNumbers);
 
-        console.log(`bytearray : ${byteArray}`);
+        // console.log(`bytearray : ${byteArray}`);
         const blob = new Blob([byteArray], { type: 'image/jpeg' });
 
         const file = new File([blob], 'captured_image.jpeg', { type: 'image/jpeg' });
@@ -588,6 +639,9 @@ const handleFileUpload = (e) => {
                                 <div className="flex flex-col justify-center items-center md:max-w-28 overflow-auto text-green-500 rounded-lg text-4xl p-4 h-28 mt-9 bg-gray-300" style={{ whiteSpace: 'pre-wrap' }}>
                                     <div>YOUR RESULT</div>
                                 </div>
+                                // <div className="md:max-w-28 overflow-auto border-none text-green-500 max-h-34 border-4 whitespace-pre-line p-4 mt-4">
+                                //     {formattedText}
+                                // </div>
                             )
                         )
                     }
@@ -750,11 +804,11 @@ const handleFileUpload = (e) => {
                                                     Object.entries(objectfield).map(([key, value]) => (
                                                         <div className="flex flex-col">
                                                             <div className="flex gap-4" key={key}>
-                                                                <div className={deletefield ? "hover:cursor-pointer hover:bg-red-600 border-[1px] p-2 w-full flex items-center": modifyfield ? "hover:cursor-pointer hover:bg-yellow-600 border-[1px] p-2 w-full flex items-center" : "border-[1px] p-2 w-full flex items-center"} onClick={() => {deletefunction(key);setmodifyvalue(key);setoriginalvalue(key)}}>
-                                                                    {key}
+                                                                <div className={deletefield ? "hover:cursor-pointer hover:bg-red-600 border-[1px] p-2 w-[20rem] flex items-center overflow-auto": modifyfield ? "hover:cursor-pointer hover:bg-yellow-600 border-[1px] p-2 w-[20rem] flex items-center overflow-auto" : "border-[1px] p-2 w-[20rem] flex items-center overflow-auto"} onClick={() => {deletefunction(key);setmodifyvalue(key);setoriginalvalue(key)}}>
+                                                                    {JSON.stringify(key)}
                                                                 </div>
-                                                                <div className="border-[1px] p-2 w-full flex items-center">
-                                                                    {value}
+                                                                <div className="border-[1px] p-2 w-[30rem] flex items-center overflow-auto">
+                                                                    {JSON.stringify(value)}
                                                                 </div>
                                                             </div>
                                                         </div>

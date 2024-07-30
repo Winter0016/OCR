@@ -68,8 +68,10 @@ function App() {
 
   // Call this function when your app starts
   useEffect(() => {
-    keepFunctionWarm();
-  },[loading])
+    if(loading==false){
+      keepFunctionWarm();
+    }
+  },[])
 
 
   return (
