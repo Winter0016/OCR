@@ -97,58 +97,53 @@ const handleFileUpload = (e) => {
             console.error(err);
         }
     };
-    let arrayraw_text = [
-        [
-            "1000",
-            "201548323",
-            "590",
-            "1590",
-            "1",
-            "đề nghị thanh toán đúng hạn",
-            "phạm hợp đống và lãi suất phạt chậm trả,",
-            "điện tiều thụ(kwh)",
-            "hệ số nhân",
-            "chỉ số mới",
-            "công tơ đo đếm",
-            "chỉ số cũ",
-            "để tránh phát sinh các chi phí phạt vi",
-            "21/05/2019",
-            "kỳ hoá đơn:tháng 5/2019(30 ngày từ 15/04/2019 đến 14/05/2019)",
-            "hạn thanh toán",
-            "tỉnh hình sử dụng điện của khách hàng",
-            "1.611.643 đồng",
-            "số hộ sử dụng điện",
-            "1",
-            "tiền thanh toán",
-            "sinh hoạt",
-            "mục đích sử dụng điện",
-            "hàng khoai,hoàn kiếm,hà nội",
-            "địa chỉ",
-            "pd010000010383",
-            "mã khách hàng",
-            "khách hàng",
-            "nguyễn quốc a",
-            "(bản thể hiện của hoá đơn điện tử)",
-            "hỏa đơn giá trị gia tăng(tiền điện)",
-            "số:0233044",
-            "mst:010010114-001",
-            "evn",
-            "ký hiệu:aa/19e",
-            "quận hoàn kiểm,hà nội",
-            "69c đinh tiền hàng,phường lý thái tổ,",
-            "mẫu số:01gtkto/001",
-            "công ty điện lực hoàn kiếm",
-            "1900 1288",
-            "tổng công ty điện lực tp hà nội"
-        ]
-    ];
-    let flattenedArray = arrayraw_text.flat(); // Flatten the array
-    let formattedText = flattenedArray.join("\n"); // Join with newline characters
-
-    // if(objectfield){
-    //     console.log(objectfield);
-    // }
-
+    // let arrayraw_text = [
+    //     [
+    //         "1000",
+    //         "201548323",
+    //         "590",
+    //         "1590",
+    //         "1",
+    //         "đề nghị thanh toán đúng hạn",
+    //         "phạm hợp đống và lãi suất phạt chậm trả,",
+    //         "điện tiều thụ(kwh)",
+    //         "hệ số nhân",
+    //         "chỉ số mới",
+    //         "công tơ đo đếm",
+    //         "chỉ số cũ",
+    //         "để tránh phát sinh các chi phí phạt vi",
+    //         "21/05/2019",
+    //         "kỳ hoá đơn:tháng 5/2019(30 ngày từ 15/04/2019 đến 14/05/2019)",
+    //         "hạn thanh toán",
+    //         "tỉnh hình sử dụng điện của khách hàng",
+    //         "1.611.643 đồng",
+    //         "số hộ sử dụng điện",
+    //         "1",
+    //         "tiền thanh toán",
+    //         "sinh hoạt",
+    //         "mục đích sử dụng điện",
+    //         "hàng khoai,hoàn kiếm,hà nội",
+    //         "địa chỉ",
+    //         "pd010000010383",
+    //         "mã khách hàng",
+    //         "khách hàng",
+    //         "nguyễn quốc a",
+    //         "(bản thể hiện của hoá đơn điện tử)",
+    //         "hỏa đơn giá trị gia tăng(tiền điện)",
+    //         "số:0233044",
+    //         "mst:010010114-001",
+    //         "evn",
+    //         "ký hiệu:aa/19e",
+    //         "quận hoàn kiểm,hà nội",
+    //         "69c đinh tiền hàng,phường lý thái tổ,",
+    //         "mẫu số:01gtkto/001",
+    //         "công ty điện lực hoàn kiếm",
+    //         "1900 1288",
+    //         "tổng công ty điện lực tp hà nội"
+    //     ]
+    // ];
+    // let flattenedArray = arrayraw_text.flat(); // Flatten the array
+    // let formattedText = flattenedArray.join("\n"); // Join with newline characters
     const isFileExtensionAllowed = (filename) => {
         const fileExtension = filename.split('.').pop().toLowerCase();
         return allowedExtensions.includes(fileExtension);
@@ -182,7 +177,11 @@ const handleFileUpload = (e) => {
                 if (!isAllowed) {
                     throw new Error("We only allow file PDF, TIFF, JPEG, and PNG.");
                 }
-                formData.append('file', file);
+                if(inputservice ==="Viet_OCR"){
+                    formData.append("image",file);
+                }else{
+                    formData.append('file', file);
+                }
             }
     
             if (myFiles.length <= 0) {
@@ -259,6 +258,24 @@ const handleFileUpload = (e) => {
                 setProcessing(false);
                 seterror("");
                 setswitchtype("text");
+            }if(inputservice === "Viet_OCR"){
+                var background_removal=1
+                var text_correction=1
+                formData.append('background_removal',background_removal);
+                formData.append('text_correction',text_correction);
+                const response=await fetch('https://xoebif6n3f6cc5rsbcruhkgney0zfirk.lambda-url.ap-southeast-1.on.aws/',{
+                    method:'POST',
+                    body:formData
+                })
+                const json = await response.json(); 
+                const result=json['result']
+                let flattenedArray = result.text.flat(); // Flatten the array
+                let formattedText = flattenedArray.join("\n"); // Join with newline characters
+                setocrvalue(formattedText);
+                localStorage.setItem("ocrvalue", JSON.stringify(formattedText)); // Store json directly
+                setProcessing(false);
+                seterror("");
+                setswitchtype("text");
             }
         } catch (err) {
             setProcessing(false);
@@ -312,9 +329,19 @@ const handleFileUpload = (e) => {
             }
 
             const encodedRawText = encodeURIComponent(ocrvalue.raw_text);
+            const encodedocrvalue = encodeURIComponent(ocrvalue)
             const encodedTemplate = encodeURIComponent(JSON.stringify(objectfield));
+            // console.log(encodedocrvalue);
+            // console.log(ocrvalue);
+            let mainencoded
+            if(encodedRawText !== "undefined"){
+                mainencoded = encodedRawText;
+            }else{
+                mainencoded = encodedocrvalue;
+            }
+            // console.log(mainencoded);
 
-            const response = await fetch(`https://fastapi-r12h.onrender.com/convert?raw_text=${encodedRawText}&template=${encodedTemplate}`, {
+            const response = await fetch(`https://fastapi-r12h.onrender.com/convert?raw_text=${mainencoded}&template=${encodedTemplate}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -619,7 +646,7 @@ const handleFileUpload = (e) => {
                     {
                         ocrvalue ? (
                             <div className="md:max-w-28 overflow-auto border-none text-green-500 max-h-34 border-4 whitespace-pre-line p-4 mt-4">
-                                {ocrvalue.raw_text}
+                                {ocrvalue.raw_text || ocrvalue}
                             </div>
                         ) : (
                             processing ? (

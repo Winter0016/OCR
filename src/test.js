@@ -11,10 +11,6 @@ document.querySelector('#text_correction').addEventListener('change',(event)=>{
 
 
 
-
-const url='http://localhost:5500'
-
-
 // OCR API CALL //
 document.querySelector('#submit_ocr').addEventListener('click',(event)=>{
     if(File_Content){
@@ -27,20 +23,17 @@ document.querySelector('#submit_ocr').addEventListener('click',(event)=>{
     }
     else alert('Please Upload Image First !')
 })
-async function OCR_API_Call(formData){
-    const response=await fetch(url/OCR,{
+async function OCR_API_Call(formData){    
+    const response=await fetch('https://xoebif6n3f6cc5rsbcruhkgney0zfirk.lambda-url.ap-southeast-1.on.aws/',{
         method:'POST',
-        headers: {
-            'Accept': "application/json"
-        },
         body:formData
     })
     const jsonResponse = await response.json(); 
-    localStorage.setItem('img_path',JSON.stringify(jsonResponse['img_path']))
-    localStorage.setItem('bbox',JSON.stringify(jsonResponse['bounding_box']))
-    localStorage.setItem('text',JSON.stringify(jsonResponse['text']))
+    const result=jsonResponse['result']
+    localStorage.setItem('img_path',JSON.stringify(result['img_path']))
+    localStorage.setItem('bbox',JSON.stringify(result['bounding_box']))
+    localStorage.setItem('text',JSON.stringify(result['text']))
 
-    console.log(jsonResponse)
 }
 
 
@@ -67,14 +60,10 @@ async function APICall_Question(question,img_path,bbox,text){
         bbox:bbox,
         txt:text
     }
-    const response=await fetch(url/question,{
+    const response=await fetch('https://jgdujy7vda5ezafdks76q5rbzu0sngqm.lambda-url.ap-southeast-1.on.aws/',{
             method:'POST',
-            headers: {
-                'Accept': "application/json",
-                'Content-Type': "application/json"
-            },
             body:JSON.stringify(content)
     })
     const jsonResponse = await response.json(); 
-    console.log(jsonResponse)
+    const result=jsonResponse['answer']
 }
