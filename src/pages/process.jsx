@@ -270,7 +270,8 @@ const handleFileUpload = (e) => {
                 const json = await response.json(); 
                 const result=json['result']
                 let flattenedArray = result.text.flat(); // Flatten the array
-                let formattedText = flattenedArray.join("\n"); // Join with newline characters
+                let reversedarray = flattenedArray.reverse();
+                let formattedText = reversedarray.join("\n"); // Join with newline characters
                 setocrvalue(formattedText);
                 localStorage.setItem("ocrvalue", JSON.stringify(formattedText)); // Store json directly
                 setProcessing(false);
