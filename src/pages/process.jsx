@@ -369,10 +369,12 @@ const handleFileUpload = (e) => {
 
     useEffect(() => {
         if(ocrjson){
-            const cleanedJsonString = ocrjson.reply.replace(/```json\n|```/g, '');
+            // console.log(`ocrjson : ${JSON.stringify(ocrjson)}`)
+            const cleanedJsonString = ocrjson.reply.replace(/```json\n|```/g, '').replace(/^"|"$/g, '');
             // console.log(`cleanedjson string : ${cleanedJsonString}`);
 
             const parsedObject = JSON.parse(cleanedJsonString);
+            // console.log("parsedObject :",parsedObject);
 
             setobjectfield(parsedObject);
             // console.log(`${JSON.stringify(objectfield)}`)
