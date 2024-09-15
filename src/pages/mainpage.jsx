@@ -29,7 +29,7 @@ export const Mainpage = () => {
                             </div>
                             <div className="flex ml-5 gap-3">
                                 <button className=" text-white border-4 w-fit md:p-2 md:pl-7 md:pr-7 md:text-lg  text-sm rounded-full p-1 hover:bg-yellow-400" onClick={() => navigate("/process")}>Get started with our services</button>
-                                <button className=" text-white border-4 w-fit md:p-2 md:pl-7 md:pr-7 md:text-lg  text-sm rounded-full p-1 hover:bg-yellow-400">Find out more</button>
+                                <button className=" text-white border-4 w-fit md:p-2 md:pl-7 md:pr-7 md:text-lg  text-sm rounded-full p-1 hover:bg-yellow-400" onClick={() => navigate("/integration")}>Find out more</button>
                             </div>
                         </div>
                         <img className="w-auto h-auto lg:block hidden" src={img.hoadonocr} alt="" />
